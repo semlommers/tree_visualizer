@@ -41,7 +41,7 @@ public class DataToJsonTree {
      */
     public static void main(String[] args) {
         try {
-            String inputFolderLocation = "./Data/SimulationData/";
+            String inputFolderLocation = "./RepresentativeTreeCalculator/Data/SimulationData/";
             String outputFileLocation = inputFolderLocation;
 
             int startTreeSize = 1;//calculate starting from trees of size 1
@@ -63,7 +63,7 @@ public class DataToJsonTree {
         this.outputFileLocation = outputFileLocation;
         System.out.println("Working on data from: " + inputFolderLocation);
         //read data
-        List<String> infectionMap = Files.readAllLines(Paths.get(inputFolderLocation + "/infectionMap.txt"));
+        List<String> infectionMap = Files.readAllLines(Paths.get(inputFolderLocation + "/infectionMapTest.txt"));
         InfectionMapParser imp = new InfectionMapParser(infectionMap);
         imp.constructGraph();
 
@@ -107,7 +107,7 @@ public class DataToJsonTree {
 
         TreeDistanceMeasure tdm = new RtDistanceMeasure(100, 1);
         RepresentativeTreesFinder rgf = new RepresentativeTreesFinder();
-        rgf.getAndWriteRepresentativeTreeData(forest, startTreeSize, endTreeSize, tdm, outputFileLocation + "/ReptreesRTDistance/");
+        rgf.getAndWriteRepresentativeTreeData(forest, startTreeSize, endTreeSize, tdm, outputFileLocation + "/ReptreesRTDistance");
     }
 
     private void printStatistics(HashMap<Integer, Set<Contact>> contacts, InfectionGraph ig) {
