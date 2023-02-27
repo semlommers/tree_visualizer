@@ -153,6 +153,7 @@ function getStateArray(nodesWithMetaData, stateNames, policy, appPercentage, sta
  * Holds whether the node with the specified metadata is removed by the policy
  */
 function isRemovedByPolicy(nodeMetaData, policy, appPercentage, origin = false) {
+    return false;
     for (const metaPolicy of nodeMetaData.policies) {
 
         //combine policyAndAppPercentage to get the right number

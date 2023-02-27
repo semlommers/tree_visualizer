@@ -1,14 +1,15 @@
 package Export;
 
+import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
+import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
 import com.google.gson.Gson;
 import InfectionTreeGenerator.Graph.Graph;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeEdge;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeNode;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
-import InfectionTreeGenerator.Graph.Infection.InfectionEdge;
-import InfectionTreeGenerator.Graph.Infection.InfectionGraph;
-import InfectionTreeGenerator.Graph.Infection.InfectionNode;
 import InfectionTreeGenerator.Graph.Tree;
+import com.google.gson.GsonBuilder;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 
 /*
@@ -75,12 +75,12 @@ public class GraphWriter {
         return maxEditDistance;
     }
 
-    public void writeInfectionGraph(String outputFileLocation, InfectionGraph ig) throws IOException {
-        Gson gson = new Gson();
+    public void writeModelGraph(String outputFileLocation, DecisionTreeGraph dtg) throws IOException {
+        Gson gson = new GsonBuilder().serializeNulls().create();
         FileWriter fw = new FileWriter(outputFileLocation);
 
-        Collection<InfectionNode> infectionNodes = ig.getNodes();
-        gson.toJson(infectionNodes, fw);
+        Collection<DecisionTreeNode> dtNodes = dtg.getNodes();
+        gson.toJson(dtNodes, fw);
 
         fw.flush();
         fw.close();

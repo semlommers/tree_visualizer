@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
  *
  * @author MaxSondag
  */
+@Deprecated
 public class SimMetaDataWriter {
 
     private Set<PolicyCompartmentsJson> compartmentData = new HashSet();
@@ -53,6 +54,7 @@ public class SimMetaDataWriter {
         }
     }
 
+    @Deprecated
     public void writeMetaDataFile(String outputFileLocation) throws IOException {
         Gson gson = new Gson();
 

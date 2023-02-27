@@ -36,6 +36,7 @@ public class RepresentativeTreesFinder {
 
         //get the forest
         //Group forest into size categories
+        //TODO: Remove this
         HashMap<Integer, List<Tree>> treesBySizeMap = new HashMap();
         for (Tree tree : forest) {
             //add the tree to the map with the correct amount of nodes.
@@ -63,17 +64,23 @@ public class RepresentativeTreesFinder {
             }
 
             List<Tree> trees = treesBySizeMap.get(size);
+            // TODO: Geen idee wat ik hier mee moet
+            trees = new ArrayList<>(forest);
 
             Log.printProgress("Calculating for " + trees.size() + " trees with " + size + "nodes.");
 
             //calculate the representative trees
             Collection<RepresentativeTree> repTrees = calculateRepresentativeTrees(trees, dm);
             allRepTrees.addAll(repTrees);
+            break;
 
             //write the representativeTrees
-            GraphWriter tw = new GraphWriter();
-            tw.writeRepresentativeTrees(outputFilePrefix + size + ".json", repTrees);
+//            GraphWriter tw = new GraphWriter();
+//            tw.writeRepresentativeTrees(outputFilePrefix + size + ".json", repTrees);
         }
+
+        GraphWriter tw = new GraphWriter();
+        tw.writeRepresentativeTrees(outputFilePrefix + "Full.json", allRepTrees);
 
         //returns the trees;
         return allRepTrees;

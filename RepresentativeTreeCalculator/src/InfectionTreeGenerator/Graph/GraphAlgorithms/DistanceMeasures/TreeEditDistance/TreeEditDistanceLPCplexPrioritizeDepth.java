@@ -7,6 +7,7 @@ package InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDi
 
 import Utility.Pair;
 
+import java.nio.file.Paths;
 import java.util.Collection;
 
 import InfectionTreeGenerator.Graph.Edge;
@@ -37,7 +38,7 @@ public class TreeEditDistanceLPCplexPrioritizeDepth<N extends Node, E extends Ed
         try {
             OutputStream outputStream;
             //shut up cplex and write it to a file
-            outputStream = new FileOutputStream("./Data/CplexOutputStream.txt", true);
+            outputStream = new FileOutputStream("./RepresentativeTreeCalculator/Data/CplexOutputStream.txt", true);
             cplex.setOut(outputStream);
 
             //1 hour timeout

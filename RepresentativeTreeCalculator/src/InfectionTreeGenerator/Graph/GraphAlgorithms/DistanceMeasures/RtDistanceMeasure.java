@@ -33,7 +33,7 @@ public class RtDistanceMeasure implements TreeDistanceMeasure {
     }
 
     @Override
-    public int getDistance(Tree<InfectionNode, InfectionEdge> t1, Tree<InfectionNode, InfectionEdge> t2) {
+    public int getDistance(Tree t1, Tree t2) {
         Double[] rtT1 = getRtValuesPerStep(t1);
         Double[] rtT2 = getRtValuesPerStep(t2);
 

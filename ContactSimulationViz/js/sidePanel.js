@@ -13,8 +13,6 @@ function createSelectors() {
     createDistanceSlider(selectorDiv);
     createSizeSlider(selectorDiv);
     createNodeColorSelectors(selectorDiv);
-    createPolicySelectors(selectorDiv);
-    createAppPercentageSelectors(selectorDiv);
     // createSortOptions(selectorDiv);
     createRecalculateButton(selectorDiv);
 }
@@ -62,11 +60,11 @@ function createNodeColorSelectors(selectorDiv) {
 
     //get the properties of the selectors
     const colorOptions = [
-        { "NAME": "None" },
-        { "NAME": "Infection Location" },
-        { "NAME": "Infection Time" },
-        { "NAME": "Age" },
-        { "NAME": "Infector State" }
+        { "NAME": "None" }
+        // { "NAME": "Infection Location" },
+        // { "NAME": "Infection Time" },
+        // { "NAME": "Age" },
+        // { "NAME": "Infector State" }
     ];
 
     const leftChangeFunction = function() {
@@ -80,100 +78,6 @@ function createNodeColorSelectors(selectorDiv) {
     };
 
     createLeftRightComboBoxes(selectorDiv, colorOptions, "leftNodeColorSelector", "rightNodeColorSelector", currentLeftColor, currentRightColor, leftChangeFunction, rightChangeFunction);
-}
-
-
-function createPolicySelectors(selectorDiv) {
-
-    selectorDiv.append("p")
-        .attr("class", "text title")
-        .text("Policy")
-
-    createLeftRightSubtitles(selectorDiv);
-
-    //get the properties of the selectors
-    var colorOptions = [
-        { "NAME": "None", },
-        { "NAME": "1a", },
-        { "NAME": "1b", },
-        { "NAME": "1cX1Y3", },
-        { "NAME": "1cX3Y3", },
-        { "NAME": "1cX7Y3", },
-        { "NAME": "1cX14Y3", },
-        { "NAME": "1cX1Y7", },
-        { "NAME": "1cX3Y7", },
-        { "NAME": "1cX7Y7", },
-        { "NAME": "1cX14Y7", },
-        { "NAME": "1cX1Y14", },
-        { "NAME": "1cX3Y14", },
-        { "NAME": "1cX7Y14", },
-        { "NAME": "1cX14Y14", },
-        // { "NAME": "1x", }
-    ];
-
-    const leftChangeFunction = function() {
-        currentLeftPolicy = this.value; //keep the policy up to date
-        changePending();
-    }
-
-    const rightChangeFunction = function() {
-        currentRightPolicy = this.value; //keep the policy up to date
-        changePending();
-    }
-
-
-    const policySplitCheckBoxFunction = function() {
-        splitPolicy = this.checked;
-        changePending();
-    };
-
-    const comboBoxDiv = selectorDiv.append("div")
-        .attr("class", "comboBoxesDiv")
-
-    createComboBox(comboBoxDiv, "leftPolicySelector", colorOptions, currentLeftPolicy, leftChangeFunction);
-    createCheckBox(comboBoxDiv, "policySplitCheckbox", false, policySplitCheckBoxFunction, "Detailed")
-    createComboBox(comboBoxDiv, "rightPolicySelector", colorOptions, currentRightPolicy, rightChangeFunction);
-}
-
-
-
-function createAppPercentageSelectors(selectorDiv) {
-
-    selectorDiv.append("p")
-        .attr("class", "text title")
-        .text("App percentage")
-
-    createLeftRightSubtitles(selectorDiv);
-
-    //get the properties of the selectors
-    var colorOptions = [
-        { "NAME": "0%" },
-        { "NAME": "10%" },
-        { "NAME": "20%" },
-        { "NAME": "30%" },
-        { "NAME": "40%" },
-        { "NAME": "50%" },
-        { "NAME": "60%" },
-        { "NAME": "70%" },
-        { "NAME": "80%" },
-        { "NAME": "90%" },
-        { "NAME": "100%" }
-    ];
-
-    const leftChangeFunction = function() {
-        const appPercentage = this.value.substring(0, this.value.length - 1); //remove % sign
-        currentLeftAppPercentage = appPercentage; //keep the appPercentage up to date
-        changePending();
-    }
-
-    const rightChangeFunction = function() {
-        const appPercentage = this.value.substring(0, this.value.length - 1); //remove % sign
-        currentRightAppPercentage = appPercentage; //keep the appPercentage up to date
-        changePending();
-
-    }
-
-    createLeftRightComboBoxes(selectorDiv, colorOptions, "leftAppPercentageSelector", "rightAppPercentageSelector", currentLeftAppPercentage + "%", currentRightAppPercentage + "%", leftChangeFunction, rightChangeFunction);
 }
 
 function createSortOptions(selectorDiv) {
