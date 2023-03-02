@@ -7,6 +7,10 @@ function preprocessData() {
         const treeId = repTree.id;
         repTreeById.set(treeId, repTree);
 
+        if (maxMaxEditDistance < repTree.maxEditDistance) {
+            maxMaxEditDistance = repTree.maxEditDistance;
+        }
+
         const nodes = getNodes(repTree);
         for (let j = 0; j < nodes.length; j++) {
             const repNode = nodes[j];

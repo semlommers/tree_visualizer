@@ -20,7 +20,8 @@ function createSelectors() {
 
 function createDistanceSlider(selectorDiv) {
 
-    createSlider(selectorDiv, "DistanceSlider", "Rt tree distance", 0, 99, initEditDistanceSliderVal)
+    createSlider(selectorDiv, "DistanceSlider", "Rt tree distance", 0, maxMaxEditDistance, parseInt(maxMaxEditDistance / 2))
+    currentEditDistance = parseInt(maxMaxEditDistance / 2);
 
     d3.select("#DistanceSlider")
         .on("input", function() {
@@ -31,7 +32,7 @@ function createDistanceSlider(selectorDiv) {
         })
 
     //create it at the end of the sliderdiv so the slider aligns with the scented widget
-    createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), initEditDistanceSliderVal);
+    createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), (maxMaxEditDistance / 2));
 }
 
 function createSizeSlider(selectorDiv) {

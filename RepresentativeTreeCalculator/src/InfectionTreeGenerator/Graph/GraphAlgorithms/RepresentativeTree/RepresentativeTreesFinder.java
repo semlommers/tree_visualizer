@@ -16,13 +16,8 @@ import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDis
 import InfectionTreeGenerator.Graph.Node;
 import InfectionTreeGenerator.Graph.Tree;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  *
@@ -98,6 +93,15 @@ public class RepresentativeTreesFinder {
         //Holds the graphs as nodes, and uses the specified distance measure as weights between the nodes
         Graph g = makeWeightedGraph(trees, dm);
 
+        Collection<Edge> edges = g.getEdges();
+
+        int maxDistance = 0;
+        for (Edge edge : edges) {
+            if (edge.weight > maxDistance) {
+                maxDistance = (int) edge.weight;
+            }
+        }
+
         //Start calculating representative trees.
         //We find it by using dominating set on filtered trees. The dominating set are the set of representative nodes
         //where all other nodes can transform into within {ted} graph change moves.
@@ -112,7 +116,9 @@ public class RepresentativeTreesFinder {
         HashMap<Integer, RepresentativeTree> repTrees = initRepTrees(currentDsIds, trees);
 
         //go through the edit distances
-        for (int ted = 0; ted <= MAXEDITDISTANCE; ted++) {
+        int ted = 0;
+        // Go on until only one representative tree exists
+        while (currentDsIds.size() > 1) {
             //Get graph with only edgeMapping with weight <= ted
             Graph fgTED = getFilteredGraph(g, ted);
 
@@ -136,6 +142,7 @@ public class RepresentativeTreesFinder {
                 repTree.addToMapping(ted, treesMapped, tedC);
             }
             currentDsIds = dsTrimmed;
+            ted++;
         }
 
         return repTrees.values();

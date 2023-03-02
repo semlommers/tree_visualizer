@@ -55,6 +55,7 @@ var metaDataFromNodeById = new Map(); //holds the meta data for each node by id 
 
 
 var currentEditDistance = initEditDistanceSliderVal; //Current edit distance
+var maxMaxEditDistance = 0;
 
 
 var currentLeftColor = "None"; //What we are currently coloring the nodes by for the left sides of the glyphs
