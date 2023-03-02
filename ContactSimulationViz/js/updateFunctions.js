@@ -14,6 +14,7 @@ function updateAll() {
     updateSliderPreview();
     updateColors();
     if (recalculate) { //if we need to reinitialize the grid
+        recalculate = false;
         d3.select("#treeGrid").selectAll("*").remove();
         generateTreeGrid();
 		//update the position without animating as we are redrawing the tree
