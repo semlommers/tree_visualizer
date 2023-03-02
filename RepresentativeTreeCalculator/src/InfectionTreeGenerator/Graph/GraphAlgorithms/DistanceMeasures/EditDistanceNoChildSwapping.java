@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class EditDistanceNoChildSwapping implements TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
     Integer ADD_NODE_COST = 1;
-    Integer CHANGE_LABEL_COST = 0;
+    Integer CHANGE_SPLIT_FEATURE = 0;
 
     @Override
     public int getDistance(Tree t1, Tree t2) {
@@ -24,7 +24,7 @@ public class EditDistanceNoChildSwapping implements TreeDistanceMeasure<Decision
         int distance = 0;
 
         if (!Objects.equals(node1.featureId, node2.featureId) && node1.featureId != null && node2.featureId != null) {
-            distance = distance + CHANGE_LABEL_COST;
+            distance = distance + CHANGE_SPLIT_FEATURE;
         }
 
         List<DecisionTreeEdge> edges1 = node1.getOutgoingEdgesSorted();
