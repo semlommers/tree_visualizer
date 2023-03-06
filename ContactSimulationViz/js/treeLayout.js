@@ -77,7 +77,7 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
 
 
     const g = treeSvg.append("g")
-        .attr("transform", `translate(${marginWithinTree / 2},${marginWithinTree / 2})`); //make sure no clipping occurs
+        .attr("transform", `translate(${marginWithinTree / 2},${marginWithinTree / 2 + fontSizeRepAmount})`); //make sure no clipping occurs
 
     const link = g.append("g") //links
         .attr("class", "edge")
@@ -118,7 +118,7 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
 
         //position text such that the top is 2 pixels below the root
         const textX = root.x + nodeBaseSize - text.node().getBBox().width / 2;
-        const textY = root.y + nodeBaseSize * 2 + fontSizeRepAmount;
+        const textY = root.y + fontSizeRepAmount * 0.9;
 
         text.attr("transform", `translate(${textX},${textY})`); //make sure no clipping occurs
     }
@@ -152,7 +152,7 @@ function getTree(data) {
         (dataRoot)
 
 
-    moveTreeToFirstQuadrantAndInvert(treeRoot);
+    moveTreeToFirstQuadrant(treeRoot);
     return treeRoot;
 }
 
@@ -160,15 +160,9 @@ function getTree(data) {
 /**
  * Moves the position of the nodes in the tree with root {@code root} 
  * such that it is completely in the first quadrant with at least one node with x=0 and one node with y=0.
- * Additionally ensure the tree grows towards the top.
  * @param {The tree we are moving} root 
  */
-function moveTreeToFirstQuadrantAndInvert(root) {
-    //invert tree
-    root.each(d => {
-        d.y = -d.y;
-    });
-
+function moveTreeToFirstQuadrant(root) {
     //put back into  quadrant 1 starting at 0,0
     let minY = Infinity;
     let minX = Infinity;

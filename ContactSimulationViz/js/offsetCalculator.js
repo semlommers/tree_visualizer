@@ -57,6 +57,7 @@ function snakeLayout(inputWidths, inputHeights, horMargins, maxWidth) {
         if (lastElement || (stripWidth + widths[i + 1]) > maxWidth) {
             //layout the nodes in the strip            
             for (let j = stripStartIndex; j <= i; j++) {
+                // Not used because we invert the tree and want to align the roots
                 let extraYOffset = stripMaxHeight - heights[j];//if the tree is smaller, shift it down more to align at bottom
 
                 let extraXOffset = 0;
@@ -64,7 +65,7 @@ function snakeLayout(inputWidths, inputHeights, horMargins, maxWidth) {
                     extraXOffset = -widths[j];//move it to the left by the width of this tree so that the element fits (coordinates at left bottom)
                     extraXOffset -= (maxWidth - stripWidth);//ensure it is always flush against the left side
                 }
-                outputPositions[j] = [currentXOffset + extraXOffset, stripYOffset + extraYOffset];
+                outputPositions[j] = [currentXOffset + extraXOffset, stripYOffset];
 
                 //increase or decrease depending on direction
                 if (stripDirection == "Right") {
