@@ -5,17 +5,18 @@
  */
 package InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree;
 
+import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
+import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
+import Utility.Log;
 import Utility.Pair;
 import InfectionTreeGenerator.Graph.Edge;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance.TEDMapping;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance.TreeEditDistanceCalculator;
 import InfectionTreeGenerator.Graph.Node;
 import InfectionTreeGenerator.Graph.Tree;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  *
@@ -56,7 +57,10 @@ public class RepresentativeTree extends Tree<RepresentativeNode, RepresentativeE
         }
 
         Collection<Edge> gEdges = t.getEdges();
-        for (Edge e : gEdges) {
+        List<Edge> edgeList = new ArrayList<>(gEdges);
+        Collections.sort(edgeList);
+
+        for (Edge e : edgeList) {
             RepresentativeNode source = nodeMap.get(e.source.id);
             RepresentativeNode target = nodeMap.get(e.target.id);
             RepresentativeEdge re = new RepresentativeEdge(source, target);

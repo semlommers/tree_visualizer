@@ -24,8 +24,13 @@ public class DecisionTreeNode extends Node<DecisionTreeEdge> {
         return new DecisionTreeNode(id, featureId, predictedLabel);
     }
 
+    @Override
+    public List<DecisionTreeEdge> getOutgoingEdges() {
+        return getOutgoingEdgesSorted();
+    }
+
     public List<DecisionTreeEdge> getOutgoingEdgesSorted() {
-        List<DecisionTreeEdge> edges = getOutgoingEdges();
+        List<DecisionTreeEdge> edges = super.getOutgoingEdges();
         Collections.sort(edges);
         return edges;
     }

@@ -1,6 +1,28 @@
 package InfectionTreeGenerator.Graph.DecisionTree;
 
-import InfectionTreeGenerator.Graph.Graph;
+import InfectionTreeGenerator.Graph.Tree;
 
-public class DecisionTreeGraph extends Graph<DecisionTreeNode, DecisionTreeEdge> {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+public class DecisionTreeGraph extends Tree<DecisionTreeNode, DecisionTreeEdge> {
+
+    @Override
+    public DecisionTreeNode getNode(int id) {
+        return (DecisionTreeNode) super.getNode(id);
+    }
+
+    @Override
+    public Collection getEdges() {
+        List<DecisionTreeEdge> edges = new ArrayList(edgeMapping.values());
+        Collections.sort(edges);
+        return edges;
+    }
+
+    public int predictTarget(List<Double> inputData) {
+        //TODO: implement
+        return 0;
+    }
 }

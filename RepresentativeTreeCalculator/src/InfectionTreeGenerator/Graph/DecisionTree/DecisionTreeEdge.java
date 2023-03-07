@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class DecisionTreeEdge extends Edge<DecisionTreeNode> implements Comparable<DecisionTreeEdge> {
+public class DecisionTreeEdge extends Edge<DecisionTreeNode> {
 
     /**
      * Holds the id of the feature
@@ -62,7 +62,8 @@ public class DecisionTreeEdge extends Edge<DecisionTreeNode> implements Comparab
     }
 
     @Override
-    public int compareTo(@NotNull DecisionTreeEdge o) {
-        return this.minValue.compareTo(o.minValue);
+    public int compareTo(@NotNull Edge o) {
+        DecisionTreeEdge edge = (DecisionTreeEdge) o;
+        return this.minValue.compareTo(edge.minValue);
     }
 }

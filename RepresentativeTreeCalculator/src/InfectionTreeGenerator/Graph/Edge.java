@@ -5,13 +5,15 @@
  */
 package InfectionTreeGenerator.Graph;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 
 /**
  * An edge is uniquely identified by {@code source.id} and {@code target.id}
  * @author MaxSondag
  */
-public class Edge<N extends Node> {
+public class Edge<N extends Node> implements Comparable<Edge> {
 
     final public N source, target;
     /**
@@ -100,6 +102,8 @@ public class Edge<N extends Node> {
         return true;
     }
 
-    
-    
+    @Override
+    public int compareTo(@NotNull Edge o) {
+        return 0;
+    }
 }
