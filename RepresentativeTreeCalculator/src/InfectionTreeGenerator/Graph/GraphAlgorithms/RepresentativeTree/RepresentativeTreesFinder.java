@@ -6,6 +6,7 @@
 package InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree;
 
 import Export.GraphWriter;
+import InfectionTreeGenerator.Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMappingCalculator;
 import Utility.Log;
 import InfectionTreeGenerator.Graph.Edge;
 import InfectionTreeGenerator.Graph.Graph;
@@ -133,13 +134,13 @@ public class RepresentativeTreesFinder {
                 List<Tree> treesMapped = mapping.get(id);
 
                 //calculate the mapping from repTree to all treesMapped
-                TreeEditDistanceCalculator tedC = new TreeEditDistanceCalculator();
+                TreeMappingCalculator tmCalc = new TreeMappingCalculator<>();
                 for (Tree tm : treesMapped) {
                     if (!repTree.treesAlreadyMapped.contains(tm)) {//not mapped yet, so mapping isn't stored yet
-                        tedC.calculateMapping(repTree.originalTree, tm);
+                        tmCalc.computeMapping(repTree.originalTree, tm);
                     }
                 }
-                repTree.addToMapping(ted, treesMapped, tedC);
+                repTree.addToMapping(ted, treesMapped, tmCalc);
             }
             currentDsIds = dsTrimmed;
             ted++;

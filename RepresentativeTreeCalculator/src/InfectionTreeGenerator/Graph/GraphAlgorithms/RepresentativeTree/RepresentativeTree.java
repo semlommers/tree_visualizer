@@ -7,6 +7,8 @@ package InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree;
 
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
+import InfectionTreeGenerator.Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMap;
+import InfectionTreeGenerator.Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMappingCalculator;
 import Utility.Log;
 import Utility.Pair;
 import InfectionTreeGenerator.Graph.Edge;
@@ -93,9 +95,9 @@ public class RepresentativeTree extends Tree<RepresentativeNode, RepresentativeE
      *
      * @param editDistance
      * @param treesMapped Trees mapped to this tree
-     * @param tedC Calculator holding the mapping between trees
+     * @param tmCalc Calculator holding the mapping between trees
      */
-    public void addToMapping(int editDistance, List<Tree> treesMapped, TreeEditDistanceCalculator tedC) {
+    public void addToMapping(int editDistance, List<Tree> treesMapped, TreeMappingCalculator tmCalc) {
 
         //don't change anything if no new trees are mapped to this node.
         if (treesMapped.isEmpty()) {
@@ -114,13 +116,13 @@ public class RepresentativeTree extends Tree<RepresentativeNode, RepresentativeE
             }
             treesAlreadyMapped.add(otherT);
 
-            TEDMapping tedMapping = (TEDMapping) tedC.tedMapping.get(new Pair(otherT, originalTree));
+            TreeMap treeMap = (TreeMap) tmCalc.treesMapping.get(new Pair(otherT, originalTree));
 
             //go through the node mappings.
             Collection<Node> otherTNodes = otherT.getNodes();
             for (Node otherN : otherTNodes) {
                 //get to which node otherN maps to
-                Node mappedN = tedMapping.getMappedNode(otherN);
+                Node mappedN = treeMap.getMappedNode(otherN);
                 if (mappedN == null) {//otherN was deleted in the mapping
                     continue;
                 }
@@ -134,7 +136,7 @@ public class RepresentativeTree extends Tree<RepresentativeNode, RepresentativeE
             Collection<Edge> otherTEdges = otherT.getEdges();
             for (Edge otherE : otherTEdges) {
                 //get to which edge otherE maps to
-                Edge mappedEdge = tedMapping.getMappedEdge(otherE);
+                Edge mappedEdge = treeMap.getMappedEdge(otherE);
                 if (mappedEdge == null) {//otherE was deleted in the mapping
                     continue;
                 }
