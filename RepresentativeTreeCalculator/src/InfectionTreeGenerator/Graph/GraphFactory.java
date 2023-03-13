@@ -5,8 +5,6 @@
  */
 package InfectionTreeGenerator.Graph;
 
-import InfectionTreeGenerator.Graph.Infection.InfectionGraph;
-
 /**
  *
  * @author MaxSondag
@@ -16,9 +14,6 @@ public class GraphFactory {
     public static <G extends Graph> G getNewGraph(String graphType) {
         if (graphType == null) {
             return null;
-        }
-        if (graphType.equalsIgnoreCase("InfectionGraph")) {
-            return (G) new InfectionGraph();
         }
         if (graphType.equalsIgnoreCase("Tree")) {
             return (G) new Tree();
