@@ -28,7 +28,9 @@ public class RepresentativeTreesFinder<N extends Node<E>, E extends Edge<N>> {
 
     public final int MAXEDITDISTANCE = 100;
 
-    public List<RepresentativeTree> getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, int startSize, int endSize, TreeDistanceMeasure dm, String outputFilePrefix) throws IOException {
+    public List<RepresentativeTree> getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, TreeDistanceMeasure dm, String outputFilePrefix) throws IOException {
+        int startSize = 1;//calculate starting from trees of size 1
+        int endSize = 2000; //stop calculating for trees of size 200
 
         //get the forest
         //Group forest into size categories

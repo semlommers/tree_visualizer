@@ -33,10 +33,7 @@ public class DataToJsonTree {
             String inputFolderLocation = dataFolderLocation + "/Input";
             String outputFileLocation = dataFolderLocation + "/Output";
 
-            int startTreeSize = 1;//calculate starting from trees of size 1
-            int endTreeSize = 2000; //stop calculating for trees of size 200
-
-            new DataToJsonTree(inputFolderLocation, outputFileLocation, startTreeSize, endTreeSize);
+            new DataToJsonTree(inputFolderLocation, outputFileLocation);
         } catch (IOException ex) {
             System.out.println("Invalid input or outputFileLocation");
             Logger.getLogger(DataToJsonTree.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +41,7 @@ public class DataToJsonTree {
 
     }
 
-    private DataToJsonTree(String inputFolderLocation, String outputFileLocation, int startTreeSize, int endTreeSize) throws IOException {
+    private DataToJsonTree(String inputFolderLocation, String outputFileLocation) throws IOException {
         System.out.println("Working on data from: " + inputFolderLocation);
         //read data
         RandomForestParser randomForestParser = new RandomForestParser(inputFolderLocation + "/randomForestMap.json");
@@ -66,7 +63,7 @@ public class DataToJsonTree {
 
         TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> treeDistanceMeasure = new EditDistanceNoChildSwapping();
         RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<>();
-        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, startTreeSize, endTreeSize, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistance");
+        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistance");
     }
 
     private void printStatistics(DecisionTreeGraph dtg) {
