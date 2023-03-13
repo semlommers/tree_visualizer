@@ -29,6 +29,7 @@ public class Pair<X, Y> {
         return hash;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

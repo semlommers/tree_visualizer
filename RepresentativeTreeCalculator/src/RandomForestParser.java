@@ -1,8 +1,8 @@
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
-import JsonObjects.JsonNode;
-import JsonObjects.JsonNode.JsonChild;
+import Import.JsonNode;
+import Import.JsonNode.JsonChild;
 import com.google.gson.Gson;
 
 import java.io.IOException;
