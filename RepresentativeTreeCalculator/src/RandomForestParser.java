@@ -1,4 +1,3 @@
-
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
@@ -18,20 +17,19 @@ import java.nio.file.Paths;
  */
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 class RandomForestParser {
 
-    DecisionTreeGraph dtg = new DecisionTreeGraph();
+    DecisionTreeGraph decisionTreeGraph = new DecisionTreeGraph();
     String fileLocation;
 
     public RandomForestParser(String fileLocation) {
         this.fileLocation = fileLocation;
     }
 
-    public DecisionTreeGraph constructGraph() throws IOException {
+    public void constructGraph() throws IOException {
         parseData(fileLocation);
-        return dtg;
     }
 
     private void parseData(String fileLocation) throws IOException {
@@ -52,32 +50,30 @@ class RandomForestParser {
         }
     }
 
-    private int createNode(JsonNode rootNode) {
+    private void createNode(JsonNode rootNode) {
         int id = rootNode.nodeId;
-        if (!dtg.hasNodeWithId(id)) {
-            DecisionTreeNode n = new DecisionTreeNode(id, rootNode.featureId, rootNode.predictedLabel);
-            dtg.addNode(n);
+        if (!decisionTreeGraph.hasNodeWithId(id)) {
+            DecisionTreeNode node = new DecisionTreeNode(id, rootNode.featureId, rootNode.predictedLabel);
+            decisionTreeGraph.addNode(node);
         } else { // Node has already been created as a child
-            DecisionTreeNode node = dtg.getNode(id);
+            DecisionTreeNode node = decisionTreeGraph.getNode(id);
             node.featureId = rootNode.featureId;
             node.predictedLabel = rootNode.predictedLabel;
         }
-        return id;
     }
 
-    private int createChild(JsonChild childNode) {
+    private void createChild(JsonChild childNode) {
         int id = childNode.childId;
-        if (!dtg.hasNodeWithId(id)) {
-            DecisionTreeNode n = new DecisionTreeNode(id);
-            dtg.addNode(n);
+        if (!decisionTreeGraph.hasNodeWithId(id)) {
+            DecisionTreeNode node = new DecisionTreeNode(id);
+            decisionTreeGraph.addNode(node);
         }
-        return id;
     }
 
     private void createEdge(JsonNode rootNode, JsonChild childNode) {
-        DecisionTreeNode root =  dtg.getNode(rootNode.nodeId);
-        DecisionTreeNode target =  dtg.getNode(childNode.childId);
-        DecisionTreeEdge e = new DecisionTreeEdge(root, target, rootNode.featureId, childNode.minValue, childNode.maxValue);
-        dtg.addEdge(e);
+        DecisionTreeNode root =  decisionTreeGraph.getNode(rootNode.nodeId);
+        DecisionTreeNode target =  decisionTreeGraph.getNode(childNode.childId);
+        DecisionTreeEdge edge = new DecisionTreeEdge(root, target, rootNode.featureId, childNode.minValue, childNode.maxValue);
+        decisionTreeGraph.addEdge(edge);
     }
 }

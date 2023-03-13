@@ -2,6 +2,8 @@ package Export;
 
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
+import InfectionTreeGenerator.Graph.Edge;
+import InfectionTreeGenerator.Graph.Node;
 import com.google.gson.Gson;
 import InfectionTreeGenerator.Graph.Graph;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeEdge;
@@ -29,7 +31,7 @@ import java.util.Set;
  *
  * @author MaxSondag
  */
-public class GraphWriter {
+public class GraphWriter<N extends Node<E>, E extends Edge<N>> {
 
     public void writeRepresentativeGraph(String outputFileLocation, Collection<RepresentativeTree> trees) throws IOException {
         Graph<RepresentativeNode, RepresentativeEdge> g = new Graph();
@@ -86,7 +88,7 @@ public class GraphWriter {
         fw.close();
     }
 
-    public void writeForest(String outputFileLocation, Set<Tree> forest) throws IOException {
+    public void writeForest(String outputFileLocation, Set<Tree<N, E>> forest) throws IOException {
         Gson gson = new Gson();
 
         ArrayList<Tree> sortedForest = new ArrayList(forest);

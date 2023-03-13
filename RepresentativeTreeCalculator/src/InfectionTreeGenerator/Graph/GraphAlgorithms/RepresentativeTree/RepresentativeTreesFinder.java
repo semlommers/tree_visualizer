@@ -24,11 +24,11 @@ import java.util.Map.Entry;
  *
  * @author MaxSondag
  */
-public class RepresentativeTreesFinder {
+public class RepresentativeTreesFinder<N extends Node<E>, E extends Edge<N>> {
 
     public final int MAXEDITDISTANCE = 100;
 
-    public List<RepresentativeTree> getAndWriteRepresentativeTreeData(Set<Tree> forest, int startSize, int endSize, TreeDistanceMeasure dm, String outputFilePrefix) throws IOException {
+    public List<RepresentativeTree> getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, int startSize, int endSize, TreeDistanceMeasure dm, String outputFilePrefix) throws IOException {
 
         //get the forest
         //Group forest into size categories

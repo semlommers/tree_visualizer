@@ -20,8 +20,7 @@ import java.util.Set;
  *
  * @author MaxSondag
  */
-//public class Tree<N extends Node<E>, E extends Edge<N>> extends Graph<N extends Node<E>, E extends Edge<N>> {
-public class Tree<N extends Node<E>, E extends Edge<N>> extends Graph {
+public class Tree<N extends Node<E>, E extends Edge<N>> extends Graph<N, E> {
 
     //returns if possibleAncestor is an ancestor of n
     public boolean isAncestor(N possibleAncestor, N n) {
