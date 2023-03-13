@@ -1,4 +1,4 @@
-package JsonObjects;
+package Import;
 
 import com.google.gson.annotations.SerializedName;
 
