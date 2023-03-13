@@ -1,4 +1,5 @@
 
+import Import.RandomForestParser;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.EditDistanceNoChildSwapping;

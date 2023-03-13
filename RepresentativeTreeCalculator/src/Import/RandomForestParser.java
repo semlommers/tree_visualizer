@@ -1,7 +1,8 @@
+package Import;
+
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
 import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
-import Import.JsonNode;
 import Import.JsonNode.JsonChild;
 import com.google.gson.Gson;
 
@@ -19,9 +20,9 @@ import java.nio.file.Paths;
  *
  * @author MaxSondag, SemLommers
  */
-class RandomForestParser {
+public class RandomForestParser {
 
-    DecisionTreeGraph decisionTreeGraph = new DecisionTreeGraph();
+    public DecisionTreeGraph decisionTreeGraph = new DecisionTreeGraph();
     String fileLocation;
 
     public RandomForestParser(String fileLocation) {
