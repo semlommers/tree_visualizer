@@ -52,3 +52,6 @@ hs_err_pid*
 /JsonMerge/JsonMerger/nbproject/private/
 /JsonMerge/JsonMerger/build/
 /JsonMerge/JsonMerger/dist/
+
+# Json files
+*.json
