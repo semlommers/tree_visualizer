@@ -53,7 +53,7 @@ public class DataToJsonTree {
         printStatistics(decisionTreeGraph);
 
         GraphWriter<DecisionTreeNode, DecisionTreeEdge> treeWriter = new GraphWriter<>();
-        treeWriter.writeModelGraph(outputFileLocation + "/NodesAndMeta.json", decisionTreeGraph);
+        treeWriter.writeMetaDataGraph(outputFileLocation + "/NodesAndMeta.json", decisionTreeGraph);
 
         System.out.println("Finding the forest");
         ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>, DecisionTreeNode, DecisionTreeEdge> forestFinder = new ForestFinder<>(decisionTreeGraph, Tree.class);

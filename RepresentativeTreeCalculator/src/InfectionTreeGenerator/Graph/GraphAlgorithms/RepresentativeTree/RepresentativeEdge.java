@@ -5,6 +5,7 @@
  */
 package InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree;
 
+import InfectionTreeGenerator.Graph.Node;
 import Utility.Log;
 import InfectionTreeGenerator.Graph.Edge;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author MaxSondag
  */
-public class RepresentativeEdge extends Edge<RepresentativeNode> {
+public class RepresentativeEdge<N extends Node<E>, E extends Edge<N>> extends Edge<RepresentativeNode<N, E>> {
 
     /**
      * Holds the edit distances at which point additional edges are represented
@@ -74,7 +75,7 @@ public class RepresentativeEdge extends Edge<RepresentativeNode> {
     }
 
     @Override
-    public Edge deepCopy(HashMap<Integer, RepresentativeNode> newNodes) {
+    public Edge deepCopy(HashMap<Integer, RepresentativeNode<N, E>> newNodes) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  *
  * @author MaxSondag
  */
-public class RepresentativeTree extends Tree<RepresentativeNode, RepresentativeEdge> {
+public class RepresentativeTree<N extends Node<E>, E extends Edge<N>> extends Tree<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
 
     /**
      * Holds the maximum edit distance where this tree still represents at least
@@ -155,7 +155,7 @@ public class RepresentativeTree extends Tree<RepresentativeNode, RepresentativeE
         sb.append("{");
         sb.append("\"maxEditDistance\":" + maxEditDistance + ",");
         sb.append("\"nodes\":[");
-        Collection<RepresentativeNode> nodes = getNodes();
+        Collection<RepresentativeNode<N, E>> nodes = getNodes();
         for (RepresentativeNode n : nodes) {
             sb.append(n.toJson());
             sb.append(",");
@@ -165,7 +165,7 @@ public class RepresentativeTree extends Tree<RepresentativeNode, RepresentativeE
         sb.append("],");
         //edges
         sb.append("\"edges\":[");
-        Collection<RepresentativeEdge> edges = getEdges();
+        Collection<RepresentativeEdge<N, E>> edges = getEdges();
         for (RepresentativeEdge e : edges) {
             sb.append(e.toJson());
             sb.append(",");

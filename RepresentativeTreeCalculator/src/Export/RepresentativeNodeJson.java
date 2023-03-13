@@ -5,6 +5,7 @@
  */
 package Export;
 
+import InfectionTreeGenerator.Graph.Edge;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeEdge;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeNode;
 import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
@@ -19,9 +20,9 @@ import java.util.Set;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
-public class RepresentativeNodeJson {
+public class RepresentativeNodeJson<N extends Node<E>, E extends Edge<N>> {
 
     /**
      * Id of the node
@@ -36,48 +37,39 @@ public class RepresentativeNodeJson {
      * (edit distance,List<id's>) object that holds the first edit distance when
      * the nodes with id: "id's" are represented by this node
      */
-    public List<RepresentationJson> representations = new ArrayList();
+    public List<RepresentationJson> representations = new ArrayList<>();
 
     /**
      * Children of this node
      */
-    public List<RepresentativeNodeJson> children = new ArrayList();
+    public List<RepresentativeNodeJson<N, E>> children = new ArrayList<>();
 
-    public RepresentativeNodeJson(RepresentativeTree rt) {
-        this.maxEditDistance = rt.maxEditDistance;
-        RepresentativeNode root = rt.calculateRoot();
+    public RepresentativeNodeJson(RepresentativeTree<N, E> repTree) {
+        this.maxEditDistance = repTree.maxEditDistance;
+        RepresentativeNode<N, E> root = repTree.calculateRoot();
         initialize(root);
     }
 
-    private RepresentativeNodeJson(RepresentativeNode rn) {
-        initialize(rn);
+    private RepresentativeNodeJson(RepresentativeNode<N, E> repNode) {
+        initialize(repNode);
     }
 
-    private void initialize(RepresentativeNode root) {
+    private void initialize(RepresentativeNode<N, E> root) {
         this.id = root.id;
         //store the nodes that root represents
-        HashMap<Integer, List<Node>> representNodesMapping = root.getRepresentNodesMapping();
-        for (Entry<Integer, List<Node>> entry : representNodesMapping.entrySet()) {
+        HashMap<Integer, List<N>> representNodesMapping = root.getRepresentNodesMapping();
+        for (Entry<Integer, List<N>> entry : representNodesMapping.entrySet()) {
             RepresentationJson repJson = new RepresentationJson(entry.getKey(), entry.getValue());
             representations.add(repJson);
         }
 
         //recurse into the children
-        List<RepresentativeEdge> outEdges = root.getOutgoingEdges();
-        for (RepresentativeEdge re : outEdges) {
-            RepresentativeNode child = re.target;
-            RepresentativeNodeJson rnChild = new RepresentativeNodeJson(child);
-            children.add(rnChild);
+        List<RepresentativeEdge<N, E>> outEdges = root.getOutgoingEdges();
+        for (RepresentativeEdge<N, E> outEdge : outEdges) {
+            RepresentativeNode<N, E> child = outEdge.target;
+            RepresentativeNodeJson<N, E> nodeJson = new RepresentativeNodeJson<>(child);
+            children.add(nodeJson);
         }
-    }
-
-    public RepresentativeNodeJson getChild(int id) {
-        for (RepresentativeNodeJson rnj : children) {
-            if (rnj.id == id) {
-                return rnj;
-            }
-        }
-        return null;
     }
 
     public class RepresentationJson {
@@ -89,12 +81,12 @@ public class RepresentativeNodeJson {
         /**
          * Nodes that are represented at editDistance
          */
-        public Set<Integer> representationIds = new HashSet();
+        public Set<Integer> representationIds = new HashSet<>();
 
-        public RepresentationJson(Integer editDistance, List<Node> nodes) {
+        public RepresentationJson(Integer editDistance, List<N> nodes) {
             this.editDistance = editDistance;
-            for (Node n : nodes) {
-                representationIds.add(n.id);
+            for (N node : nodes) {
+                representationIds.add(node.id);
             }
         }
 
@@ -106,6 +98,7 @@ public class RepresentativeNodeJson {
             return hash;
         }
 
+        @SuppressWarnings({"RedundantIfStatement", "unchecked"})
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {

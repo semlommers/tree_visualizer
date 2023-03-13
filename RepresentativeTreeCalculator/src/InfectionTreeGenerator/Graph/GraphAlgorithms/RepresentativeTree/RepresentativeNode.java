@@ -5,6 +5,7 @@
  */
 package InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree;
 
+import InfectionTreeGenerator.Graph.Edge;
 import Utility.Log;
 import InfectionTreeGenerator.Graph.Node;
 import java.util.ArrayList;
@@ -15,13 +16,13 @@ import java.util.List;
  *
  * @author MaxSondag
  */
-public class RepresentativeNode extends Node<RepresentativeEdge> {
+public class RepresentativeNode<N extends Node<E>, E extends Edge<N>> extends Node<RepresentativeEdge<N, E>> {
 
     /**
      * Holds the edit distances at which point additional nodes are represented
      * by this node
      */
-    private HashMap<Integer, List<Node>> representsNodes = new HashMap();
+    private HashMap<Integer, List<N>> representsNodes = new HashMap();
 
     public RepresentativeNode(int id) {
         super(id);
@@ -79,12 +80,12 @@ public class RepresentativeNode extends Node<RepresentativeEdge> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public HashMap<Integer, List<Node>> getRepresentNodesMapping() {
+    public HashMap<Integer, List<N>> getRepresentNodesMapping() {
         return representsNodes;
     }
 
-    public void addToRepresentsNodes(int editDistance, Node newN) {
-        List<Node> representNodes = getRepresentNodes(editDistance);
+    public void addToRepresentsNodes(int editDistance, N newN) {
+        List<N> representNodes = getRepresentNodes(editDistance);
         representNodes.add(newN);
         representsNodes.put(editDistance, representNodes);
     }
@@ -94,7 +95,7 @@ public class RepresentativeNode extends Node<RepresentativeEdge> {
      * @param editDistance
      * @return 
      */
-    public List<Node> getRepresentNodes(int editDistance) {
+    public List<N> getRepresentNodes(int editDistance) {
         return representsNodes.getOrDefault(editDistance, new ArrayList());
     }
 
