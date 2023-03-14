@@ -1,10 +1,10 @@
 package Export;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
+import Graph.Edge;
+import Graph.Node;
 import com.google.gson.Gson;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
+import Graph.Tree;
 import com.google.gson.GsonBuilder;
 
 import java.io.FileWriter;

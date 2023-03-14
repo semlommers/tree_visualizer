@@ -1,14 +1,14 @@
 
 import Import.RandomForestParser;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.EditDistanceNoChildSwapping;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
+import Graph.DecisionTree.DecisionTreeEdge;
+import Graph.DecisionTree.DecisionTreeNode;
+import Graph.GraphAlgorithms.DistanceMeasures.EditDistanceNoChildSwapping;
+import Graph.DecisionTree.DecisionTreeGraph;
 import Export.GraphWriter;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.ForestFinder;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTreesFinder;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
+import Graph.GraphAlgorithms.ForestFinder;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTreesFinder;
+import Graph.Tree;
 import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Level;
@@ -57,13 +57,15 @@ public class DataToJsonTree {
         treeWriter.writeMetaDataGraph(outputFileLocation + "/NodesAndMeta.json", decisionTreeGraph);
 
         System.out.println("Finding the forest");
-        ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>, DecisionTreeNode, DecisionTreeEdge> forestFinder = new ForestFinder<>(decisionTreeGraph, Tree.class);
+        ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>, DecisionTreeNode, DecisionTreeEdge>
+                forestFinder = new ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>,
+                DecisionTreeNode, DecisionTreeEdge>(decisionTreeGraph, Tree.class);
         Set<Tree<DecisionTreeNode, DecisionTreeEdge>> forest = forestFinder.getForest();
 
         treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);
 
         TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> treeDistanceMeasure = new EditDistanceNoChildSwapping();
-        RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<>();
+        RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
         representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistance");
     }
 

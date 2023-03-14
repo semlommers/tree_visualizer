@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph;
+package Graph;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,7 +50,7 @@ public class Edge<N extends Node<N, E>, E extends Edge<N, E>> implements Compara
     public Edge<N, E> deepCopy(HashMap<Integer, N> nodeMapping) {
         N newSource = nodeMapping.get(source.id);
         N newTarget = nodeMapping.get(target.id);
-        return new Edge<>(newSource, newTarget, weight);
+        return new Edge<N, E>(newSource, newTarget, weight);
     }
 
     /**
@@ -61,7 +61,7 @@ public class Edge<N extends Node<N, E>, E extends Edge<N, E>> implements Compara
         assert (sourceCopy.id == source.id);
         assert (targetCopy.id == target.id);
 
-        return new Edge<>(sourceCopy, targetCopy, weight);
+        return new Edge<N, E>(sourceCopy, targetCopy, weight);
     }
 
     @Override

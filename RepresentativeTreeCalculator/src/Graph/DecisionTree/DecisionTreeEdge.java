@@ -1,6 +1,6 @@
-package InfectionTreeGenerator.Graph.DecisionTree;
+package Graph.DecisionTree;
 
-import InfectionTreeGenerator.Graph.Edge;
+import Graph.Edge;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance;
+package Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance;
 
 import Utility.Pair;
 
-import java.nio.file.Paths;
 import java.util.Collection;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.Node;
+import Graph.Tree;
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
 import ilog.cplex.*;

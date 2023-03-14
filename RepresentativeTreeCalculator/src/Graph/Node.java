@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph;
+package Graph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class Node<N extends Node<N, E>, E extends Edge<N, E>> {
      * edges will be empty
      */
     public Node<N, E> deepCopy() {
-        return new Node<>(id, weight);
+        return new Node<N, E>(id, weight);
     }
 
     @Override

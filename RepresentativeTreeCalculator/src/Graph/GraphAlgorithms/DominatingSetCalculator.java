@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms;
+package Graph.GraphAlgorithms;
 
 import Utility.Log;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Graph;
+import Graph.Node;
+import Graph.Edge;
+import Graph.Graph;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,9 +21,6 @@ public class DominatingSetCalculator {
 
     /**
      * Returns a set of node-ids that is a dominating set.
-     *
-     * @param graph
-     * @return
      */
     public List<Integer> getDominatingSet(Graph g) {
         Log.printOnce("getDominatingSet can be optimized to a simple approximation algorithm or an LP");

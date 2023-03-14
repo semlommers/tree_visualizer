@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph;
+package Graph;
 
 /**
  *
@@ -17,10 +17,10 @@ public class GraphFactory {
             return null;
         }
         if (graphType.equalsIgnoreCase("Tree")) {
-            return (G) new Tree<>();
+            return (G) new Tree<N, E>();
         }
         if (graphType.equalsIgnoreCase("Graph")) {
-            return (G) new Graph<>();
+            return (G) new Graph<N, E>();
         }
         throw new UnsupportedOperationException("Type " + graphType + " is not supported yet");
     }

@@ -3,22 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree;
+package Graph.GraphAlgorithms.RepresentativeTree;
 
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMap;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMappingCalculator;
-import Utility.Log;
+import Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMap;
+import Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMappingCalculator;
 import Utility.Pair;
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance.TEDMapping;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance.TreeEditDistanceCalculator;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.Node;
+import Graph.Tree;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  *

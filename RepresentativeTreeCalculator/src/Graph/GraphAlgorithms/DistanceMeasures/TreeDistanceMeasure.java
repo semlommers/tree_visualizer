@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures;
+package Graph.GraphAlgorithms.DistanceMeasures;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.Node;
+import Graph.Tree;
 
 /**
  *

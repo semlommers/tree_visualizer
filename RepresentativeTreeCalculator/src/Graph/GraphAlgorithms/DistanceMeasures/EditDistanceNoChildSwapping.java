@@ -1,8 +1,8 @@
-package InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures;
+package Graph.GraphAlgorithms.DistanceMeasures;
 
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.DecisionTree.DecisionTreeEdge;
+import Graph.DecisionTree.DecisionTreeNode;
+import Graph.Tree;
 
 import java.util.List;
 import java.util.Objects;

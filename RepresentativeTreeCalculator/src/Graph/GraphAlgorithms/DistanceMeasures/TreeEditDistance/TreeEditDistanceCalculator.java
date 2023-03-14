@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance;
+package Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance;
 
 import Utility.Pair;
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
+import Graph.Node;
+import Graph.Tree;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  *

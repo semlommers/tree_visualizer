@@ -5,11 +5,11 @@
  */
 package Export;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeEdge;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeNode;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
-import InfectionTreeGenerator.Graph.Node;
+import Graph.Edge;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeEdge;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeNode;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
+import Graph.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;

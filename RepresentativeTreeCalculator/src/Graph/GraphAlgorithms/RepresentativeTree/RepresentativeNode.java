@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree;
+package Graph.GraphAlgorithms.RepresentativeTree;
 
-import InfectionTreeGenerator.Graph.Node;
+import Graph.Edge;
 import Utility.Log;
-import InfectionTreeGenerator.Graph.Edge;
+import Graph.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,16 +16,16 @@ import java.util.List;
  *
  * @author MaxSondag
  */
-public class RepresentativeEdge<N extends Node<N, E>, E extends Edge<N, E>> extends Edge<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
+public class RepresentativeNode<N extends Node<N, E>, E extends Edge<N, E>> extends Node<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
 
     /**
-     * Holds the edit distances at which point additional edges are represented
-     * by this edge
+     * Holds the edit distances at which point additional nodes are represented
+     * by this node
      */
-    private HashMap<Integer, List<Edge>> representsEdges = new HashMap();
+    private HashMap<Integer, List<N>> representsNodes = new HashMap();
 
-    public RepresentativeEdge(RepresentativeNode source, RepresentativeNode target) {
-        super(source, target);
+    public RepresentativeNode(int id) {
+        super(id);
     }
 
     private int maxEditDistance;
@@ -39,19 +39,20 @@ public class RepresentativeEdge<N extends Node<N, E>, E extends Edge<N, E>> exte
     public String toJson() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
-        sb.append("\"source\":" + source.id + ",");
-        sb.append("\"target\":" + target.id + ",");
+        sb.append("\"id\":" + id + ",");
         sb.append("\"maxEditDistance\":" + maxEditDistance + ","); //TODO: REMOVE
         sb.append("\"representation\":{");
-        int maxDistance = getMaximumDistance();
+
+        int maxDistance = getMaxEditDistance();
         for (int i = 0; i <= maxDistance; i++) {
-            if (representsEdges.containsKey(i)) {
+            if (representsNodes.containsKey(i)) {//only print if there is new information
                 sb.append("\"" + i + "\":");
                 sb.append("[");
-                for (Edge e : representsEdges.get(i)) {
-                    sb.append(e.toJson());
+                for (Node n : representsNodes.get(i)) {
+                    sb.append(n.toJson());
                     sb.append(",");
                 }
+
                 if (sb.charAt(sb.length() - 1) == ',') {
                     sb.setLength(sb.length() - 1);//remove last comma
                 }
@@ -66,26 +67,37 @@ public class RepresentativeEdge<N extends Node<N, E>, E extends Edge<N, E>> exte
         return sb.toString();
     }
 
-    private int getMaximumDistance() {
+    private int getMaxEditDistance() {
         int maxDistance = 0;
-        for (Integer distance : representsEdges.keySet()) {
+        for (Integer distance : representsNodes.keySet()) {
             maxDistance = Math.max(maxDistance, distance);
         }
         return maxDistance;
     }
 
     @Override
-    public Edge deepCopy(HashMap<Integer, RepresentativeNode<N, E>> newNodes) {
+    public RepresentativeNode<N, E> deepCopy() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public List<Edge> getRepresentEdges(int distance) {
-        return representsEdges.getOrDefault(distance, new ArrayList());
+    public HashMap<Integer, List<N>> getRepresentNodesMapping() {
+        return representsNodes;
     }
 
-    public void addToRepresentsEdges(int editDistance, Edge newEdge) {
-        List<Edge> representEdges = getRepresentEdges(editDistance);
-        representEdges.add(newEdge);
-        representsEdges.put(editDistance, representEdges);
+    public void addToRepresentsNodes(int editDistance, N newN) {
+        List<N> representNodes = getRepresentNodes(editDistance);
+        representNodes.add(newN);
+        representsNodes.put(editDistance, representNodes);
     }
+
+    /**
+     * Returns the nodes this node additionally represents at editdistance
+     * @param editDistance
+     * @return 
+     */
+    public List<N> getRepresentNodes(int editDistance) {
+        return representsNodes.getOrDefault(editDistance, new ArrayList());
+    }
+
+
 }

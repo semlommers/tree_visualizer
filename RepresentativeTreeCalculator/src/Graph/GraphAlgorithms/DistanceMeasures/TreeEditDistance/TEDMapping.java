@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance;
+package Graph.GraphAlgorithms.DistanceMeasures.TreeEditDistance;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
+import Graph.Edge;
+import Graph.Node;
 import java.util.HashMap;
 import java.util.Map.Entry;
 

@@ -1,8 +1,8 @@
 package Import;
 
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeEdge;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeNode;
+import Graph.DecisionTree.DecisionTreeEdge;
+import Graph.DecisionTree.DecisionTreeGraph;
+import Graph.DecisionTree.DecisionTreeNode;
 import Import.JsonNode.JsonChild;
 import com.google.gson.Gson;
 

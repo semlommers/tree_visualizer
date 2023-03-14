@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InfectionTreeGenerator.Graph.GraphAlgorithms;
+package Graph.GraphAlgorithms;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Graph;
-import InfectionTreeGenerator.Graph.GraphFactory;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.Graph;
+import Graph.GraphFactory;
+import Graph.Node;
+import Graph.Tree;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;

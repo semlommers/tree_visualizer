@@ -1,8 +1,8 @@
-package InfectionTreeGenerator.Graph.GraphAlgorithms.NodeMappingAlgorithms;
+package Graph.GraphAlgorithms.NodeMappingAlgorithms;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.Node;
+import Graph.Tree;
 import Utility.Pair;
 
 import java.util.HashMap;

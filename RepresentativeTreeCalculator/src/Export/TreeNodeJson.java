@@ -5,9 +5,9 @@
  */
 package Export;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.Node;
+import Graph.Tree;
 import java.util.ArrayList;
 import java.util.List;
 

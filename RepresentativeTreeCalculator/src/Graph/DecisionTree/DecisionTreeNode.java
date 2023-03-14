@@ -1,6 +1,6 @@
-package InfectionTreeGenerator.Graph.DecisionTree;
+package Graph.DecisionTree;
 
-import InfectionTreeGenerator.Graph.Node;
+import Graph.Node;
 
 import java.util.Collections;
 import java.util.List;
