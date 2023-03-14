@@ -44,7 +44,7 @@ public class RepresentativeNode<N extends Node<N, E>, E extends Edge<N, E>> exte
     }
 
     /**
-     * Returns the nodes this node additionally represents at edit distance
+     * Returns the nodes this node additionally represents at distance
      */
     public List<N> getRepresentNodes(int distance) {
         return representsNodes.getOrDefault(distance, new ArrayList<>());

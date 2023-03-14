@@ -1,7 +1,6 @@
 package Graph.DecisionTree;
 
 import Graph.Edge;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -32,16 +31,6 @@ public class DecisionTreeEdge extends Edge<DecisionTreeNode, DecisionTreeEdge> {
     }
 
     @Override
-    public String toJson() {
-        return "{\"sourceId\":" + source.id + ","
-                + "\"targetId\":" + target.id + ","
-                + "\"featureId\":" + featureId + ","
-                + "\"minValue\":" + minValue + ","
-                + "\"maxValue\":" + maxValue
-                + "}";
-    }
-
-    @Override
     public DecisionTreeEdge deepCopy(HashMap<Integer, DecisionTreeNode> nodeMapping) {
         DecisionTreeNode newSource = nodeMapping.get(source.id);
         DecisionTreeNode newTarget = nodeMapping.get(target.id);
@@ -57,7 +46,7 @@ public class DecisionTreeEdge extends Edge<DecisionTreeNode, DecisionTreeEdge> {
     }
 
     @Override
-    public int compareTo(@NotNull Edge o) {
+    public int compareTo(Edge o) {
         DecisionTreeEdge edge = (DecisionTreeEdge) o;
         return this.minValue.compareTo(edge.minValue);
     }

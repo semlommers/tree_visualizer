@@ -20,13 +20,13 @@ import java.util.*;
 public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> extends Tree<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
 
     /**
-     * Holds the maximum edit distance where this tree still represents at least
+     * Holds the maximum distance where this tree still represents at least
      * 1 tree
      */
     public int maxDistance = 0;
 
     /**
-     * Holds which trees are already mapped to this tree for some edit distance.
+     * Holds which trees are already mapped to this tree for some distance.
      * Used to prevent double mappings
      */
     public Set<Tree<N, E>> treesAlreadyMapped = new HashSet<>();
@@ -91,7 +91,7 @@ public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> exte
             return;
         }
 
-        //at least one node mapped at this distance, so we have a new important edit distance
+        //at least one node mapped at this distance, so we have a new important distance
         maxDistance = Math.max(maxDistance, distance);
 
         //go trough all trees that are mapped to this one, and store the mapping

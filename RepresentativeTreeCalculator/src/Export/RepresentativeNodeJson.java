@@ -30,11 +30,11 @@ public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> 
     public int id;
     
     /**
-     * maximum edit distance that this tree is still representing nodes
+     * maximum distance that this tree is still representing nodes
      */
-    public int maxEditDistance;
+    public int maxDistance;
     /**
-     * (edit distance,List<id's>) object that holds the first edit distance when
+     * (distance,List<id's>) object that holds the first distance when
      * the nodes with id: "id's" are represented by this node
      */
     public List<RepresentationJson> representations = new ArrayList<>();
@@ -45,7 +45,7 @@ public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> 
     public List<RepresentativeNodeJson<N, E>> children = new ArrayList<>();
 
     public RepresentativeNodeJson(RepresentativeTree<N, E> repTree) {
-        this.maxEditDistance = repTree.maxDistance;
+        this.maxDistance = repTree.maxDistance;
         RepresentativeNode<N, E> root = repTree.calculateRoot();
         initialize(root);
     }
@@ -75,16 +75,16 @@ public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> 
     public class RepresentationJson {
 
         /**
-         * First edit distance the nodes are represented by this node
+         * First distance the nodes are represented by this node
          */
-        public int editDistance;
+        public int distance;
         /**
-         * Nodes that are represented at editDistance
+         * Nodes that are represented at Distance
          */
         public Set<Integer> representationIds = new HashSet<>();
 
-        public RepresentationJson(Integer editDistance, List<N> nodes) {
-            this.editDistance = editDistance;
+        public RepresentationJson(Integer distance, List<N> nodes) {
+            this.distance = distance;
             for (N node : nodes) {
                 representationIds.add(node.id);
             }
@@ -93,7 +93,7 @@ public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> 
         @Override
         public int hashCode() {
             int hash = 7;
-            hash = 31 * hash + this.editDistance;
+            hash = 31 * hash + this.distance;
             hash = 31 * hash + Objects.hashCode(this.representationIds);
             return hash;
         }
@@ -111,7 +111,7 @@ public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> 
                 return false;
             }
             final RepresentationJson other = (RepresentationJson) obj;
-            if (this.editDistance != other.editDistance) {
+            if (this.distance != other.distance) {
                 return false;
             }
             if (!Objects.equals(this.representationIds, other.representationIds)) {

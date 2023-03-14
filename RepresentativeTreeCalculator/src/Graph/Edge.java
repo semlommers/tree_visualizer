@@ -5,8 +5,6 @@
  */
 package Graph;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 
 /**
@@ -35,12 +33,6 @@ public class Edge<N extends Node<N, E>, E extends Edge<N, E>> implements Compara
     @Override
     public String toString() {
         return "Edge{" + "start=" + source.id + ", end=" + target.id + '}';
-    }
-
-    public String toJson() {
-        return "{\"source\":" + source.id + ","
-                + "\"target\":" + target.id
-                + "}";
     }
 
     /**
@@ -94,7 +86,7 @@ public class Edge<N extends Node<N, E>, E extends Edge<N, E>> implements Compara
     }
 
     @Override
-    public int compareTo(@NotNull Edge o) {
+    public int compareTo(Edge o) {
         return 0;
     }
 }

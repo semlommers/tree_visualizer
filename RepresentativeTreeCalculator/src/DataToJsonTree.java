@@ -66,7 +66,7 @@ public class DataToJsonTree {
 
         TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> treeDistanceMeasure = new EditDistanceNoChildSwapping();
         RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
-        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistance");
+        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistanceFull.json"); //TODO: deze naam moet de distance measure omschrijven
     }
 
     private void printStatistics(DecisionTreeGraph dtg) {

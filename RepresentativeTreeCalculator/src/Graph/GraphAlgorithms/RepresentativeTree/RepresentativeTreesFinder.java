@@ -16,7 +16,6 @@ import Graph.Node;
 import Graph.Tree;
 import java.io.IOException;
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  *
@@ -24,80 +23,31 @@ import java.util.Map.Entry;
  */
 public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E>> {
 
-    public final int MAXEDITDISTANCE = 100;
-
-    public List<RepresentativeTree> getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, TreeDistanceMeasure dm, String outputFilePrefix) throws IOException {
-        int startSize = 1;//calculate starting from trees of size 1
-        int endSize = 2000; //stop calculating for trees of size 200
-
-        //get the forest
-        //Group forest into size categories
-        //TODO: Remove this
-        HashMap<Integer, List<Tree>> treesBySizeMap = new HashMap();
-        for (Tree tree : forest) {
-            //add the tree to the map with the correct amount of nodes.
-            int size = tree.getNodes().size();
-            List<Tree> treeList = treesBySizeMap.getOrDefault(size, new ArrayList<>());
-            treeList.add((Tree) tree);
-            treesBySizeMap.put(size, treeList);
-        }
-        for (Entry<Integer, List<Tree>> entry : treesBySizeMap.entrySet()) {
-            Integer size = entry.getKey();
-            List<Tree> trees = entry.getValue();
-
-            Log.printProgress("To calculate: " + trees.size() + " trees with " + size + " nodes.");
-        }
-
-        Log.printProgress(treesBySizeMap.size() + " groups of trees to calculate");
+    public void getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, TreeDistanceMeasure<N, E> dm, String outputFilePrefix) throws IOException {
         Log.printProgress(forest.size() + " total trees");
 
-        List<RepresentativeTree> allRepTrees = new ArrayList();
+        List<Tree<N, E>> trees = new ArrayList<>(forest);
 
-        //for each group, calculate the representativeTrees
-        for (int size = startSize; size < endSize; size++) {//go through them in order
-            if (!treesBySizeMap.containsKey(size)) {
-                continue;
-            }
+        //calculate the representative trees
+        Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm);
+        List<RepresentativeTree<N, E>> allRepTrees = new ArrayList<>(repTrees);
 
-            List<Tree> trees = treesBySizeMap.get(size);
-            // TODO: Geen idee wat ik hier mee moet
-            trees = new ArrayList<>(forest);
-
-            Log.printProgress("Calculating for " + trees.size() + " trees with " + size + "nodes.");
-
-            //calculate the representative trees
-            Collection<RepresentativeTree> repTrees = calculateRepresentativeTrees(trees, dm);
-            allRepTrees.addAll(repTrees);
-            break;
-
-            //write the representativeTrees
-//            GraphWriter tw = new GraphWriter();
-//            tw.writeRepresentativeTrees(outputFilePrefix + size + ".json", repTrees);
-        }
-
-        GraphWriter tw = new GraphWriter();
-        tw.writeRepresentativeTrees(outputFilePrefix + "Full.json", allRepTrees);
-
-        //returns the trees;
-        return allRepTrees;
-
+        GraphWriter<N, E> tw = new GraphWriter<>();
+        tw.writeRepresentativeTrees(outputFilePrefix, allRepTrees);
     }
 
     /**
      * Returns a set of representativeTrees for the collection of {@code trees}.
-     *
-     * @param trees
-     * @return
      */
-    private Collection<RepresentativeTree> calculateRepresentativeTrees(List<Tree> trees, TreeDistanceMeasure dm) {
+    private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm) {
 
         //Holds the graphs as nodes, and uses the specified distance measure as weights between the nodes
-        Graph g = makeWeightedGraph(trees, dm);
+        Graph<N, E> g = makeWeightedGraph(trees, dm);
 
-        Collection<Edge> edges = g.getEdges();
+        Collection<E> edges = g.getEdges();
 
         int maxDistance = 0;
-        for (Edge edge : edges) {
+        for (E edge : edges) {
             if (edge.weight > maxDistance) {
                 maxDistance = (int) edge.weight;
             }
@@ -105,69 +55,67 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
 
         //Start calculating representative trees.
         //We find it by using dominating set on filtered trees. The dominating set are the set of representative nodes
-        //where all other nodes can transform into within {ted} graph change moves.
-        DominatingSetCalculator dsc = new DominatingSetCalculator();
+        //where all other nodes can transform into within {distance} graph change moves.
+        DominatingSetCalculator<N, E> dsc = new DominatingSetCalculator<N, E>();
 
-        //start with an graph on distance 0 and slowly add edges. Used to intialize the dominating set
-        Graph fg0 = getFilteredGraph(g, 0);
+        //start with an graph on distance 0 and slowly add edges. Used to initialize the dominating set
+        Graph<N, E> fg0 = getFilteredGraph(g, 0);
         List<Integer> currentDsIds = dsc.getDominatingSet(fg0);
 
         //initialize the representing trees, they only get filtered down, so these are all Representative trees that will exists.
         //maps from id to a representative tree
-        HashMap<Integer, RepresentativeTree> repTrees = initRepTrees(currentDsIds, trees);
+        HashMap<Integer, RepresentativeTree<N, E>> repTrees = initRepTrees(currentDsIds, trees);
 
-        //go through the edit distances
-        int ted = 0;
+        //go through the distances
+        int distance = 0;
         // Go on until only one representative tree exists
         while (currentDsIds.size() > 1) {
-            //Get graph with only edgeMapping with weight <= ted
-            Graph fgTED = getFilteredGraph(g, ted);
+            //Get graph with only edgeMapping with weight <= distance
+            Graph<N, E> fgTED = getFilteredGraph(g, distance);
 
             //trim the dominating set down instead of recalculating so we keep the original trees. Trees thus only disappear
             List<Integer> dsTrimmed = dsc.trimDominatingSet(fgTED, currentDsIds);
 
-            //holds the set of trees that are assigned to a dominating tree at distance {ted}
-            HashMap<Integer, List<Tree>> mapping = calculateDominationMapping(fgTED, dsTrimmed, trees);
+            //holds the set of trees that are assigned to a dominating tree at distance {distance}
+            HashMap<Integer, List<Tree<N, E>>> mapping = calculateDominationMapping(fgTED, dsTrimmed, trees);
 
             for (Integer id : dsTrimmed) {
-                RepresentativeTree repTree = repTrees.get(id);
-                List<Tree> treesMapped = mapping.get(id);
+                RepresentativeTree<N, E> repTree = repTrees.get(id);
+                List<Tree<N, E>> treesMapped = mapping.get(id);
 
                 //calculate the mapping from repTree to all treesMapped
-                TreeMappingCalculator tmCalc = new TreeMappingCalculator<>();
-                for (Tree tm : treesMapped) {
+                TreeMappingCalculator<N, E> tmCalc = new TreeMappingCalculator<>();
+                for (Tree<N, E> tm : treesMapped) {
                     if (!repTree.treesAlreadyMapped.contains(tm)) {//not mapped yet, so mapping isn't stored yet
                         tmCalc.computeMapping(repTree.originalTree, tm);
                     }
                 }
-                repTree.addToMapping(ted, treesMapped, tmCalc);
+                repTree.addToMapping(distance, treesMapped, tmCalc);
             }
             currentDsIds = dsTrimmed;
-            ted++;
+            distance++;
         }
 
         return repTrees.values();
 
     }
 
-    private Graph makeWeightedGraph(List<Tree> trees, TreeDistanceMeasure tdm) {
-        Graph g = new Graph();
+    @SuppressWarnings("unchecked")
+    private Graph<N, E> makeWeightedGraph(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> tdm) {
+        Graph<N, E> g = new Graph<N, E>();
 
         //make nodes for each tree
-        HashMap<Integer, Node> nodeMapping = new HashMap();
-        HashMap<Integer, Tree> graphMapping = new HashMap();
-        for (int i = 0; i < (trees.size()); i++) {
-            Tree t = trees.get(i);
-            Node n = new Node(t.id, 1);
+        HashMap<Integer, N> nodeMapping = new HashMap<>();
+        for (Tree<N, E> t : trees) {
+            N n = (N) new Node<N, E>(t.id, 1);
             nodeMapping.put(n.id, n);
-            graphMapping.put(n.id, t);
 
             g.addNode(n);
         }
 
-        int count = 0;//counter for progesas
+        int count = 0;//counter for progress
         for (int i = 0; i < (trees.size() - 1); i++) {
-            Tree t1 = trees.get(i);
+            Tree<N, E> t1 = trees.get(i);
             for (int j = i + 1; j < trees.size(); j++) {
 
                 count++;
@@ -175,15 +123,15 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
                     Log.printProgress("Calculating distance " + count + " out of " + ((trees.size() * trees.size() - trees.size()) / 2), 1000);
                 }
 
-                Tree t2 = trees.get(j);
+                Tree<N, E> t2 = trees.get(j);
 
                 int distance = tdm.getDistance(t1, t2);
 
-                Node n1 = nodeMapping.get(t1.id);
-                Node n2 = nodeMapping.get(t2.id);
-                Edge weOut = new Edge(n1, n2, distance);
+                N n1 = nodeMapping.get(t1.id);
+                N n2 = nodeMapping.get(t2.id);
+                E weOut = (E) new Edge<N, E>(n1, n2, distance);
                 //ted is symmetric
-                Edge weIn = new Edge(n2, n1, distance);
+                E weIn = (E) new Edge<N, E>(n2, n1, distance);
                 g.addEdge(weOut);
                 g.addEdge(weIn);
             }
@@ -194,11 +142,8 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
     /**
      * Returns a new graph with the same id's that only has edges with weight
      * below or equal to {@code weight}
-     *
-     * @param weight
-     * @return
      */
-    private Graph getFilteredGraph(Graph<N, E> g, double weight) {
+    private Graph<N, E> getFilteredGraph(Graph<N, E> g, double weight) {
         Graph<N, E> deepCopy = g.deepCopy();
         Set<E> toRemove = new HashSet<>();
         for (E e : deepCopy.getEdges()) {
@@ -210,12 +155,12 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         return deepCopy;
     }
 
-    private HashMap<Integer, RepresentativeTree> initRepTrees(List<Integer> dsIds, List<Tree> trees) {
-        HashMap<Integer, RepresentativeTree> idMapping = new HashMap();
-        for (Tree t : trees) {
+    private HashMap<Integer, RepresentativeTree<N, E>> initRepTrees(List<Integer> dsIds, List<Tree<N, E>> trees) {
+        HashMap<Integer, RepresentativeTree<N, E>> idMapping = new HashMap<>();
+        for (Tree<N, E> t : trees) {
             //only add the trees that are representing something.
             if (dsIds.contains(t.id)) {
-                RepresentativeTree rt = new RepresentativeTree(t);
+                RepresentativeTree<N, E> rt = new RepresentativeTree<>(t);
                 idMapping.put(t.id, rt);
             }
         }
@@ -231,29 +176,27 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
      * @param trimmedGraph The graph the dominating set is based upon
      * @param dsIds Set of graph ids that are in the dominating set.
      * @param trees all trees
-     * @return
      */
-    private HashMap<Integer, List<Tree>> calculateDominationMapping(Graph trimmedGraph, List<Integer> dsIds, List<Tree> trees) {
-        HashMap<Integer, List<Tree>> mapping = new HashMap();
+    private HashMap<Integer, List<Tree<N, E>>> calculateDominationMapping(Graph<N, E> trimmedGraph, List<Integer> dsIds, List<Tree<N, E>> trees) {
+        HashMap<Integer, List<Tree<N, E>>> mapping = new HashMap<>();
 
         //make a copy so we can freely delete those that we have mapped
-        List<Tree> remainingTrees = new ArrayList();
-        remainingTrees.addAll(trees);
+        List<Tree<N, E>> remainingTrees = new ArrayList<>(trees);
 
         for (Integer id : dsIds) {
             //the current tree we are looking into the dominance relations of
-            Tree domTree = getTreeWithId(trees, id);
+            Tree<N, E> domTree = getTreeWithId(trees, id);
 
-            Node domTreeNode = trimmedGraph.getNode(id);
-            List<Edge> edges = domTreeNode.edges;
+            N domTreeNode = trimmedGraph.getNode(id);
+            List<E> edges = domTreeNode.edges;
 
-            List<Tree> dominated = new ArrayList();
+            List<Tree<N, E>> dominated = new ArrayList<>();
 
             //it dominated itself
             dominated.add(domTree);
             //and all trees on outgoing edges
-            for (Edge e : edges) {
-                Tree t = getTreeWithId(remainingTrees, e.target.id);
+            for (E e : edges) {
+                Tree<N, E> t = getTreeWithId(remainingTrees, e.target.id);
                 if (t == null) {//already processed
                     continue;
                 }
@@ -272,8 +215,8 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         return mapping;
     }
 
-    private Tree getTreeWithId(List<Tree> trees, Integer id) {
-        for (Tree t : trees) {
+    private Tree<N, E> getTreeWithId(List<Tree<N, E>> trees, Integer id) {
+        for (Tree<N, E> t : trees) {
             if (t.id == id) {
                 return t;
             }

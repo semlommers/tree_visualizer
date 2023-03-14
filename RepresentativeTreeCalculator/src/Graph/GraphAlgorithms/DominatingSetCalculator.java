@@ -23,8 +23,6 @@ public class DominatingSetCalculator<N extends Node<N, E>, E extends Edge<N, E>>
      * Returns a set of node-ids that is a dominating set.
      */
     public List<Integer> getDominatingSet(Graph<N, E> g) {
-        Log.printOnce("getDominatingSet can be optimized to a simple approximation algorithm or an LP");
-
         ArrayList<Integer> dominatingSet = new ArrayList<>();
 
         //nodes that are not connected always need to be in
