@@ -1,7 +1,6 @@
 package InfectionTreeGenerator.Graph.DecisionTree;
 
 import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -46,8 +45,7 @@ public class DecisionTreeEdge extends Edge<DecisionTreeNode, DecisionTreeEdge> {
     public DecisionTreeEdge deepCopy(HashMap<Integer, DecisionTreeNode> nodeMapping) {
         DecisionTreeNode newSource = nodeMapping.get(source.id);
         DecisionTreeNode newTarget = nodeMapping.get(target.id);
-        DecisionTreeEdge e = new DecisionTreeEdge(newSource, newTarget, featureId, minValue, maxValue);
-        return e;
+        return new DecisionTreeEdge(newSource, newTarget, featureId, minValue, maxValue);
     }
 
     @Override
@@ -55,10 +53,7 @@ public class DecisionTreeEdge extends Edge<DecisionTreeNode, DecisionTreeEdge> {
         assert (sourceCopy.id == source.id);
         assert (targetCopy.id == target.id);
 
-        DecisionTreeNode newSource = sourceCopy;
-        DecisionTreeNode newTarget = targetCopy;
-        DecisionTreeEdge e = new DecisionTreeEdge(newSource, newTarget, featureId, minValue, maxValue);
-        return e;
+        return new DecisionTreeEdge(sourceCopy, targetCopy, featureId, minValue, maxValue);
     }
 
     @Override

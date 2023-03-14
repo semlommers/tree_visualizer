@@ -11,12 +11,12 @@ public class DecisionTreeGraph extends Tree<DecisionTreeNode, DecisionTreeEdge> 
 
     @Override
     public DecisionTreeNode getNode(int id) {
-        return (DecisionTreeNode) super.getNode(id);
+        return super.getNode(id);
     }
 
     @Override
-    public Collection getEdges() {
-        List<DecisionTreeEdge> edges = new ArrayList(edgeMapping.values());
+    public Collection<DecisionTreeEdge> getEdges() {
+        List<DecisionTreeEdge> edges = new ArrayList<>(edgeMapping.values());
         Collections.sort(edges);
         return edges;
     }
