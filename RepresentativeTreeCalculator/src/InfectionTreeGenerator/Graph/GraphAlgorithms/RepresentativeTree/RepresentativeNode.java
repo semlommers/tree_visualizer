@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author MaxSondag
  */
-public class RepresentativeNode<N extends Node<E>, E extends Edge<N>> extends Node<RepresentativeEdge<N, E>> {
+public class RepresentativeNode<N extends Node<N, E>, E extends Edge<N, E>> extends Node<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
 
     /**
      * Holds the edit distances at which point additional nodes are represented
@@ -76,7 +76,7 @@ public class RepresentativeNode<N extends Node<E>, E extends Edge<N>> extends No
     }
 
     @Override
-    public Node deepCopy() {
+    public RepresentativeNode<N, E> deepCopy() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

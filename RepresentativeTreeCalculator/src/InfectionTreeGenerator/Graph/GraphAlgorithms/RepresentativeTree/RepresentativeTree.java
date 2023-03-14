@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  *
  * @author MaxSondag
  */
-public class RepresentativeTree<N extends Node<E>, E extends Edge<N>> extends Tree<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
+public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> extends Tree<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
 
     /**
      * Holds the maximum edit distance where this tree still represents at least

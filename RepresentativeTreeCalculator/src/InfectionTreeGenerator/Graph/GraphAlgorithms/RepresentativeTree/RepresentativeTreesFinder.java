@@ -24,7 +24,7 @@ import java.util.Map.Entry;
  *
  * @author MaxSondag
  */
-public class RepresentativeTreesFinder<N extends Node<E>, E extends Edge<N>> {
+public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E>> {
 
     public final int MAXEDITDISTANCE = 100;
 
@@ -200,10 +200,10 @@ public class RepresentativeTreesFinder<N extends Node<E>, E extends Edge<N>> {
      * @param weight
      * @return
      */
-    private Graph getFilteredGraph(Graph<Node, Edge> g, double weight) {
-        Graph<Node, Edge> deepCopy = g.deepCopy();
-        Set<Edge> toRemove = new HashSet();
-        for (Edge e : deepCopy.getEdges()) {
+    private Graph getFilteredGraph(Graph<N, E> g, double weight) {
+        Graph<N, E> deepCopy = g.deepCopy();
+        Set<E> toRemove = new HashSet<>();
+        for (E e : deepCopy.getEdges()) {
             if (e.weight > weight) {
                 toRemove.add(e);
             }

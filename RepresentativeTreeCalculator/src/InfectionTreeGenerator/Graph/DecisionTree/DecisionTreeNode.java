@@ -5,7 +5,7 @@ import InfectionTreeGenerator.Graph.Node;
 import java.util.Collections;
 import java.util.List;
 
-public class DecisionTreeNode extends Node<DecisionTreeEdge> {
+public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
     public Integer featureId;
     public Integer predictedLabel;
 

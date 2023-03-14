@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author MaxSondag, SemLommers
  */
-public class TreeNodeJson<N extends Node<E>, E extends Edge<N>> {
+public class TreeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> {
     /**
      * Id of the node
      */

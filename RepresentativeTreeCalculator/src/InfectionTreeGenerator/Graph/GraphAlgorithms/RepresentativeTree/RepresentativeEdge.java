@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author MaxSondag
  */
-public class RepresentativeEdge<N extends Node<E>, E extends Edge<N>> extends Edge<RepresentativeNode<N, E>> {
+public class RepresentativeEdge<N extends Node<N, E>, E extends Edge<N, E>> extends Edge<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
 
     /**
      * Holds the edit distances at which point additional edges are represented

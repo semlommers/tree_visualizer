@@ -22,7 +22,7 @@ import java.util.Set;
  *
  * @author MaxSondag
  */
-public class GraphWriter<N extends Node<E>, E extends Edge<N>> {
+public class GraphWriter<N extends Node<N, E>, E extends Edge<N, E>> {
 
     public void writeMetaDataGraph(String outputFileLocation, Tree<N, E> tree) throws IOException {
         Gson gson = new GsonBuilder().serializeNulls().create();

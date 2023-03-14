@@ -13,7 +13,7 @@ import java.util.HashMap;
  * An edge is uniquely identified by {@code source.id} and {@code target.id}
  * @author MaxSondag
  */
-public class Edge<N extends Node> implements Comparable<Edge> {
+public class Edge<N extends Node<N, E>, E extends Edge<N, E>> implements Comparable<Edge<N, E>> {
 
     final public N source, target;
     /**
@@ -44,34 +44,24 @@ public class Edge<N extends Node> implements Comparable<Edge> {
     }
 
     /**
-     * Returns a deepcopy of this node. Nodes assigned to source and target will
+     * Returns a deep copy of this node. Nodes assigned to source and target will
      * be taken from newNodes with the same id
-     *
-     * @param nodeMapping
-     * @return
      */
-    public Edge deepCopy(HashMap<Integer, N> nodeMapping) {
-        Node newSource = nodeMapping.get(source.id);
-        Node newTarget = nodeMapping.get(target.id);
-        Edge e = new Edge(newSource, newTarget, weight);
-        return e;
+    public Edge<N, E> deepCopy(HashMap<Integer, N> nodeMapping) {
+        N newSource = nodeMapping.get(source.id);
+        N newTarget = nodeMapping.get(target.id);
+        return new Edge<>(newSource, newTarget, weight);
     }
 
     /**
-     * Returns a deepcopy of this node. Nodes assigned to source and target will
+     * Returns a deep copy of this node. Nodes assigned to source and target will
      * be n1Copy and n2Copy
-     *
-     * @param nodeMapping
-     * @return
      */
-    public Edge deepCopy(Node sourceCopy, Node targetCopy) {
+    public Edge<N, E> deepCopy(N sourceCopy, N targetCopy) {
         assert (sourceCopy.id == source.id);
         assert (targetCopy.id == target.id);
 
-        Node newSource = sourceCopy;
-        Node newTarget = targetCopy;
-        Edge e = new Edge(newSource, newTarget, weight);
-        return e;
+        return new Edge<>(sourceCopy, targetCopy, weight);
     }
 
     @Override
@@ -81,6 +71,7 @@ public class Edge<N extends Node> implements Comparable<Edge> {
         return hash;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -92,7 +83,7 @@ public class Edge<N extends Node> implements Comparable<Edge> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Edge<?> other = (Edge<?>) obj;
+        final Edge<?, ?> other = (Edge<?, ?>) obj;
         if (this.source.id != other.source.id) {
             return false;
         }

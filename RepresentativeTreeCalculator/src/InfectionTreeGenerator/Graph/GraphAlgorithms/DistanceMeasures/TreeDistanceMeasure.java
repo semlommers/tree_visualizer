@@ -6,8 +6,6 @@
 package InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures;
 
 import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Infection.InfectionEdge;
-import InfectionTreeGenerator.Graph.Infection.InfectionNode;
 import InfectionTreeGenerator.Graph.Node;
 import InfectionTreeGenerator.Graph.Tree;
 
@@ -15,7 +13,7 @@ import InfectionTreeGenerator.Graph.Tree;
  *
  * @author MaxSondag
  */
-public interface TreeDistanceMeasure<N extends Node<E>, E extends Edge<N>> {
+public interface TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N, E>> {
 
     /**
      * Distance between two infectionTrees. Values are rounded up in case of

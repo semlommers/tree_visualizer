@@ -10,7 +10,7 @@ import java.util.Map.Entry;
  *
  * @author Sem Lommers
  */
-public class TreeMap<N extends Node<E>, E extends Edge<N>> {
+public class TreeMap<N extends Node<N, E>, E extends Edge<N, E>> {
 
     //holds the mapping from t1 to t2
     private HashMap<N, N> nodeMapping = new HashMap<>();

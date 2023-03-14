@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class DecisionTreeEdge extends Edge<DecisionTreeNode> {
+public class DecisionTreeEdge extends Edge<DecisionTreeNode, DecisionTreeEdge> {
 
     /**
      * Holds the id of the feature
@@ -51,12 +51,12 @@ public class DecisionTreeEdge extends Edge<DecisionTreeNode> {
     }
 
     @Override
-    public DecisionTreeEdge deepCopy(Node sourceCopy, Node targetCopy) {
+    public DecisionTreeEdge deepCopy(DecisionTreeNode sourceCopy, DecisionTreeNode targetCopy) {
         assert (sourceCopy.id == source.id);
         assert (targetCopy.id == target.id);
 
-        DecisionTreeNode newSource = (DecisionTreeNode) sourceCopy;
-        DecisionTreeNode newTarget = (DecisionTreeNode) targetCopy;
+        DecisionTreeNode newSource = sourceCopy;
+        DecisionTreeNode newTarget = targetCopy;
         DecisionTreeEdge e = new DecisionTreeEdge(newSource, newTarget, featureId, minValue, maxValue);
         return e;
     }

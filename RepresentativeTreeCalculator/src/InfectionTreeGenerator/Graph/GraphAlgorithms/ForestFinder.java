@@ -18,16 +18,12 @@ import java.util.Set;
  *
  * @author MaxSondag
  */
-public class ForestFinder<G extends Graph, T extends Tree, N extends Node, E extends Edge> {
+@SuppressWarnings("unchecked")
+public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends Node<N, E>, E extends Edge<N, E>> {
 
     G completeGraph;
     private final String graphType;
 
-    /**
-     *
-     * @param completeGraph
-     * @param GraphType
-     */
     public ForestFinder(G completeGraph, Class treeType) {
         this.completeGraph = completeGraph;
         this.graphType = treeType.getSimpleName();
@@ -40,13 +36,14 @@ public class ForestFinder<G extends Graph, T extends Tree, N extends Node, E ext
      * @return
      */
     public Set<T> getForest() {
-        Set<T> trees = new HashSet();
+        Set<T> trees = new HashSet<>();
 
         //start by making all nodes the root of a tree, and merge them together
         Collection<N> nodes = completeGraph.getNodes();
         for (N node : nodes) {
             T newTree = GraphFactory.getNewGraph(graphType);
-            newTree.addNode(node.deepCopy());
+            Node<N,E> test = node.deepCopy();
+            newTree.addNode((N) test);
 
             //give the tree the id of the root
             newTree.id = node.id;
@@ -85,11 +82,11 @@ public class ForestFinder<G extends Graph, T extends Tree, N extends Node, E ext
      * @param targetTree
      * @param connectingEdge
      */
-    private void mergeTrees(Set<T> trees, T sourceTree, T targetTree, Edge connectingEdge) {
+    private void mergeTrees(Set<T> trees, T sourceTree, T targetTree, Edge<N, E> connectingEdge) {
         //add the nodes
         Collection<N> nodes = targetTree.getNodes();
         for (N n : nodes) {
-            sourceTree.addNodes(n);
+            sourceTree.addNode(n);
         }
 
         //add the edges
@@ -103,8 +100,8 @@ public class ForestFinder<G extends Graph, T extends Tree, N extends Node, E ext
         N targetNode = (N) targetTree.getNode(connectingEdge.target.id);
 
         //make a copy of the edge, as the nodes have been copied initially as well
-        Edge eCopy = connectingEdge.deepCopy(startNode, targetNode);
-        sourceTree.addEdge(eCopy);
+        Edge<N, E> eCopy = connectingEdge.deepCopy(startNode, targetNode);
+        sourceTree.addEdge((E) eCopy);
 
         //remove the targettrees from the list as it has been handles
         trees.remove(targetTree);

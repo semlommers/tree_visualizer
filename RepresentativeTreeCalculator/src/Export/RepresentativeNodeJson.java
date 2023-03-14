@@ -22,7 +22,7 @@ import java.util.Set;
  *
  * @author MaxSondag, SemLommers
  */
-public class RepresentativeNodeJson<N extends Node<E>, E extends Edge<N>> {
+public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> {
 
     /**
      * Id of the node

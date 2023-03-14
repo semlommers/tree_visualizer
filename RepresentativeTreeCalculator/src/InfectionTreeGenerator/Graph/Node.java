@@ -13,11 +13,11 @@ import java.util.List;
  *
  * @author MaxSondag
  */
-public class Node<E extends Edge> {
+public class Node<N extends Node<N, E>, E extends Edge<N, E>> {
 
     public final int id;
-    //Transient removes the edges this node is involved in for serialization. Required for JSON as otherwise there is an infite loop
-    public transient List<E> edges = new ArrayList();//Edges involving this node
+    //Transient removes the edges this node is involved in for serialization. Required for JSON as otherwise there is an infinite loop
+    public transient List<E> edges = new ArrayList<>();//Edges involving this node
 
     /**
      * Unit weight by default
@@ -51,7 +51,7 @@ public class Node<E extends Edge> {
     }
 
     public List<E> getIncomingEdges() {
-        List<E> incomingEdges = new ArrayList();
+        List<E> incomingEdges = new ArrayList<>();
         for (E e : edges) {
             if (e.target == this) {
                 incomingEdges.add(e);
@@ -61,7 +61,7 @@ public class Node<E extends Edge> {
     }
 
     public List<E> getOutgoingEdges() {
-        List<E> outgoingEdges = new ArrayList();
+        List<E> outgoingEdges = new ArrayList<>();
         for (E e : edges) {
             if (e.target != this) {
                 outgoingEdges.add(e);
@@ -71,14 +71,11 @@ public class Node<E extends Edge> {
     }
 
     /**
-     * Returns a deepcopy of the properties of the node. Id will be the same,
+     * Returns a deep copy of the properties of the node. Id will be the same,
      * edges will be empty
-     *
-     * @return
      */
-    public Node deepCopy() {
-        Node n = new Node(id, weight);
-        return n;
+    public Node<N, E> deepCopy() {
+        return new Node<>(id, weight);
     }
 
     @Override
@@ -88,6 +85,7 @@ public class Node<E extends Edge> {
         return hash;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -99,7 +97,7 @@ public class Node<E extends Edge> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Node<?> other = (Node<?>) obj;
+        final Node<?, ?> other = (Node<?, ?>) obj;
         if (this.id != other.id) {
             return false;
         }

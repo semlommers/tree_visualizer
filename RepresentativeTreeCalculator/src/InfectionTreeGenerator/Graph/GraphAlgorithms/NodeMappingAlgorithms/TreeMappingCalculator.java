@@ -8,7 +8,7 @@ import Utility.Pair;
 import java.util.HashMap;
 import java.util.List;
 
-public class TreeMappingCalculator<N extends Node<E>, E extends Edge<N>> {
+public class TreeMappingCalculator<N extends Node<N, E>, E extends Edge<N, E>> {
 
     /**
      * Holds the node mapping of all calculated pairs of trees so far
@@ -36,7 +36,7 @@ public class TreeMappingCalculator<N extends Node<E>, E extends Edge<N>> {
     }
 
     private void traverseTreeAndComputeMapping(HashMap<N, N> nodeMapping, HashMap<E, E> edgeMapping,
-                                               Node<E> node1, Node<E> node2) {
+                                               Node<N, E> node1, Node<N, E> node2) {
         List<E> edges1 = node1.getOutgoingEdges();
         List<E> edges2 = node2.getOutgoingEdges();
 
