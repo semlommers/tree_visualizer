@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Log {
 

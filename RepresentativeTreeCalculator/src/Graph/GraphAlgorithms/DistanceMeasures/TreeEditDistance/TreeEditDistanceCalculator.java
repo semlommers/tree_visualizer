@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class TreeEditDistanceCalculator<N extends Node, E extends Edge> implements TreeDistanceMeasure {
 

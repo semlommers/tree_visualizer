@@ -11,7 +11,7 @@ import Graph.Tree;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public interface TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N, E>> {
 

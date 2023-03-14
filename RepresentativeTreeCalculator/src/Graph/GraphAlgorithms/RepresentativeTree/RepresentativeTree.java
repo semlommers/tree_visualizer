@@ -15,8 +15,7 @@ import Graph.Tree;
 import java.util.*;
 
 /**
- *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> extends Tree<RepresentativeNode<N, E>, RepresentativeEdge<N, E>> {
 
@@ -24,42 +23,40 @@ public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> exte
      * Holds the maximum edit distance where this tree still represents at least
      * 1 tree
      */
-    public int maxEditDistance = 0;
+    public int maxDistance = 0;
 
     /**
      * Holds which trees are already mapped to this tree for some edit distance.
      * Used to prevent double mappings
      */
-    public Set<Tree> treesAlreadyMapped = new HashSet();
+    public Set<Tree<N, E>> treesAlreadyMapped = new HashSet<>();
 
-    Tree originalTree;
+    Tree<N, E> originalTree;
 
     /**
      * Initializes a Representative trees with the same id's on the nods and
      * edgeMapping.
-     *
-     * @param t
      */
-    public RepresentativeTree(Tree t) {
+    public RepresentativeTree(Tree<N, E> t) {
         id = t.id;
         //mapping from id to node for adding edgeMapping.
-        HashMap<Integer, RepresentativeNode> nodeMap = new HashMap();
+        HashMap<Integer, RepresentativeNode<N, E>> nodeMap = new HashMap<>();
 
-        Collection<Node> gNodes = t.getNodes();
-        for (Node n : gNodes) {
-            RepresentativeNode rn = new RepresentativeNode(n.id);
+        Collection<N> gNodes = t.getNodes();
+        for (N n : gNodes) {
+            RepresentativeNode<N, E> rn = new RepresentativeNode<>(n.id);
             nodeMap.put(rn.id, rn);
             addNode(rn);
         }
 
-        Collection<Edge> gEdges = t.getEdges();
-        List<Edge> edgeList = new ArrayList<>(gEdges);
+        Collection<E> gEdges = t.getEdges();
+        List<E> edgeList = new ArrayList<>(gEdges);
         Collections.sort(edgeList);
 
-        for (Edge e : edgeList) {
-            RepresentativeNode source = nodeMap.get(e.source.id);
-            RepresentativeNode target = nodeMap.get(e.target.id);
-            RepresentativeEdge re = new RepresentativeEdge(source, target);
+        for (E e : edgeList) {
+            RepresentativeNode<N, E> source = nodeMap.get(e.source.id);
+            RepresentativeNode<N, E> target = nodeMap.get(e.target.id);
+            RepresentativeEdge<N, E> re = new RepresentativeEdge<>(source, target);
             addEdge(re);
         }
 
@@ -69,29 +66,25 @@ public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> exte
         mapToSelf(t);
     }
 
-    private void mapToSelf(Tree t) {
-        Collection<Node> tNodes = t.getNodes();
-        for (Node tN : tNodes) {
-            RepresentativeNode n = (RepresentativeNode) getNode(tN.id);
+    private void mapToSelf(Tree<N, E> t) {
+        Collection<N> tNodes = t.getNodes();
+        for (N tN : tNodes) {
+            RepresentativeNode<N, E> n = getNode(tN.id);
             n.addToRepresentsNodes(0, tN);
         }
 
-        Collection<Edge> tEdges = t.getEdges();
-        for (Edge tE : tEdges) {
-            RepresentativeEdge e = (RepresentativeEdge) getEdge(tE.source.id, tE.target.id);
+        Collection<E> tEdges = t.getEdges();
+        for (E tE : tEdges) {
+            RepresentativeEdge<N, E> e = getEdge(tE.source.id, tE.target.id);
             e.addToRepresentsEdges(0, tE);
         }
     }
 
     /**
-     * store which trees map to this RepresentativeTree for this edit distance
+     * store which trees map to this RepresentativeTree for this distance
      * and how they map to this RepresentativeTree
-     *
-     * @param editDistance
-     * @param treesMapped Trees mapped to this tree
-     * @param tmCalc Calculator holding the mapping between trees
      */
-    public void addToMapping(int editDistance, List<Tree> treesMapped, TreeMappingCalculator tmCalc) {
+    public void addToMapping(int distance, List<Tree<N, E>> treesMapped, TreeMappingCalculator<N, E> tmCalc) {
 
         //don't change anything if no new trees are mapped to this node.
         if (treesMapped.isEmpty()) {
@@ -99,10 +92,10 @@ public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> exte
         }
 
         //at least one node mapped at this distance, so we have a new important edit distance
-        maxEditDistance = Math.max(maxEditDistance, editDistance);
+        maxDistance = Math.max(maxDistance, distance);
 
         //go trough all trees that are mapped to this one, and store the mapping
-        for (Tree otherT : treesMapped) {
+        for (Tree<N, E> otherT : treesMapped) {
 
             //only add the tree if it wasn't mapped already
             if (treesAlreadyMapped.contains(otherT)) {
@@ -110,65 +103,38 @@ public class RepresentativeTree<N extends Node<N, E>, E extends Edge<N, E>> exte
             }
             treesAlreadyMapped.add(otherT);
 
-            TreeMap treeMap = (TreeMap) tmCalc.treesMapping.get(new Pair(otherT, originalTree));
+            TreeMap<N, E> treeMap = tmCalc.treesMapping.get(new Pair<>(otherT, originalTree));
 
             //go through the node mappings.
-            Collection<Node> otherTNodes = otherT.getNodes();
-            for (Node otherN : otherTNodes) {
+            Collection<N> otherTNodes = otherT.getNodes();
+            for (N otherN : otherTNodes) {
                 //get to which node otherN maps to
-                Node mappedN = treeMap.getMappedNode(otherN);
+                N mappedN = treeMap.getMappedNode(otherN);
                 if (mappedN == null) {//otherN was deleted in the mapping
                     continue;
                 }
                 //use the id to find the associated representativeNode
-                RepresentativeNode mappedRepN = (RepresentativeNode) getNode(mappedN.id);
+                RepresentativeNode<N, E> mappedRepN = getNode(mappedN.id);
                 //add otherN to the mapping
-                mappedRepN.addToRepresentsNodes(editDistance, otherN);
+                mappedRepN.addToRepresentsNodes(distance, otherN);
             }
 
             //go through the edge mappings
-            Collection<Edge> otherTEdges = otherT.getEdges();
-            for (Edge otherE : otherTEdges) {
+            Collection<E> otherTEdges = otherT.getEdges();
+            for (E otherE : otherTEdges) {
                 //get to which edge otherE maps to
-                Edge mappedEdge = treeMap.getMappedEdge(otherE);
+                E mappedEdge = treeMap.getMappedEdge(otherE);
                 if (mappedEdge == null) {//otherE was deleted in the mapping
                     continue;
                 }
                 //use the ids to find the associated representativeNode
-                RepresentativeEdge thisE = (RepresentativeEdge) edgeMapping.get(new Pair(mappedEdge.source.id, mappedEdge.target.id));
+                RepresentativeEdge<N, E> thisE =edgeMapping.get(new Pair<>(mappedEdge.source.id, mappedEdge.target.id));
 
                 //add otherN to the mapping
-                thisE.addToRepresentsEdges(editDistance, otherE);
+                thisE.addToRepresentsEdges(distance, otherE);
             }
         }
 
-    }
-
-    public String toJson() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        sb.append("\"maxEditDistance\":" + maxEditDistance + ",");
-        sb.append("\"nodes\":[");
-        Collection<RepresentativeNode<N, E>> nodes = getNodes();
-        for (RepresentativeNode n : nodes) {
-            sb.append(n.toJson());
-            sb.append(",");
-        }
-        sb.setLength(sb.length() - 1);//remove last comma
-
-        sb.append("],");
-        //edges
-        sb.append("\"edges\":[");
-        Collection<RepresentativeEdge<N, E>> edges = getEdges();
-        for (RepresentativeEdge e : edges) {
-            sb.append(e.toJson());
-            sb.append(",");
-        }
-        sb.setLength(sb.length() - 1);//remove last comma
-        sb.append("]");
-
-        sb.append("}");
-        return sb.toString();
     }
 
 }

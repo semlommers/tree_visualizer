@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E>> {
 

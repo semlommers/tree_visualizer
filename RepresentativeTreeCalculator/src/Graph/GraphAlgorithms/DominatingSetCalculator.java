@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class DominatingSetCalculator<N extends Node<N, E>, E extends Edge<N, E>> {
 

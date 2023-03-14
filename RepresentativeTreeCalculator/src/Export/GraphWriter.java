@@ -20,7 +20,7 @@ import java.util.Set;
  */
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class GraphWriter<N extends Node<N, E>, E extends Edge<N, E>> {
 

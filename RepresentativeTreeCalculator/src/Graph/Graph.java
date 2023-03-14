@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * By default the graph is directed
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Graph<N extends Node<N, E>, E extends Edge<N, E>> {
 

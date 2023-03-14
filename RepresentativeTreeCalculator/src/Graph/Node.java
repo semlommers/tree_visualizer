@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * A node is uniquely identified by {@code id}.
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Node<N extends Node<N, E>, E extends Edge<N, E>> {
 

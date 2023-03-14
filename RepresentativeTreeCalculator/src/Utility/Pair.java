@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Pair<X, Y> {
 

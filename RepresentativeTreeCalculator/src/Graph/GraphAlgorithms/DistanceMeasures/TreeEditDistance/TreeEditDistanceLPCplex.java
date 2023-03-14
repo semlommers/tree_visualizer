@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * Method from paper by Kondo, Seiichi, et al. 
  * "Fast computation of the tree edit distance between unordered trees using IP solvers." International Conference on Discovery Science. 2014. 
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class TreeEditDistanceLPCplex<N extends Node, E extends Edge>  {
 

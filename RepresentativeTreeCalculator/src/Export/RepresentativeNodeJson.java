@@ -45,7 +45,7 @@ public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> 
     public List<RepresentativeNodeJson<N, E>> children = new ArrayList<>();
 
     public RepresentativeNodeJson(RepresentativeTree<N, E> repTree) {
-        this.maxEditDistance = repTree.maxEditDistance;
+        this.maxEditDistance = repTree.maxDistance;
         RepresentativeNode<N, E> root = repTree.calculateRoot();
         initialize(root);
     }

@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class TEDMapping<N extends Node, E extends Edge> {
 

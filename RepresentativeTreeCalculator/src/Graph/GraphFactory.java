@@ -9,7 +9,7 @@ import Graph.DecisionTree.DecisionTreeGraph;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class GraphFactory {
 

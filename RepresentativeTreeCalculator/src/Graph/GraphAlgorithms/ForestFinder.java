@@ -16,7 +16,7 @@ import java.util.Set;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 @SuppressWarnings("unchecked")
 public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends Node<N, E>, E extends Edge<N, E>> {

@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Tree<N extends Node<N, E>, E extends Edge<N, E>> extends Graph<N, E> {
 

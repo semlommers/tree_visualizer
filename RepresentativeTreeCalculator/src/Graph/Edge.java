@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 /**
  * An edge is uniquely identified by {@code source.id} and {@code target.id}
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Edge<N extends Node<N, E>, E extends Edge<N, E>> implements Comparable<Edge<N, E>> {
 
