@@ -24,7 +24,7 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
     G completeGraph;
     private final String graphType;
 
-    public ForestFinder(G completeGraph, Class treeType) {
+    public ForestFinder(G completeGraph, Class<G> treeType) {
         this.completeGraph = completeGraph;
         this.graphType = treeType.getSimpleName();
     }
@@ -33,7 +33,6 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
      * Returns a set of graphs which are all trees. References of nodes and
      * edges will have changed. Each tree will have the id of the root node as
      * an id.
-     * @return
      */
     public Set<T> getForest() {
         Set<T> trees = new HashSet<>();
@@ -77,10 +76,6 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
 
     /**
      * Merge the targetTree graph into the sourceTree graph.
-     *
-     * @param sourceTree
-     * @param targetTree
-     * @param connectingEdge
      */
     private void mergeTrees(Set<T> trees, T sourceTree, T targetTree, Edge<N, E> connectingEdge) {
         //add the nodes
@@ -95,15 +90,15 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
             sourceTree.addEdgeWithoutNodeUpdate(e);
         }
 
-        //add the connecting edge and remove targettree as it is merges
-        N startNode = (N) sourceTree.getNode(connectingEdge.source.id);
-        N targetNode = (N) targetTree.getNode(connectingEdge.target.id);
+        //add the connecting edge and remove target tree as it is merges
+        N startNode = sourceTree.getNode(connectingEdge.source.id);
+        N targetNode = targetTree.getNode(connectingEdge.target.id);
 
         //make a copy of the edge, as the nodes have been copied initially as well
         Edge<N, E> eCopy = connectingEdge.deepCopy(startNode, targetNode);
         sourceTree.addEdge((E) eCopy);
 
-        //remove the targettrees from the list as it has been handles
+        //remove the target trees from the list as it has been handles
         trees.remove(targetTree);
     }
 

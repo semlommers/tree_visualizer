@@ -5,6 +5,8 @@
  */
 package Graph;
 
+import Graph.DecisionTree.DecisionTreeGraph;
+
 /**
  *
  * @author MaxSondag
@@ -21,6 +23,9 @@ public class GraphFactory {
         }
         if (graphType.equalsIgnoreCase("Graph")) {
             return (G) new Graph<N, E>();
+        }
+        if (graphType.equalsIgnoreCase("DecisionTreeGraph")) {
+            return (G) new DecisionTreeGraph();
         }
         throw new UnsupportedOperationException("Type " + graphType + " is not supported yet");
     }

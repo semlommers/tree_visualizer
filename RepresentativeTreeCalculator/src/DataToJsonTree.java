@@ -59,7 +59,7 @@ public class DataToJsonTree {
         System.out.println("Finding the forest");
         ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>, DecisionTreeNode, DecisionTreeEdge>
                 forestFinder = new ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>,
-                DecisionTreeNode, DecisionTreeEdge>(decisionTreeGraph, Tree.class);
+                DecisionTreeNode, DecisionTreeEdge>(decisionTreeGraph, DecisionTreeGraph.class);
         Set<Tree<DecisionTreeNode, DecisionTreeEdge>> forest = forestFinder.getForest();
 
         treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);

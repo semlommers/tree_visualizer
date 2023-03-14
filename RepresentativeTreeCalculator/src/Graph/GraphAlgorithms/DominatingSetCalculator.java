@@ -17,22 +17,22 @@ import java.util.List;
  *
  * @author MaxSondag
  */
-public class DominatingSetCalculator {
+public class DominatingSetCalculator<N extends Node<N, E>, E extends Edge<N, E>> {
 
     /**
      * Returns a set of node-ids that is a dominating set.
      */
-    public List<Integer> getDominatingSet(Graph g) {
+    public List<Integer> getDominatingSet(Graph<N, E> g) {
         Log.printOnce("getDominatingSet can be optimized to a simple approximation algorithm or an LP");
 
-        ArrayList<Integer> dominatingSet = new ArrayList();
+        ArrayList<Integer> dominatingSet = new ArrayList<>();
 
         //nodes that are not connected always need to be in
-        Collection<Node> nodes = g.getNodes();
+        Collection<N> nodes = g.getNodes();
 
         //Trivial algorithm. Go through the nodes. For each node if it is not yet dominated, add it to the set.
-        for (Node n : nodes) {
-            if (!isDominated(g, dominatingSet, n)) {
+        for (N n : nodes) {
+            if (isNotDominated(dominatingSet, n)) {
                 dominatingSet.add(n.id);
             }
         }
@@ -45,12 +45,11 @@ public class DominatingSetCalculator {
      *
      * @param domSet A set of nodeIds.
      * @param newG A graph that is covered by {@code domSet}
-     * @return
      */
-    public ArrayList<Integer> trimDominatingSet(Graph newG, List<Integer> domSet) {
-        //start by taking all node, and keep removing them as long as the result remaind a dominating set
-        ArrayList<Integer> domSetTrimmed = new ArrayList(domSet);
-        ArrayList<Integer> idsToConsider = new ArrayList(domSetTrimmed);
+    public ArrayList<Integer> trimDominatingSet(Graph<N, E> newG, List<Integer> domSet) {
+        //start by taking all nodes, and keep removing them as long as the result remains a dominating set
+        ArrayList<Integer> domSetTrimmed = new ArrayList<>(domSet);
+        ArrayList<Integer> idsToConsider = new ArrayList<>(domSetTrimmed);
 
         for (Integer id : idsToConsider) {
             //check if removing node with id from the dominating set still gives a dominating set
@@ -64,29 +63,29 @@ public class DominatingSetCalculator {
         return domSetTrimmed;
     }
 
-    private boolean isDominatingSet(Graph g, ArrayList<Integer> domSet) {
-        Collection<Node> nodes = g.getNodes();
-        for (Node n : nodes) {
-            if (!isDominated(g, domSet, n)) {
+    private boolean isDominatingSet(Graph<N, E> g, ArrayList<Integer> domSet) {
+        Collection<N> nodes = g.getNodes();
+        for (N n : nodes) {
+            if (isNotDominated(domSet, n)) {
                 return false;
             }
         }
         return true;//all nodes are dominated
     }
 
-    public boolean isDominated(Graph g, List<Integer> domSet, Node n) {
+    public boolean isNotDominated(List<Integer> domSet, N n) {
 
         if (domSet.contains(n.id)) {
-            return true;
+            return false;
         }
-        List<Edge> edges = n.edges;
+        List<E> edges = n.edges;
 
-        for (Edge e : edges) {//directed edge
+        for (E e : edges) {//directed edge
             if (domSet.contains(e.source.id)) {
-                return true;
+                return false;
             }
         }
 
-        return false;//there is a node not dominated
+        return true;//there is a node not dominated
     }
 }
