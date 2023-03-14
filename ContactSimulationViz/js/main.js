@@ -39,7 +39,7 @@ const hiddenTreesScalingFactor = 0.001; //how much the trees that are represente
 
 
 
-const initEditDistanceSliderVal = 15; //start the slider at 0
+const initDistanceSliderVal = 15; //start the slider at 0
 
 
 const popupWidth = 500; //width of the popup when clicking a node to see which trees it represents.
@@ -54,8 +54,8 @@ var allTreeById = new Map(); //holds the alltree data by id of the root
 var metaDataFromNodeById = new Map(); //holds the meta data for each node by id of the node.
 
 
-var currentEditDistance = initEditDistanceSliderVal; //Current edit distance
-var maxMaxEditDistance = 0;
+var currentDistance = initDistanceSliderVal; //Current distance
+var maxMaxDistance = 0;
 
 
 var currentLeftColor = "None"; //What we are currently coloring the nodes by for the left sides of the glyphs

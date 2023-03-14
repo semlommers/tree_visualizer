@@ -15,7 +15,7 @@ function getOffSets(treeRoots, containerWidth, representativeTrees) {
     for (let i = 0; i < treeRoots.length; i++) {
         if (representativeTrees) {
             const id = treeRoots[i].data.id;
-            const repAmount = getAmountOfTreesRepresentedById(id, currentEditDistance);
+            const repAmount = getAmountOfTreesRepresentedById(id, currentDistance);
             const scaleFactor = getScaleFactorByRepAmount(repAmount);
             widths[i] = treeBaseWidthById.get(id) * scaleFactor;
             heights[i] = treeBaseHeightById.get(id) * scaleFactor; //get base height
@@ -48,7 +48,7 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
 
     let scaleFactor = 1;
     if (isRepTree) {
-        const repAmount = getAmountOfTreesRepresentedById(treeId, currentEditDistance);
+        const repAmount = getAmountOfTreesRepresentedById(treeId, currentDistance);
         scaleFactor = getScaleFactorByRepAmount(repAmount);
     }
 
@@ -107,7 +107,7 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
 
     //add how many trees this node represents if the data is present
     if (isRepTree && typeof root.data.representations !== 'undefined') {
-        const repNumber = getAmountOfTreesRepresented(root, currentEditDistance);
+        const repNumber = getAmountOfTreesRepresented(root, currentDistance);
 
         const textG = treeSvg.append("g").attr("class", "textG")
         const text = textG.append("text")

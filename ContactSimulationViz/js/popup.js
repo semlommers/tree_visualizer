@@ -61,7 +61,7 @@ function showTreesRepresented(event, treeRoot) {
 
 function getTreeHierarchiesRepresented(id) {
 
-    const treesRepresented = getTreesRepresentedById(id,currentEditDistance)
+    const treesRepresented = getTreesRepresentedById(id,currentDistance)
     
     //use function from representativeGraph to get the tree layouts
     let treeRoots = getTreeRoots(treesRepresented);

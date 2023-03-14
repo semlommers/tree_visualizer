@@ -2,11 +2,11 @@
  * Updates the visualization without changing the layout of the trees
  */
 function updateSliderPreview() {
-    let idsToHide = getIdsToHide(currentEditDistance)
+    let idsToHide = getIdsToHide(currentDistance)
     hideTrees(idsToHide);
     updateRepresentationText();
 
-    updateScentWidget(currentEditDistance)
+    updateScentWidget(currentDistance)
 }
 
 
@@ -36,7 +36,7 @@ function updateColors() {
 
 function updatePositions(animate = true) {
     removeAllPopups(); //remove all popups as we are changing the layout and possibly hiding trees/nodes
-    let idsToHide = getIdsToHide(currentEditDistance);
+    let idsToHide = getIdsToHide(currentDistance);
     updateTreesAnimated(idsToHide,animate);
 }
 
@@ -80,7 +80,7 @@ function updateRepresentationText() {
         .select("text")
         .text(function() {
             const treeId = parseInt(d3.select(this).node().parentNode.parentNode.getAttribute("id").substring(3))
-            const repAmount = getAmountOfTreesRepresentedById(treeId, currentEditDistance);
+            const repAmount = getAmountOfTreesRepresentedById(treeId, currentDistance);
             return repAmount;
         })
 }
@@ -122,7 +122,7 @@ function recalculatePlacement(idsToHide) {
     for (let i = 0; i < treeOrder.length; i++) {
         const id = treeOrder[i];
 
-        const repAmount = getAmountOfTreesRepresentedById(id, currentEditDistance);
+        const repAmount = getAmountOfTreesRepresentedById(id, currentDistance);
 
         let width = treeBaseWidthById.get(id); //get base width
         let height = treeBaseHeightById.get(id); //get base height
@@ -217,10 +217,10 @@ function animateChanges(widthArray, heightArray, offsetArray,transitionTime) {
 
 
 
-function getIdsToHide(editDistance) {
+function getIdsToHide(distance) {
     let idsToHide = [];
     for (let i = 0; i < repTreesData.length; i++) {
-        if (repTreesData[i].maxEditDistance < editDistance) {
+        if (repTreesData[i].maxDistance < distance) {
             idsToHide.push(repTreesData[i].id);
         }
     }

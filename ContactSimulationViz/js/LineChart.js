@@ -4,13 +4,13 @@ const treesPerSize = []; //for each R_t value (represented by the index), holds 
 
 function createScentedRtLineChart(chartDiv, scentIndex) {
 
-    for (let i = 0; i < maxMaxEditDistance; i++) {
+    for (let i = 0; i < maxMaxDistance; i++) {
         treesPerSize[i] = 0;
     }
 
     for (let treeI = 0; treeI < repTreesData.length; treeI++) {
-        //tree exists up to maxEditDistance
-        for (let i = 0; i < repTreesData[treeI].maxEditDistance; i++) {
+        //tree exists up to maxDistance
+        for (let i = 0; i < repTreesData[treeI].maxDistance; i++) {
             treesPerSize[i] = treesPerSize[i] + 1;
         }
     }

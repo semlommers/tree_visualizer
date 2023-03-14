@@ -20,19 +20,19 @@ function createSelectors() {
 
 function createDistanceSlider(selectorDiv) {
 
-    createSlider(selectorDiv, "DistanceSlider", "Rt tree distance", 0, maxMaxEditDistance, parseInt(maxMaxEditDistance / 2))
-    currentEditDistance = parseInt(maxMaxEditDistance / 2);
+    createSlider(selectorDiv, "DistanceSlider", "Rt tree distance", 0, maxMaxDistance, parseInt(maxMaxDistance / 2))
+    currentDistance = parseInt(maxMaxDistance / 2);
 
     d3.select("#DistanceSlider")
         .on("input", function() {
-            currentEditDistance = parseInt(this.value); //keep the value up to date
+            currentDistance = parseInt(this.value); //keep the value up to date
             updateSliderPreview() //Show a preview
             d3.select("#DistanceSliderNumber").text(this.value);
             changePending();
         })
 
     //create it at the end of the sliderdiv so the slider aligns with the scented widget
-    createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), (maxMaxEditDistance / 2));
+    createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), (maxMaxDistance / 2));
 }
 
 function createSizeSlider(selectorDiv) {

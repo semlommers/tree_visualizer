@@ -7,8 +7,8 @@ function preprocessData() {
         const treeId = repTree.id;
         repTreeById.set(treeId, repTree);
 
-        if (maxMaxEditDistance < repTree.maxEditDistance) {
-            maxMaxEditDistance = repTree.maxEditDistance;
+        if (maxMaxDistance < repTree.maxDistance) {
+            maxMaxDistance = repTree.maxDistance;
         }
 
         const nodes = getNodes(repTree);
@@ -76,15 +76,15 @@ function getTreeHeight(treeNode) {
 
 
 /**
- * Gets the amount of trees represented by the tree {@code d} before editdistance {@code editDistance}
- * @param {*} editDistance 
+ * Gets the amount of trees represented by the tree {@code d} before distance {@code distance}
+ * @param {*} distance
  */
-function getAmountOfTreesRepresented(d, editDistance) {
+function getAmountOfTreesRepresented(d, distance) {
     let count = 0;
     let reps = d.data.representations;
     for (let repI = 0; repI < reps.length; repI++) {
         const repIData = reps[repI];
-        if (repIData.editDistance <= editDistance) {
+        if (repIData.distance <= distance) {
             count += repIData.representationIds.length;
         }
     }
@@ -93,10 +93,10 @@ function getAmountOfTreesRepresented(d, editDistance) {
 
 
 /**
- * Gets the amount of trees represented by the tree with id {@code id} before editdistance {@code editDistance}
- * @param {*} editDistance 
+ * Gets the amount of trees represented by the tree with id {@code id} before distance {@code distance}
+ * @param {*} distance
  */
-function getAmountOfTreesRepresentedById(id, editDistance) {
+function getAmountOfTreesRepresentedById(id, distance) {
     const repTree = repTreeById.get(id);
     if (repTree === undefined) { //Occurs when looking at Alltrees which do not have representations
         return 1;
@@ -106,7 +106,7 @@ function getAmountOfTreesRepresentedById(id, editDistance) {
     let count = 0;
     for (let repI = 0; repI < reps.length; repI++) {
         const repIData = reps[repI];
-        if (repIData.editDistance <= editDistance) {
+        if (repIData.distance <= distance) {
             count += repIData.representationIds.length;
         }
     }
@@ -114,17 +114,17 @@ function getAmountOfTreesRepresentedById(id, editDistance) {
 }
 
 /**
- * Gets the amount of trees represented by the tree with id {@code id} before editdistance {@code editDistance}
- * @param {*} editDistance 
+ * Gets the amount of trees represented by the tree with id {@code id} before distance {@code distance}
+ * @param {*} distance
  */
-function getTreesRepresentedById(id, editDistance) {
+function getTreesRepresentedById(id, distance) {
     const repTree = repTreeById.get(id);
     let reps = repTree.representations;
 
     let repTreeIds = [];
     for (let i = 0; i < reps.length; i++) {
         const repIData = reps[i];
-        if (repIData.editDistance <= editDistance) {
+        if (repIData.distance <= distance) {
             const repIds = repIData.representationIds;
             for (let j = 0; j < repIds.length; j++) {
                 repTreeIds.push(repIds[j]);
@@ -144,19 +144,19 @@ function getTreesRepresentedById(id, editDistance) {
 
 
 /**
- * Get all nodes that the node with nodeId represents at the specified editdistance. treeId is the tree nodeid belong to
+ * Get all nodes that the node with nodeId represents at the specified distance. treeId is the tree nodeid belong to
  * @param {} treeId 
  * @param {} nodeId 
- * @param {} editDistance
+ * @param {} distance
  */
-function getRepresentedNodesMetaData(nodeId, editDistance) {
+function getRepresentedNodesMetaData(nodeId, distance) {
     const node = repNodeById.get(nodeId);
     let reps = node.representations;
 
     let repNodeIds = [];
     for (let i = 0; i < reps.length; i++) {
         const repIData = reps[i];
-        if (repIData.editDistance <= editDistance) {
+        if (repIData.distance <= distance) {
             const repIds = repIData.representationIds;
             for (let j = 0; j < repIds.length; j++) {
                 repNodeIds.push(repIds[j]);

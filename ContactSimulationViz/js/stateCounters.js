@@ -13,7 +13,7 @@
 function infectorStateCount(nodeId, isRepTree, policy, appPercentage) {
     let nodesMetaData;
     if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentEditDistance);
+        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
     } else { //only use the tree itself
         nodesMetaData = [metaDataFromNodeById.get(nodeId)];
     }
@@ -33,7 +33,7 @@ function infectorStateCount(nodeId, isRepTree, policy, appPercentage) {
 function noneCount(nodeId, isRepTree, policy, appPercentage) {
     let nodesWithMetaData;
     if (isRepTree) { //use all representative trees for the data
-        nodesWithMetaData = getRepresentedNodesMetaData(nodeId, currentEditDistance);
+        nodesWithMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
     } else { //only use the tree itself
         nodesWithMetaData = [metaDataFromNodeById.get(nodeId)];
     }
@@ -53,7 +53,7 @@ function noneCount(nodeId, isRepTree, policy, appPercentage) {
 function locationCount(nodeId, isRepTree, policy, appPercentage) {
     let nodesMetaData;
     if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentEditDistance);
+        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
     } else { //only use the tree itself
         nodesMetaData = [metaDataFromNodeById.get(nodeId)];
     }
@@ -72,7 +72,7 @@ function locationCount(nodeId, isRepTree, policy, appPercentage) {
 function ageCount(nodeId, isRepTree, policy, appPercentage) {
     let nodesMetaData;
     if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentEditDistance);
+        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
     } else { //only use the tree itself
         nodesMetaData = [metaDataFromNodeById.get(nodeId)];
     }
@@ -92,7 +92,7 @@ function ageCount(nodeId, isRepTree, policy, appPercentage) {
 function timeCount(nodeId, isRepTree, policy, appPercentage) {
     let nodesMetaData;
     if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentEditDistance);
+        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
     } else { //only use the tree itself
         nodesMetaData = [metaDataFromNodeById.get(nodeId)];
     }

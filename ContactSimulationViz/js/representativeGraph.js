@@ -65,11 +65,11 @@ function setBaseWidthAndHeightById(treeRoots) {
 
 
 /**
- * True if d.maxEditDistance > editdistance
+ * True if d.maxDistance > distance
  * @param {*} d 
- * @param {*} editDistance 
+ * @param {*} distance
  * @returns 
  */
-function contains(d, editDistance) {
-    return (d.maxEditDistance > editDistance)
+function contains(d, distance) {
+    return (d.maxDistance > distance)
 }
