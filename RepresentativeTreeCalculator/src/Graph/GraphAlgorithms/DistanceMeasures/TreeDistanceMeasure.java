@@ -16,13 +16,9 @@ import Graph.Tree;
 public interface TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N, E>> {
 
     /**
-     * Distance between two infectionTrees. Values are rounded up in case of
+     * Distance between two trees. Values are rounded up in case of
      * internal double values
-     *
-     * @param t1
-     * @param t2
-     * @return
      */
-    public abstract int getDistance(Tree<N, E> t1, Tree<N, E> t2);
+    int getDistance(Tree<N, E> t1, Tree<N, E> t2);
 
 }

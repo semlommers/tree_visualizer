@@ -12,14 +12,15 @@ public class EditDistanceNoChildSwapping implements TreeDistanceMeasure<Decision
     Integer CHANGE_SPLIT_FEATURE = 0;
 
     @Override
-    public int getDistance(Tree t1, Tree t2) {
+    public int getDistance(Tree<DecisionTreeNode, DecisionTreeEdge> t1, Tree<DecisionTreeNode, DecisionTreeEdge> t2) {
         // Get the roots of both trees
-        DecisionTreeNode root1 = (DecisionTreeNode) t1.calculateRoot();
-        DecisionTreeNode root2 = (DecisionTreeNode) t2.calculateRoot();
+        DecisionTreeNode root1 = t1.calculateRoot();
+        DecisionTreeNode root2 = t2.calculateRoot();
 
         return calculateDistanceRecursive(root1, root2);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private int calculateDistanceRecursive(DecisionTreeNode node1, DecisionTreeNode node2) {
         int distance = 0;
 
