@@ -1,11 +1,14 @@
 
-import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.EditDistanceNoChildSwapping;
-import InfectionTreeGenerator.Graph.DecisionTree.DecisionTreeGraph;
+import Import.RandomForestParser;
+import Graph.DecisionTree.DecisionTreeEdge;
+import Graph.DecisionTree.DecisionTreeNode;
+import Graph.GraphAlgorithms.DistanceMeasures.EditDistanceNoChildSwapping;
+import Graph.DecisionTree.DecisionTreeGraph;
 import Export.GraphWriter;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.ForestFinder;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTreesFinder;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
+import Graph.GraphAlgorithms.ForestFinder;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTreesFinder;
+import Graph.Tree;
 import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Level;
@@ -18,7 +21,7 @@ import java.util.logging.Logger;
  */
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class DataToJsonTree {
 
@@ -27,13 +30,11 @@ public class DataToJsonTree {
      */
     public static void main(String[] args) {
         try {
-            String inputFolderLocation = "./RepresentativeTreeCalculator/Data/SimulationData/";
-            String outputFileLocation = inputFolderLocation;
+            String dataFolderLocation = "./RepresentativeTreeCalculator/Data";
+            String inputFolderLocation = dataFolderLocation + "/Input";
+            String outputFileLocation = dataFolderLocation + "/Output";
 
-            int startTreeSize = 1;//calculate starting from trees of size 1
-            int endTreeSize = 2000; //stop calculating for trees of size 200
-
-            new DataToJsonTree(inputFolderLocation, outputFileLocation, startTreeSize, endTreeSize);
+            new DataToJsonTree(inputFolderLocation, outputFileLocation);
         } catch (IOException ex) {
             System.out.println("Invalid input or outputFileLocation");
             Logger.getLogger(DataToJsonTree.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,34 +42,31 @@ public class DataToJsonTree {
 
     }
 
-    final private String inputFolderLocation;
-    final private String outputFileLocation;
-
-    private DataToJsonTree(String inputFolderLocation, String outputFileLocation, int startTreeSize, int endTreeSize) throws IOException {
-        this.inputFolderLocation = inputFolderLocation;
-        this.outputFileLocation = outputFileLocation;
+    private DataToJsonTree(String inputFolderLocation, String outputFileLocation) throws IOException {
         System.out.println("Working on data from: " + inputFolderLocation);
         //read data
-        RandomForestParser rfp = new RandomForestParser(inputFolderLocation + "/randomForestMap.json");
-        rfp.constructGraph();
+        RandomForestParser randomForestParser = new RandomForestParser(inputFolderLocation + "/randomForestMap.json");
+        randomForestParser.constructGraph();
 
-        DecisionTreeGraph dtg = rfp.dtg;
+        DecisionTreeGraph decisionTreeGraph = randomForestParser.decisionTreeGraph;
 
         //output data
-        printStatistics(dtg);
+        printStatistics(decisionTreeGraph);
 
-        GraphWriter tw = new GraphWriter();
-        tw.writeModelGraph(outputFileLocation + "/NodesAndMeta.json", dtg);
+        GraphWriter<DecisionTreeNode, DecisionTreeEdge> treeWriter = new GraphWriter<>();
+        treeWriter.writeMetaDataGraph(outputFileLocation + "/NodesAndMeta.json", decisionTreeGraph);
 
         System.out.println("Finding the forest");
-        ForestFinder ff = new ForestFinder(dtg, Tree.class);
-        Set<Tree> forest = ff.getForest();
+        ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>, DecisionTreeNode, DecisionTreeEdge>
+                forestFinder = new ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>,
+                DecisionTreeNode, DecisionTreeEdge>(decisionTreeGraph, DecisionTreeGraph.class);
+        Set<Tree<DecisionTreeNode, DecisionTreeEdge>> forest = forestFinder.getForest();
 
-        tw.writeForest(outputFileLocation + "/AllTrees.json", forest);
+        treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);
 
-        TreeDistanceMeasure tdm = new EditDistanceNoChildSwapping();
-        RepresentativeTreesFinder rgf = new RepresentativeTreesFinder();
-        rgf.getAndWriteRepresentativeTreeData(forest, startTreeSize, endTreeSize, tdm, outputFileLocation + "/RepTreesRTDistance");
+        TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> treeDistanceMeasure = new EditDistanceNoChildSwapping();
+        RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
+        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistanceFull.json"); //TODO: deze naam moet de distance measure omschrijven
     }
 
     private void printStatistics(DecisionTreeGraph dtg) {

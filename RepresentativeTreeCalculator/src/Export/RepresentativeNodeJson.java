@@ -5,10 +5,11 @@
  */
 package Export;
 
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeEdge;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeNode;
-import InfectionTreeGenerator.Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
-import InfectionTreeGenerator.Graph.Node;
+import Graph.Edge;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeEdge;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeNode;
+import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
+import Graph.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,9 +20,9 @@ import java.util.Set;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
-public class RepresentativeNodeJson {
+public class RepresentativeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> {
 
     /**
      * Id of the node
@@ -29,83 +30,75 @@ public class RepresentativeNodeJson {
     public int id;
     
     /**
-     * maximum edit distance that this tree is still representing nodes
+     * maximum distance that this tree is still representing nodes
      */
-    public int maxEditDistance;
+    public int maxDistance;
     /**
-     * (edit distance,List<id's>) object that holds the first edit distance when
+     * (distance,List<id's>) object that holds the first distance when
      * the nodes with id: "id's" are represented by this node
      */
-    public List<RepresentationJson> representations = new ArrayList();
+    public List<RepresentationJson> representations = new ArrayList<>();
 
     /**
      * Children of this node
      */
-    public List<RepresentativeNodeJson> children = new ArrayList();
+    public List<RepresentativeNodeJson<N, E>> children = new ArrayList<>();
 
-    public RepresentativeNodeJson(RepresentativeTree rt) {
-        this.maxEditDistance = rt.maxEditDistance;
-        RepresentativeNode root = rt.calculateRoot();
+    public RepresentativeNodeJson(RepresentativeTree<N, E> repTree) {
+        this.maxDistance = repTree.maxDistance;
+        RepresentativeNode<N, E> root = repTree.calculateRoot();
         initialize(root);
     }
 
-    private RepresentativeNodeJson(RepresentativeNode rn) {
-        initialize(rn);
+    private RepresentativeNodeJson(RepresentativeNode<N, E> repNode) {
+        initialize(repNode);
     }
 
-    private void initialize(RepresentativeNode root) {
+    private void initialize(RepresentativeNode<N, E> root) {
         this.id = root.id;
         //store the nodes that root represents
-        HashMap<Integer, List<Node>> representNodesMapping = root.getRepresentNodesMapping();
-        for (Entry<Integer, List<Node>> entry : representNodesMapping.entrySet()) {
+        HashMap<Integer, List<N>> representNodesMapping = root.getRepresentNodesMapping();
+        for (Entry<Integer, List<N>> entry : representNodesMapping.entrySet()) {
             RepresentationJson repJson = new RepresentationJson(entry.getKey(), entry.getValue());
             representations.add(repJson);
         }
 
         //recurse into the children
-        List<RepresentativeEdge> outEdges = root.getOutgoingEdges();
-        for (RepresentativeEdge re : outEdges) {
-            RepresentativeNode child = re.target;
-            RepresentativeNodeJson rnChild = new RepresentativeNodeJson(child);
-            children.add(rnChild);
+        List<RepresentativeEdge<N, E>> outEdges = root.getOutgoingEdges();
+        for (RepresentativeEdge<N, E> outEdge : outEdges) {
+            RepresentativeNode<N, E> child = outEdge.target;
+            RepresentativeNodeJson<N, E> nodeJson = new RepresentativeNodeJson<>(child);
+            children.add(nodeJson);
         }
-    }
-
-    public RepresentativeNodeJson getChild(int id) {
-        for (RepresentativeNodeJson rnj : children) {
-            if (rnj.id == id) {
-                return rnj;
-            }
-        }
-        return null;
     }
 
     public class RepresentationJson {
 
         /**
-         * First edit distance the nodes are represented by this node
+         * First distance the nodes are represented by this node
          */
-        public int editDistance;
+        public int distance;
         /**
-         * Nodes that are represented at editDistance
+         * Nodes that are represented at Distance
          */
-        public Set<Integer> representationIds = new HashSet();
+        public Set<Integer> representationIds = new HashSet<>();
 
-        public RepresentationJson(Integer editDistance, List<Node> nodes) {
-            this.editDistance = editDistance;
-            for (Node n : nodes) {
-                representationIds.add(n.id);
+        public RepresentationJson(Integer distance, List<N> nodes) {
+            this.distance = distance;
+            for (N node : nodes) {
+                representationIds.add(node.id);
             }
         }
 
         @Override
         public int hashCode() {
             int hash = 7;
-            hash = 31 * hash + this.editDistance;
+            hash = 31 * hash + this.distance;
             hash = 31 * hash + Objects.hashCode(this.representationIds);
             return hash;
         }
 
+        @SuppressWarnings({"RedundantIfStatement", "unchecked"})
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {
@@ -118,7 +111,7 @@ public class RepresentativeNodeJson {
                 return false;
             }
             final RepresentationJson other = (RepresentationJson) obj;
-            if (this.editDistance != other.editDistance) {
+            if (this.distance != other.distance) {
                 return false;
             }
             if (!Objects.equals(this.representationIds, other.representationIds)) {

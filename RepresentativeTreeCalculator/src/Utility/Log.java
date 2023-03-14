@@ -9,13 +9,13 @@ import java.util.HashSet;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Log {
 
-    private static boolean PRINTPROGRESS = true;
+    private static final boolean PRINT_PROGRESS = true;
 
-    private static HashSet<String> messagesSend = new HashSet();
+    private static final HashSet<String> messagesSend = new HashSet<>();
 
     public static void printOnce(String message) {
         if (!messagesSend.contains(message)) {
@@ -25,7 +25,7 @@ public class Log {
     }
 
     public static void printProgress(String message) {
-        if (PRINTPROGRESS) {
+        if (PRINT_PROGRESS) {
             System.out.println(message);
         }
 
@@ -36,9 +36,6 @@ public class Log {
     /**
      * Prints the message only if there has not been another message with a
      * delay in the last {@code delay} milliseconds
-     *
-     * @param message
-     * @param delay
      */
     public static void printProgress(String message, int delay) {
         long currentTime = System.currentTimeMillis();

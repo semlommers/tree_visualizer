@@ -5,17 +5,17 @@
  */
 package Export;
 
-import InfectionTreeGenerator.Graph.Edge;
-import InfectionTreeGenerator.Graph.Node;
-import InfectionTreeGenerator.Graph.Tree;
+import Graph.Edge;
+import Graph.Node;
+import Graph.Tree;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
-public class TreeNodeJson {
+public class TreeNodeJson<N extends Node<N, E>, E extends Edge<N, E>> {
     /**
      * Id of the node
      */
@@ -24,35 +24,26 @@ public class TreeNodeJson {
     /**
      * Children of this node
      */
-    public List<TreeNodeJson> children = new ArrayList();
+    public List<TreeNodeJson<N, E>> children = new ArrayList<>();
 
-    public TreeNodeJson(Tree t) {
-        Node root = t.calculateRoot();
+    public TreeNodeJson(Tree<N, E> tree) {
+        N root = tree.calculateRoot();
         initialize(root);
     }
 
-    protected TreeNodeJson(Node n) {
-        initialize(n);
+    protected TreeNodeJson(N node) {
+        initialize(node);
     }
 
-    protected void initialize(Node root) {
+    protected void initialize(N root) {
         this.id = root.id;
 
         //recurse into the children
-        List<Edge> outEdges = root.getOutgoingEdges();
-        for (Edge e : outEdges) {
-            Node child = e.target;
-            TreeNodeJson rnChild = new TreeNodeJson(child);
+        List<E> outEdges = root.getOutgoingEdges();
+        for (E edge : outEdges) {
+            N child = edge.target;
+            TreeNodeJson<N, E> rnChild = new TreeNodeJson<>(child);
             children.add(rnChild);
         }
-    }
-
-    public TreeNodeJson getChild(int id) {
-        for (TreeNodeJson rnj : children) {
-            if (rnj.id == id) {
-                return rnj;
-            }
-        }
-        return null;
     }
 }

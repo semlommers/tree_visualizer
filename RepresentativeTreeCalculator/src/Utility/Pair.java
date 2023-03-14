@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  *
- * @author MaxSondag
+ * @author MaxSondag, SemLommers
  */
 public class Pair<X, Y> {
 
@@ -29,6 +29,7 @@ public class Pair<X, Y> {
         return hash;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
