@@ -52,6 +52,7 @@ var repTreeById = new Map(); //holds the representative tree data by id of the r
 var repNodeById = new Map(); //holds all node data represented by the specified node
 var allTreeById = new Map(); //holds the alltree data by id of the root
 var metaDataFromNodeById = new Map(); //holds the meta data for each node by id of the node.
+var nodesRepresentedBy;
 
 
 var currentDistance = initDistanceSliderVal; //Current distance

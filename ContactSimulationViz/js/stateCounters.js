@@ -101,6 +101,31 @@ function timeCount(nodeId, isRepTree, policy, appPercentage) {
     return count;
 }
 
+
+/**
+ * Counts how many nodes that the node with id={id} represents are in a certain exposed time group
+ * @param {} nodeId
+ * @param {If true, takes the trees that are represented by this node into account as well} isRepTree
+ * @param {Which policy data to use} policy
+ * @param {How much the appPercentage of the policy is} appPercentage
+ */
+function decisionTreeStructureCount(nodeId, isRepTree) {
+    if (isRepTree) {
+        const rootId = metaDataFromNodeById.get(nodeId).rootId;
+        const existingNodes = getRepresentedNodesMetaData(nodeId, currentDistance).length;
+        const totalTrees = getAmountOfTreesRepresentedById(rootId, currentDistance);
+        const nonExistingNodes = totalTrees - existingNodes;
+
+        return [existingNodes, nonExistingNodes];
+    } else { //only use the tree itself
+        if (nodesRepresentedBy.has(nodeId)) {
+            return [1, 0];
+        } else {
+            return [0, 1];
+        }
+    }
+}
+
 /**
  * 
  * @param {*} nodesWithMetaData 

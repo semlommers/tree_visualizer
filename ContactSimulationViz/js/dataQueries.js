@@ -31,21 +31,22 @@ function preprocessData() {
         const id = tree.id;
         allTreeById.set(id, tree);
 
-        //add depth meta data for each tree.
-        addDepthMetaData(tree, 0);
+        //add extra meta data for each tree.
+        addExtraMetaData(tree, 0, id);
     }
 
 
-
+    updateNodesRepresentedBy();
 }
 
-function addDepthMetaData(tree, depth) {
+function addExtraMetaData(tree, depth, rootId) {
     //save node reference
     metaDataFromNodeById.get(tree.id).depth = depth;
+    metaDataFromNodeById.get(tree.id).rootId = rootId;
 
     //recurse into children
     for (let child of tree.children) {
-        addDepthMetaData(child, depth + 1);
+        addExtraMetaData(child, depth + 1, rootId);
     }
 }
 
