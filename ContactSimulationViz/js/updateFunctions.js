@@ -12,6 +12,7 @@ function updateSliderPreview() {
 
 function updateAll() {
     updateSliderPreview();
+    updateNodesRepresentedBy();
     updateColors();
     if (recalculate) { //if we need to reinitialize the grid
         recalculate = false;
@@ -46,6 +47,36 @@ function updateGlobalChart() {
     distributionDiv.select(".barChartsContainer").remove()
 
     createComponentBarChart(distributionDiv);
+}
+
+function updateNodesRepresentedBy() {
+    // Could be improved by doing this in the back-end
+    nodesRepresentedBy = new Map();
+    for (let i = 0; i < repTreesData.length; i++) {
+        if (repTreesData[i].maxDistance >= currentDistance) {
+            updateNodesRepresentedByForSubTree(repTreesData[i])
+        }
+    }
+}
+
+function updateNodesRepresentedByForSubTree(node) {
+    let reps = node.representations;
+    let repNodeId = node.id;
+
+    for (let i = 0; i < reps.length; i++) {
+        const repIData = reps[i];
+        if (repIData.distance <= currentDistance) {
+            const repIds = repIData.representationIds;
+            for (let j = 0; j < repIds.length; j++) {
+                nodesRepresentedBy.set(repIds[j], repNodeId)
+            }
+        }
+    }
+
+    let children = node.children;
+    for (let i = 0; i < children.length; i++) {
+        updateNodesRepresentedByForSubTree(children[i])
+    }
 }
 
 

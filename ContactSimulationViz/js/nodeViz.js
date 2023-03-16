@@ -74,6 +74,9 @@ function getPartColor(index, isLeftChart) {
     if (color == "Infection Time") {
         return infectionTimeColorScheme[index];
     }
+    if (color == "DT Structure") {
+        return decisionTreeStructureColorScheme[index];
+    }
     console.error("No valid color selected")
 }
 
@@ -141,6 +144,8 @@ function getPartCounts(id, isRepTree, isLeftChart) {
         counts = ageCount(id, isRepTree, policy, appPercentage);
     } else if (color == "Infection Time") {
         counts = timeCount(id, isRepTree, policy, appPercentage);
+    } else if (color == "DT Structure") {
+        counts = decisionTreeStructureCount(id, isRepTree);
     } else {
         console.error(currentLeftColor + "is not a valid node color and parts cannot be drawn");
         counts = [0];
