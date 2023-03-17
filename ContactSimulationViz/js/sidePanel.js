@@ -61,7 +61,6 @@ function createNodeColorSelectors(selectorDiv) {
 
     //get the properties of the selectors
     const colorOptions = [
-        { "NAME": "None" },
         { "NAME": "DT Structure"}
         // { "NAME": "Infection Location" },
         // { "NAME": "Infection Time" },
