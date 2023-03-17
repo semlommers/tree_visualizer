@@ -23,9 +23,9 @@ const infectionTimeColorSchemeOrderDisplay = ["Contact avoided due to isolation"
 const familyStates = ["SmallFamily", "LargeTwoAdultFamily", "LargeManyAdultFamily", "SingleParent"]
 
 // Not used, maybe later
-const decisionTreeColorSchemeOrder = ["equal", "differentSplitFeature", "nonExistingNode"]
-const decisionTreeColorScheme = ['#1b9e77','#7570b3', '#d95f02'];
-const decisionTreeSchemeOrderDisplay = ["Equal nodes", "Different split feature", "Non-existing node"]
+const decisionTreeColorSchemeOrder = ["equal", "nonExistingNode", "differentSplitFeaturePrediction", "nodeLeafComparison"]
+const decisionTreeColorScheme = ['#4daf4a','#e41a1c','#377eb8','#984ea3'];
+const decisionTreeSchemeOrderDisplay = ["Equal nodes", "Non-existing node", "Different split feature / prediction", "Node-leaf comparison"]
 
 const decisionTreeStructureColorSchemeOrder = ["existingNode", "nonExistingNode"]
 const decisionTreeStructureColorScheme = ['#4daf4a','#ff0000'];
