@@ -1,4 +1,5 @@
 
+import Graph.GraphAlgorithms.DistanceMeasures.PredictionSimilarityDistance;
 import Import.RandomForestParser;
 import Graph.DecisionTree.DecisionTreeEdge;
 import Graph.DecisionTree.DecisionTreeNode;
@@ -64,7 +65,7 @@ public class DataToJsonTree {
 
         treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);
 
-        TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> treeDistanceMeasure = new EditDistanceNoChildSwapping();
+        TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> treeDistanceMeasure = new PredictionSimilarityDistance(inputFolderLocation + "/dataset.csv");
         RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
         representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistanceFull.json"); //TODO: deze naam moet de distance measure omschrijven
     }

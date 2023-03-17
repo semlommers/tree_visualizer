@@ -1,6 +1,7 @@
 package Graph.DecisionTree;
 
 import Graph.Tree;
+import Utility.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +23,30 @@ public class DecisionTreeGraph extends Tree<DecisionTreeNode, DecisionTreeEdge> 
     }
 
     public int predictTarget(List<Double> inputData) {
-        //TODO: implement
-        return 0;
+        DecisionTreeNode currentNode = calculateRoot();
+        List<DecisionTreeEdge> childEdges = currentNode.getOutgoingEdgesSorted();
+
+        while (childEdges.size() != 0) { // While having children
+            int splitFeature = currentNode.featureId;
+            double value = inputData.get(splitFeature);
+            boolean childFound = false;
+
+            for (DecisionTreeEdge childEdge : childEdges) {
+                if (childEdge.evaluateValue(value)) {
+                    childFound = true;
+                    currentNode = childEdge.target;
+                    childEdges = currentNode.getOutgoingEdgesSorted();
+                    break;
+                }
+            }
+
+            if (!childFound) {
+                Log.printOnce("ERROR: node with id: " + currentNode.id + " has children but value: " + value +
+                        " falls not in any range");
+                return -1;
+            }
+        }
+
+        return currentNode.predictedLabel;
     }
 }
