@@ -28,6 +28,10 @@
     padding: 0;
 }
 
+#treeGrid {
+    overflow: visible;
+}
+
 body,
 html {
     height: 100%;
