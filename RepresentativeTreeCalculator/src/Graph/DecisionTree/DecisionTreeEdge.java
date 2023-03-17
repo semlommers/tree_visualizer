@@ -24,6 +24,10 @@ public class DecisionTreeEdge extends Edge<DecisionTreeNode, DecisionTreeEdge> {
         this.maxValue = maxValue;
     }
 
+    public boolean evaluateValue(Double value) {
+        return (minValue <= value) && (value < maxValue);
+    }
+
     @Override
     public String toString() {
         return "Edge{" + "start=" + source.id + ", end=" + target.id + ", featureId=" + featureId +
