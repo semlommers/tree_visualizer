@@ -61,8 +61,8 @@ function createNodeColorSelectors(selectorDiv) {
 
     //get the properties of the selectors
     const colorOptions = [
-        { "NAME": "None" },
-        { "NAME": "DT Structure"}
+        { "NAME": "DT Structure"},
+        { "NAME": "DT Comparison"}
         // { "NAME": "Infection Location" },
         // { "NAME": "Infection Time" },
         // { "NAME": "Age" },
@@ -188,6 +188,9 @@ function createStateColorLegend(colorLegendDiv, isLeft) {
     } else if (currentColor == "DT Structure") {
         colors = decisionTreeStructureColorScheme;
         names = decisionTreeStructureSchemeOrderDisplay;
+    } else if (currentColor == "DT Comparison") {
+        colors = decisionTreeColorScheme;
+        names = decisionTreeSchemeOrderDisplay;
     }
 
     if (currentPolicy == "None") {

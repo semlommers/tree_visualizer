@@ -28,6 +28,10 @@
     padding: 0;
 }
 
+#treeGrid {
+    overflow: visible;
+}
+
 body,
 html {
     height: 100%;
@@ -96,7 +100,7 @@ Text elements in sidepanel
 
 .text {
     font-size: 12pt;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Inter', Times, serif;
 }
 
 .title {

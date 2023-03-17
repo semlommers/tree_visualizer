@@ -59,8 +59,8 @@ var currentDistance = initDistanceSliderVal; //Current distance
 var maxMaxDistance = 0;
 
 
-var currentLeftColor = "None"; //What we are currently coloring the nodes by for the left sides of the glyphs
-var currentRightColor = "None"; //What we are currently coloring the nodes by for the left sides of the glyphs
+var currentLeftColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
+var currentRightColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
 var currentLeftPolicy = "1a"; //what the current policy is for the left sides of the glyphs
 var currentRightPolicy = "1a"; //what the current policy is for the left sides of the glyphs
 var splitPolicy = false; //Whether to split to policy into infection route prevent and contact avoided.
