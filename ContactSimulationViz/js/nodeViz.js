@@ -10,6 +10,8 @@ function makeNodeGlyph(gElement, nodeId, isRepTree) {
 
     //make right chart
     makeStackedChart(gElement, nodeId, isRepTree, false);
+
+    addNodeInformationToolTip(gElement, nodeId)
 }
 
 function makeStackedChart(gElement, nodeId, isRepTree, isLeftChart) {
@@ -168,6 +170,19 @@ function getRectGlyphXPositions(isLeftChart) {
     let rectWidth = nodeBaseSize;
 
     return [startX, rectWidth];
+}
+
+function addNodeInformationToolTip(gElement, nodeId) {
+    let nodeMetaData = metaDataFromNodeById.get(nodeId);
+    const nodeIsLeaf = (nodeMetaData.predictedLabel != null);
+
+    if (nodeIsLeaf) {
+        gElement.append("title")
+            .text("Prediction: " + nodeMetaData.predictedLabel)
+    } else {
+        gElement.append("title")
+            .text("Split feature: " + nodeMetaData.featureId)
+    }
 }
 
 
