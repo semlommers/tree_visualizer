@@ -21,4 +21,6 @@ public interface TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N, E>>
      */
     int getDistance(Tree<N, E> t1, Tree<N, E> t2);
 
+    String getName();
+
 }

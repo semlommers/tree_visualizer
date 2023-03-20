@@ -15,6 +15,8 @@ import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
 import Graph.Node;
 import Graph.Tree;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -23,17 +25,26 @@ import java.util.*;
  */
 public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E>> {
 
-    public void getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, TreeDistanceMeasure<N, E> dm, String outputFilePrefix) throws IOException {
+    public void getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, List<TreeDistanceMeasure<N, E>> dms, String outputFileLocation) throws IOException {
         Log.printProgress(forest.size() + " total trees");
+        String outputFolderLocation = outputFileLocation + "/RepTrees/";
+        Files.createDirectories(Paths.get(outputFolderLocation));
 
         List<Tree<N, E>> trees = new ArrayList<>(forest);
 
-        //calculate the representative trees
-        Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm);
-        List<RepresentativeTree<N, E>> allRepTrees = new ArrayList<>(repTrees);
-
         GraphWriter<N, E> tw = new GraphWriter<>();
-        tw.writeRepresentativeTrees(outputFilePrefix, allRepTrees);
+
+        for (TreeDistanceMeasure<N, E> dm : dms) {
+            //calculate the representative trees
+            Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm);
+            List<RepresentativeTree<N, E>> allRepTrees = new ArrayList<>(repTrees);
+
+
+            String outputFileName = outputFolderLocation + dm.getName() + ".json";
+            tw.writeRepresentativeTrees(outputFileName, allRepTrees);
+        }
+
+        tw.writeDistanceMetricOutputLocations(outputFileLocation + "/DistanceMeasures.json", dms);
     }
 
     /**

@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PredictionSimilarityDistance implements TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
+    String name = "PredictionSimilarityDistance";
     private final List<List<Double>> data = new ArrayList<>();
     Integer DIFFERENT_PREDICTION_PUNISHMENT = 1;
 
@@ -53,5 +54,10 @@ public class PredictionSimilarityDistance implements TreeDistanceMeasure<Decisio
         }
 
         return distance;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

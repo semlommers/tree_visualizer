@@ -1,6 +1,7 @@
 package Export;
 
 import Graph.Edge;
+import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
 import Graph.Node;
 import com.google.gson.Gson;
 import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTree;
@@ -11,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -70,6 +72,16 @@ public class GraphWriter<N extends Node<N, E>, E extends Edge<N, E>> {
         }
         FileWriter fw = new FileWriter(outputFileLocation);
         gson.toJson(trees, fw);
+        fw.flush();
+        fw.close();
+    }
+
+    public void writeDistanceMetricOutputLocations(String outputFileLocation, List<TreeDistanceMeasure<N, E>> distanceMeasures) throws IOException {
+        Gson gson = new Gson();
+        FileWriter fw = new FileWriter(outputFileLocation);
+
+        gson.toJson(distanceMeasures, fw);
+
         fw.flush();
         fw.close();
     }

@@ -8,8 +8,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class EditDistanceNoChildSwapping implements TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
-    Integer ADD_NODE_COST = 1;
-    Integer CHANGE_SPLIT_FEATURE = 0;
+    String name = "EditDistance";
+    private final Integer addNodeCost;
+    private final Integer changeSplitFeature;
+
+    public EditDistanceNoChildSwapping(int addNodeCost, int changSplitFeature) {
+        this.addNodeCost = addNodeCost;
+        this.changeSplitFeature = changSplitFeature;
+        this.name = this.name + addNodeCost + changSplitFeature;
+    }
 
     @Override
     public int getDistance(Tree<DecisionTreeNode, DecisionTreeEdge> t1, Tree<DecisionTreeNode, DecisionTreeEdge> t2) {
@@ -20,12 +27,17 @@ public class EditDistanceNoChildSwapping implements TreeDistanceMeasure<Decision
         return calculateDistanceRecursive(root1, root2);
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     @SuppressWarnings("DuplicatedCode")
     private int calculateDistanceRecursive(DecisionTreeNode node1, DecisionTreeNode node2) {
         int distance = 0;
 
         if (!Objects.equals(node1.featureId, node2.featureId) && node1.featureId != null && node2.featureId != null) {
-            distance = distance + CHANGE_SPLIT_FEATURE;
+            distance = distance + changeSplitFeature;
         }
 
         List<DecisionTreeEdge> edges1 = node1.getOutgoingEdgesSorted();
@@ -76,7 +88,7 @@ public class EditDistanceNoChildSwapping implements TreeDistanceMeasure<Decision
 
     private int calculateDistanceNonExistentSubGraph(DecisionTreeNode node) {
         // Starting with distance equal to ADD_NODE_COST to punish current node
-        int distance = ADD_NODE_COST;
+        int distance = addNodeCost;
 
         List<DecisionTreeEdge> edges = node.getOutgoingEdgesSorted();
 

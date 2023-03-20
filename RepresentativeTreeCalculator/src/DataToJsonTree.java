@@ -11,6 +11,8 @@ import Graph.GraphAlgorithms.ForestFinder;
 import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTreesFinder;
 import Graph.Tree;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,9 +67,13 @@ public class DataToJsonTree {
 
         treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);
 
-        TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> treeDistanceMeasure = new PredictionSimilarityDistance(inputFolderLocation + "/dataset.csv");
+        List<TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge>> treeDistanceMeasures = Arrays.asList(
+                new EditDistanceNoChildSwapping(0,1),
+                new EditDistanceNoChildSwapping(1,0),
+                new EditDistanceNoChildSwapping(1,1),
+                new PredictionSimilarityDistance(inputFolderLocation + "/dataset.csv"));
         RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
-        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasure, outputFileLocation + "/RepTreesRTDistanceFull.json"); //TODO: deze naam moet de distance measure omschrijven
+        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasures, outputFileLocation);
     }
 
     private void printStatistics(DecisionTreeGraph dtg) {
