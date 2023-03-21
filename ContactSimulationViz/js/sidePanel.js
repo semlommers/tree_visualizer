@@ -38,6 +38,14 @@ function createDistanceSlider(selectorDiv) {
 
 function createDistanceMetricSelector(selectorDiv) {
 
+    let containerDiv = selectorDiv.append("div")
+        .style("display", "grid")
+        .style("justify-content", "center");
+
+    containerDiv.append("p")
+        .attr("class", "text title")
+        .text("Distance metric")
+
     let distanceMetrics = []
     for (let i = 0; i < distanceMetricMetaData.length; i++) {
         distanceMetrics.push({"NAME": distanceMetricMetaData[i].name})
@@ -49,7 +57,7 @@ function createDistanceMetricSelector(selectorDiv) {
         changePending();
     };
 
-    createComboBox(selectorDiv, "distanceMetricSelector", distanceMetrics, currentDistanceMetric, changeFunction)
+    createComboBox(containerDiv, "distanceMetricSelector", distanceMetrics, currentDistanceMetric, changeFunction)
 }
 
 function createSizeSlider(selectorDiv) {
