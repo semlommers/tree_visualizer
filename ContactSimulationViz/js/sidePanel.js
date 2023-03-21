@@ -11,6 +11,7 @@ function createSelectors() {
         .attr("class", "SidePanelPanelDiv");
 
     createDistanceSlider(selectorDiv);
+    createDistanceMetricSelector(selectorDiv);
     createSizeSlider(selectorDiv);
     createNodeColorSelectors(selectorDiv);
     // createSortOptions(selectorDiv);
@@ -33,6 +34,22 @@ function createDistanceSlider(selectorDiv) {
 
     //create it at the end of the sliderdiv so the slider aligns with the scented widget
     createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), (maxMaxDistance / 2));
+}
+
+function createDistanceMetricSelector(selectorDiv) {
+
+    let distanceMetrics = []
+    for (let i = 0; i < distanceMetricMetaData.length; i++) {
+        distanceMetrics.push({"NAME": distanceMetricMetaData[i].name})
+    }
+
+    const changeFunction = function() {
+        currentDistanceMetric = this.value;
+        loadDifferentDistanceMetric = true;
+        changePending();
+    };
+
+    createComboBox(selectorDiv, "distanceMetricSelector", distanceMetrics, currentDistanceMetric, changeFunction)
 }
 
 function createSizeSlider(selectorDiv) {

@@ -1,8 +1,9 @@
 //Simple line chart including dataprocessing for underneath the R_t slider.
 
-const treesPerSize = []; //for each R_t value (represented by the index), holds how many trees there are
+let treesPerSize = []; //for each R_t value (represented by the index), holds how many trees there are
 
 function createScentedRtLineChart(chartDiv, scentIndex) {
+    treesPerSize = [];
 
     for (let i = 0; i < maxMaxDistance; i++) {
         treesPerSize[i] = 0;

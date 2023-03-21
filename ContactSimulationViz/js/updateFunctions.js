@@ -11,6 +11,10 @@ function updateSliderPreview() {
 
 
 function updateAll() {
+    if (loadDifferentDistanceMetric) {
+        loadDifferentDistanceMetric = false;
+        updateDistanceMetricUsed();
+    }
     updateSliderPreview();
     updateNodesRepresentedBy();
     updateColors();
@@ -77,6 +81,24 @@ function updateNodesRepresentedByForSubTree(node) {
     for (let i = 0; i < children.length; i++) {
         updateNodesRepresentedByForSubTree(children[i])
     }
+}
+
+function updateDistanceMetricUsed() {
+    d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
+        repTreesData = repTreesDataInput;
+        initializeRepTreeData();
+        updateNodesRepresentedBy();
+        updateDistanceSlider();
+        d3.select("#treeGrid").selectAll("*").remove();
+        generateTreeGrid();
+        updatePositions(true);
+    });
+}
+
+function updateDistanceSlider() {
+    d3.select("#DistanceSliderdiv").selectAll("*").remove();
+    let divToAppendTo = d3.select("#DistanceSliderdiv");
+    createDistanceSlider(divToAppendTo);
 }
 
 

@@ -2,23 +2,7 @@
  * Preprocess the data to usefull datastructures
  */
 function preprocessData() {
-    for (let i = 0; i < repTreesData.length; i++) {
-        const repTree = repTreesData[i];
-        const treeId = repTree.id;
-        repTreeById.set(treeId, repTree);
-
-        if (maxMaxDistance < repTree.maxDistance) {
-            maxMaxDistance = repTree.maxDistance;
-        }
-
-        const nodes = getNodes(repTree);
-        for (let j = 0; j < nodes.length; j++) {
-            const repNode = nodes[j];
-            const repId = repNode.id;
-            repNodeById.set(repId, repNode);
-        }
-    }
-
+    initializeRepTreeData()
 
     for (let i = 0; i < metaData.length; i++) {
         const node = metaData[i];
@@ -37,6 +21,33 @@ function preprocessData() {
 
 
     updateNodesRepresentedBy();
+}
+
+function initializeRepTreeData() {
+    // Reset the global variables related to repTrees
+    repTreeById = new Map();
+    maxMaxDistance = 0;
+    repNodeById = new Map();
+    treeOrder = [];
+    treeBaseWidthById = new Map();
+    treeBaseHeightById = new Map();
+
+    for (let i = 0; i < repTreesData.length; i++) {
+        const repTree = repTreesData[i];
+        const treeId = repTree.id;
+        repTreeById.set(treeId, repTree);
+
+        if (maxMaxDistance < repTree.maxDistance) {
+            maxMaxDistance = repTree.maxDistance;
+        }
+
+        const nodes = getNodes(repTree);
+        for (let j = 0; j < nodes.length; j++) {
+            const repNode = nodes[j];
+            const repId = repNode.id;
+            repNodeById.set(repId, repNode);
+        }
+    }
 }
 
 function addExtraMetaData(tree, depth, rootId) {
