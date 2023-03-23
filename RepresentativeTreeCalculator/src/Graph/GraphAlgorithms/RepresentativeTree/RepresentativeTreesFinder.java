@@ -211,6 +211,19 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
                 if (t == null) {//already processed
                     continue;
                 }
+
+                // Skip trees that belong to some other representative tree with a lower distance
+                boolean skip = false;
+                for (E otherEdge : e.target.edges) {
+                    if (dsIds.contains(otherEdge.target.id) && (otherEdge.weight < e.weight)) {
+                        skip = true;
+                        break;
+                    }
+                }
+                if (skip) {
+                    continue;
+                }
+
                 //unless t is in the dominating set
                 if (!dsIds.contains(t.id)) {
                     dominated.add(t);
