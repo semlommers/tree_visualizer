@@ -19,6 +19,9 @@ function preprocessData() {
         addExtraMetaData(tree, 0, id);
     }
 
+    for (let i = 0; i < namesData.target_names.length; i++) {
+        classProportionsColorSchemeOrderDisplay.push(namesData.target_names[i]);
+    }
 
     updateNodesRepresentedBy();
 }

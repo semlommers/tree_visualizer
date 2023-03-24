@@ -11,6 +11,9 @@ import Graph.GraphAlgorithms.ForestFinder;
 import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTreesFinder;
 import Graph.Tree;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +58,8 @@ public class DataToJsonTree {
 
         //output data
         printStatistics(decisionTreeGraph);
+
+        Files.copy(Paths.get(inputFolderLocation + "/names.json"), Paths.get(outputFileLocation + "/names.json"), StandardCopyOption.REPLACE_EXISTING);
 
         GraphWriter<DecisionTreeNode, DecisionTreeEdge> treeWriter = new GraphWriter<>();
         treeWriter.writeMetaDataGraph(outputFileLocation + "/NodesAndMeta.json", decisionTreeGraph);

@@ -73,8 +73,8 @@ function getPartColor(index, isLeftChart) {
     if (color == "Age") {
         return ageColorScheme[index];
     }
-    if (color == "Infection Time") {
-        return infectionTimeColorScheme[index];
+    if (color == "Class Proportions") {
+        return classProportionsColorScheme[index];
     }
     if (color == "DT Structure") {
         return decisionTreeStructureColorScheme[index];
@@ -147,8 +147,8 @@ function getPartCounts(id, isRepTree, isLeftChart) {
         counts = locationCount(id, isRepTree, policy, appPercentage);
     } else if (color == "Age") {
         counts = ageCount(id, isRepTree, policy, appPercentage);
-    } else if (color == "Infection Time") {
-        counts = timeCount(id, isRepTree, policy, appPercentage);
+    } else if (color == "Class Proportions") {
+        counts = classProportionsCount(id, isRepTree, policy, appPercentage);
     } else if (color == "DT Structure") {
         counts = decisionTreeStructureCount(id, isRepTree);
     } else if (color == "DT Comparison") {

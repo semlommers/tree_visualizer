@@ -31,6 +31,9 @@ const decisionTreeStructureColorSchemeOrder = ["existingNode", "nonExistingNode"
 const decisionTreeStructureColorScheme = ['#4daf4a','#ff0000'];
 const decisionTreeStructureSchemeOrderDisplay = ["Node exists", "Node does not exists"]
 
+const classProportionsColorSchemeOrder = ["class1", "class2", "class3", "class4", "class5", "class6", "class7", "class8", "class9", "class10"];
+const classProportionsColorScheme = ['#1f78b4','#33a02c','#e31a1c','#ff7f00','#a6cee3','#b2df8a','#fb9a99','#fdbf6f','#cab2d6'];
+const classProportionsColorSchemeOrderDisplay = [];
 
 //"DEAD", "RECOVERED", 
 const distributionChartColorSchemeOrder = ["EXPOSED", "ASYMPTOMATIC", "PRESYMPTOMATIC", "SYMPTOMATIC", "SEVERELY_SYMPTOMATIC"];

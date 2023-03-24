@@ -101,6 +101,11 @@ function timeCount(nodeId, isRepTree, policy, appPercentage) {
     return count;
 }
 
+function classProportionsCount(nodeId) {
+    const metadata = metaDataFromNodeById.get(nodeId);
+    return metadata.classProportions;
+}
+
 
 /**
  * Counts how many nodes that the node with id={id} represents are in a certain exposed time group

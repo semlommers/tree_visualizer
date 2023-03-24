@@ -4,6 +4,7 @@ const repTreesDataInputBaseLocation = "data/RepTrees/";
 const allTreesDataInputLocation = "data/AllTrees.json";
 const metaDataInputLocation = "data/NodesAndMeta.json";
 const distanceMetricsMetaDataLocation = "data/DistanceMeasures.json"
+const namesLocation = "data/names.json"
 
 const simMetaDataInputLocation = "data/SimMeta.csv";
 // const originalExposedDataInputLocation = "data/OriginalExposed.csv"
@@ -85,7 +86,7 @@ var recalculate = false; //Holds whether we need to recalculate the tree grid. C
 
 const maxParts = 10; //How many different parts we can have at maximum in the glyph.
 
-var repTreesData, allTreesData, metaData, originalExposedData, distanceMetricMetaData;
+var repTreesData, allTreesData, metaData, originalExposedData, distanceMetricMetaData, namesData;
 var d3;
 
 
@@ -98,21 +99,24 @@ requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.
     d3.json(distanceMetricsMetaDataLocation).then(function(distanceMetricMetaDataInput) {
         d3.json(allTreesDataInputLocation).then(function(allTreesDataInput) {
             d3.json(metaDataInputLocation).then(function(metaDataInput) {
-                distanceMetricMetaData = distanceMetricMetaDataInput;
-                currentDistanceMetric = distanceMetricMetaData[0].name;
-                d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
-                // d3.csv(simMetaDataInputLocation).then(function(simMetaDataInput) {
-                // d3.csv(originalExposedDataInputLocation).then(function(originalExposedDataInput) {
-                // repTreesData = repTreesDataInput;
-                    repTreesData = repTreesDataInput;
-                    allTreesData = allTreesDataInput;
-                    metaData = metaDataInput;
-                    // simMetaData = simMetaDataInput;
-                    // originalExposedData = originalExposedDataInput;
-                    setVizSizes(nodeBaseSize);
-                    mainRepresentativeGraph();
-                    updateAll(); //update to use slider values
-                    // });
+                d3.json(namesLocation).then(function (namesDataInput) {
+                    distanceMetricMetaData = distanceMetricMetaDataInput;
+                    currentDistanceMetric = distanceMetricMetaData[0].name;
+                    d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
+                        // d3.csv(simMetaDataInputLocation).then(function(simMetaDataInput) {
+                        // d3.csv(originalExposedDataInputLocation).then(function(originalExposedDataInput) {
+                        // repTreesData = repTreesDataInput;
+                        repTreesData = repTreesDataInput;
+                        allTreesData = allTreesDataInput;
+                        metaData = metaDataInput;
+                        namesData = namesDataInput;
+                        // simMetaData = simMetaDataInput;
+                        // originalExposedData = originalExposedDataInput;
+                        setVizSizes(nodeBaseSize);
+                        mainRepresentativeGraph();
+                        updateAll(); //update to use slider values
+                        // });
+                    });
                 });
             });
         });
