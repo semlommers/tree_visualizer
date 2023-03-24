@@ -54,12 +54,13 @@ public class RandomForestParser {
     private void createNode(JsonNode rootNode) {
         int id = rootNode.nodeId;
         if (!decisionTreeGraph.hasNodeWithId(id)) {
-            DecisionTreeNode node = new DecisionTreeNode(id, rootNode.featureId, rootNode.predictedLabel);
+            DecisionTreeNode node = new DecisionTreeNode(id, rootNode.featureId, rootNode.predictedLabel, rootNode.classProportions);
             decisionTreeGraph.addNode(node);
         } else { // Node has already been created as a child
             DecisionTreeNode node = decisionTreeGraph.getNode(id);
             node.featureId = rootNode.featureId;
             node.predictedLabel = rootNode.predictedLabel;
+            node.classProportions = rootNode.classProportions;
         }
     }
 

@@ -11,6 +11,8 @@ public class JsonNode {
     public Integer featureId;
     @SerializedName("predicted_label")
     public Integer predictedLabel;
+    @SerializedName("class_proportions")
+    public Integer[] classProportions;
 
     public static class JsonChild {
         @SerializedName("child_id")

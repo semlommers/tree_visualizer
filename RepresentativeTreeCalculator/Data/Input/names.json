@@ -1,0 +1,1 @@
+{"feature_names": {"0": "sepal length (cm)", "1": "sepal width (cm)", "2": "petal length (cm)", "3": "petal width (cm)"}, "target_names": {"0": "setosa", "1": "versicolor", "2": "virginica"}}

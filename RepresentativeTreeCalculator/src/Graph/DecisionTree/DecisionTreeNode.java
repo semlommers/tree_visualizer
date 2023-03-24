@@ -8,11 +8,13 @@ import java.util.List;
 public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
     public Integer featureId;
     public Integer predictedLabel;
+    public Integer[] classProportions;
 
-    public DecisionTreeNode(int id, Integer featureId, Integer predictedLabel) {
+    public DecisionTreeNode(int id, Integer featureId, Integer predictedLabel, Integer[] classProportions) {
         super(id);
         this.featureId = featureId;
         this.predictedLabel = predictedLabel;
+        this.classProportions = classProportions;
     }
 
     public DecisionTreeNode(int id) {
@@ -21,7 +23,7 @@ public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
 
     @Override
     public DecisionTreeNode deepCopy() {
-        return new DecisionTreeNode(id, featureId, predictedLabel);
+        return new DecisionTreeNode(id, featureId, predictedLabel, classProportions);
     }
 
     @Override
