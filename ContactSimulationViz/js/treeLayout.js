@@ -75,61 +75,14 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
         .attr("height", height)
         .style("opacity", 0.0) //make it invisible. TODO: Check performance issues
 
-
-    const g = treeSvg.append("g")
-        .attr("transform", `translate(${marginWithinTree / 2},${marginWithinTree / 2 + fontSizeRepAmount})`); //make sure no clipping occurs
-
-    const link = g.append("g") //links
-        .attr("class", "edge")
-        .selectAll("path")
-        .data(root.links())
-        .join("path")
-        .attr("d", d3.linkVertical()
-            .x(d => d.x)
-            .y(d => d.y))
-        .attr("stroke-width", linkBaseSize);
-
-    const node = g.append("g") //nodes
-        .attr("class", "node")
-        .selectAll("g")
-        .data(root.descendants())
-        .join("g")
-        .attr("transform", d => `translate(${d.x},${d.y})`)
-        .attr("id", function(d) {
-            return d.data.id
-        })
-
-    //glyphs for each node
-    node.each(function(d) {
-        makeNodeGlyph(d3.select(this), d.data.id, isRepTree)
-    })
-
-
-    //add how many trees this node represents if the data is present
-    if (isRepTree && typeof root.data.representations !== 'undefined') {
-        const repNumber = getAmountOfTreesRepresented(root, currentDistance);
-
-        const textG = treeSvg.append("g").attr("class", "textG")
-        const text = textG.append("text")
-            .attr("class", "textRepAmount")
-            .attr("font-size", fontSizeRepAmount)
-            .text(repNumber)
-
-
-        //position text such that the top is 2 pixels below the root
-        const textX = root.x + nodeBaseSize - text.node().getBBox().width / 2;
-        const textY = root.y + fontSizeRepAmount * 0.9;
-
-        text.attr("transform", `translate(${textX},${textY})`); //make sure no clipping occurs
+    if (currentTreeVisualization === "Node-link diagram") {
+        return nodeLinkDiagramLayout(treeSvg, root, width, height, isRepTree);
+    } else if (currentTreeVisualization === "Icicle plot") {
+        return iciclePlotLayout(treeSvg, root, width, height, isRepTree);
+    } else {
+        console.error("No valid tree visualization selected");
     }
-
-
-
-    return treeSvg;
 }
-
-
-
 
 
 function getTreeRoots(treeData) {

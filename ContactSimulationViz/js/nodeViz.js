@@ -5,38 +5,17 @@
  * @param {*} isRepTree 
  */
 function makeNodeGlyph(gElement, nodeId, isRepTree) {
-    //make left chart
-    makeStackedChart(gElement, nodeId, isRepTree, true);
-
-    //make right chart
-    makeStackedChart(gElement, nodeId, isRepTree, false);
+    if (currentTreeVisualization === "Node-link diagram") {
+        //make left chart
+        makeStackedChart(gElement, nodeId, isRepTree, true);
+    } else if (currentTreeVisualization === "Icicle plot") {
+        makeStackedChartIciclePlot(gElement, nodeId, isRepTree, true);
+    } else {
+        console.error("No valid tree visualization selected");
+        return;
+    }
 
     addNodeInformationToolTip(gElement, nodeId)
-}
-
-function makeStackedChart(gElement, nodeId, isRepTree, isLeftChart) {
-    let [startX, rectWidth] = getRectGlyphXPositions(isLeftChart)
-
-    for (let partI = 0; partI < maxParts; partI++) {
-        constructRect(gElement, nodeId, isRepTree, isLeftChart, partI, startX, rectWidth);
-    }
-}
-
-
-function constructRect(gElement, nodeId, isRepTree, isLeftChart, partIndex, startX, rectWidth) {
-
-    const color = getPartColor(partIndex, isLeftChart);
-    const [y, height] = getRectGlyphYPositions(nodeId, partIndex, isRepTree, isLeftChart);
-
-    if (height > 0) { //only add rectangles that have a height
-        gElement.append("rect")
-            .attr("x", startX)
-            .attr("y", y)
-            .attr("width", rectWidth)
-            .attr("height", height)
-            .attr("fill", color)
-            .attr("class", "glyphRectangle")
-    }
 }
 
 function updateNodeGlyphs(isRepTree) {
@@ -166,8 +145,8 @@ function getPartCounts(id, isRepTree, isLeftChart) {
 
 
 function getRectGlyphXPositions(isLeftChart) {
-    let startX = getStartX(isLeftChart);
-    let rectWidth = nodeBaseSize;
+    let startX = -nodeBaseSize
+    let rectWidth = nodeBaseSize * 2;
 
     return [startX, rectWidth];
 }
@@ -183,19 +162,6 @@ function addNodeInformationToolTip(gElement, nodeId) {
         gElement.append("title")
             .text("Split feature: " + nodeMetaData.featureId)
     }
-}
-
-
-function getRectGlyphYPositions(id, partIndex, isRepTree, isLeftChart) {
-
-    const partRange = getPartPercentages(id, partIndex, isRepTree, isLeftChart);
-    const rectSize = nodeBaseSize * 2; //nodeBaseSize is radius
-
-    const y1 = partRange[0] * rectSize - rectSize / 2;
-    const y2 = partRange[1] * rectSize - rectSize / 2;
-    const rectHeight = y2 - y1;
-
-    return [y1, rectHeight];
 }
 
 

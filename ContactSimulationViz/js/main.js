@@ -67,6 +67,7 @@ var currentRightColor = "DT Structure"; //What we are currently coloring the nod
 var currentLeftPolicy = "1a"; //what the current policy is for the left sides of the glyphs
 var currentRightPolicy = "1a"; //what the current policy is for the left sides of the glyphs
 var splitPolicy = false; //Whether to split to policy into infection route prevent and contact avoided.
+var currentTreeVisualization = "Node-link diagram";
 
 var currentLeftAppPercentage = "100";
 var currentRightAppPercentage = "100";
@@ -93,7 +94,7 @@ var d3;
 
 
 //Load in all the javascript files
-requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.js", "js/StackedAreaChart.js", "js/dataQueries.js", "js/stateCounters.js", "js/nodeViz.js", "js/sidePanel.js", "js/treeLayout.js", "js/representativeGraph.js", "js/popup.js", "js/updateFunctions.js", "js/offsetCalculator.js"], function(d3Var) {
+requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.js", "js/StackedAreaChart.js", "js/dataQueries.js", "js/stateCounters.js", "js/nodeViz.js", "js/sidePanel.js", "js/treeLayout.js", "js/representativeGraph.js", "js/popup.js", "js/updateFunctions.js", "js/offsetCalculator.js", "js/iciclePlotLayout.js", "js/nodeLinkDiagramLayout.js"], function(d3Var) {
     //load in all the data
     d3 = d3Var;
     d3.json(distanceMetricsMetaDataLocation).then(function(distanceMetricMetaDataInput) {
