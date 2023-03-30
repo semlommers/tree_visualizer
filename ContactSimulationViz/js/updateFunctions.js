@@ -16,6 +16,7 @@ function updateAll() {
         updateDistanceMetricUsed();
     }
     updateSliderPreview();
+    console.log("Deze zou later moeten zijn")
     updateNodesRepresentedBy();
     updateColors();
     if (recalculate) { //if we need to reinitialize the grid
@@ -87,8 +88,8 @@ function updateDistanceMetricUsed() {
     d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
         repTreesData = repTreesDataInput;
         initializeRepTreeData();
-        updateNodesRepresentedBy();
         updateDistanceSlider();
+        updateNodesRepresentedBy();
         d3.select("#treeGrid").selectAll("*").remove();
         generateTreeGrid();
         updatePositions(true);
