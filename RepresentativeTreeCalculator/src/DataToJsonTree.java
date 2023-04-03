@@ -36,7 +36,7 @@ public class DataToJsonTree {
      */
     public static void main(String[] args) {
         try {
-            String dataFolderLocation = "./RepresentativeTreeCalculator/Data";
+            String dataFolderLocation = "./RepresentativeTreeCalculator/Data/iris";
             String inputFolderLocation = dataFolderLocation + "/Input";
             String outputFileLocation = dataFolderLocation + "/Output";
 

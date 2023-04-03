@@ -16,7 +16,6 @@ function updateAll() {
         updateDistanceMetricUsed();
     }
     updateSliderPreview();
-    console.log("Deze zou later moeten zijn")
     updateNodesRepresentedBy();
     updateColors();
     if (recalculate) { //if we need to reinitialize the grid

@@ -3,7 +3,18 @@ function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
     partitionLayout
         .size([width, height - (marginWithinTree / 2 + fontSizeRepAmount)])
         .padding(1);
-    root.count();
+    root.sum(function(d) {
+        if (d.children.length === 0) {
+            let classProportions = metaDataFromNodeById.get(d.id).classProportions;
+            let count = 0;
+
+            for (let i = 0; i < classProportions.length; i++) {
+                count = count + classProportions[i];
+            }
+
+            return count;
+        }
+    });
     partitionLayout(root);
 
     const g = treeSvg.append("g")
