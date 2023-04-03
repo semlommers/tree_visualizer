@@ -42,6 +42,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
 
             String outputFileName = outputFolderLocation + dm.getName() + ".json";
             tw.writeRepresentativeTrees(outputFileName, allRepTrees);
+            Log.printOnce("Done for distance: " + dm.getName());
         }
 
         tw.writeDistanceMetricOutputLocations(outputFileLocation + "/DistanceMeasures.json", dms);
@@ -55,14 +56,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         //Holds the graphs as nodes, and uses the specified distance measure as weights between the nodes
         Graph<N, E> g = makeWeightedGraph(trees, dm);
 
-        Collection<E> edges = g.getEdges();
-
-        int maxDistance = 0;
-        for (E edge : edges) {
-            if (edge.weight > maxDistance) {
-                maxDistance = (int) edge.weight;
-            }
-        }
+        Log.printOnce("Weighted graph made for " + dm.getName());
 
         //Start calculating representative trees.
         //We find it by using dominating set on filtered trees. The dominating set are the set of representative nodes
@@ -81,6 +75,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         int distance = 0;
         // Go on until only one representative tree exists
         while (currentDsIds.size() > 1) {
+            Log.printProgress("Current distance is: " + distance + ". Dom set size equals: " + currentDsIds.size(), 10000);
             //Get graph with only edgeMapping with weight <= distance
             Graph<N, E> fgTED = getFilteredGraph(g, distance);
 

@@ -10,6 +10,8 @@ import Graph.Graph;
 import Graph.GraphFactory;
 import Graph.Node;
 import Graph.Tree;
+import Utility.Log;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +41,9 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
 
         //start by making all nodes the root of a tree, and merge them together
         Collection<N> nodes = completeGraph.getNodes();
+        int counter = 0;
         for (N node : nodes) {
+            Log.printProgress("Node " + counter + " of " + nodes.size() + " nodes", 30000);
             T newTree = GraphFactory.getNewGraph(graphType);
             Node<N,E> test = node.deepCopy();
             newTree.addNode((N) test);
@@ -47,10 +51,13 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
             //give the tree the id of the root
             newTree.id = node.id;
             trees.add(newTree);
+            counter++;
         }
 
+        counter = 0;
         Collection<E> edges = completeGraph.getEdges();
         for (E e : edges) {
+            Log.printProgress("Edge " + counter + " of " + edges.size() + " edges", 30000);
             T sourceTree = null; //holds the Tree the source of this edge is in.
             T targetTree = null;//holds the Tree the source of this edge is in.
 
@@ -69,6 +76,7 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
             assert (targetTree != null);
             //ends in two existing trees, merge them and continue with next edge
             mergeTrees(trees, sourceTree, targetTree, e);//merge the trees as they are connected
+            counter++;
         }
 
         return trees;
