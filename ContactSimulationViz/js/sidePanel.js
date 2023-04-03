@@ -12,6 +12,7 @@ function createSelectors() {
 
     createDistanceSlider(selectorDiv);
     createDistanceMetricSelector(selectorDiv);
+    createVisualizationTypeSelector(selectorDiv);
     createSizeSlider(selectorDiv);
     createNodeColorSelectors(selectorDiv);
     // createSortOptions(selectorDiv);
@@ -58,6 +59,30 @@ function createDistanceMetricSelector(selectorDiv) {
     };
 
     createComboBox(containerDiv, "distanceMetricSelector", distanceMetrics, currentDistanceMetric, changeFunction)
+}
+
+function createVisualizationTypeSelector(selectorDiv) {
+
+    let containerDiv = selectorDiv.append("div")
+        .style("display", "grid")
+        .style("justify-content", "center");
+
+    containerDiv.append("p")
+        .attr("class", "text title")
+        .text("Visualization type")
+
+    let visualizationTypes = [
+        {"NAME": "Node-link diagram"},
+        {"NAME": "Icicle plot"}
+    ]
+
+    const changeFunction = function() {
+        currentTreeVisualization = this.value;
+        recalculate = true;
+        changePending();
+    };
+
+    createComboBox(containerDiv, "visualizationTypeSelector", visualizationTypes, currentTreeVisualization, changeFunction)
 }
 
 function createSizeSlider(selectorDiv) {
