@@ -9,7 +9,7 @@ function makeNodeGlyph(gElement, nodeId, isRepTree) {
         //make left chart
         makeStackedChart(gElement, nodeId, isRepTree, true);
     } else if (currentTreeVisualization === "Icicle plot") {
-        makeStackedChartIciclePlot(gElement, nodeId, isRepTree, true);
+        makeStackedChartIciclePlotVertical(gElement, nodeId, isRepTree, true);
     } else {
         console.error("No valid tree visualization selected");
         return;

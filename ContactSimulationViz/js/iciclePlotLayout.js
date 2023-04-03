@@ -61,6 +61,7 @@ function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
 }
 
 
+// TODO: Remove this if you decide not to use a horizontal chart
 function makeStackedChartIciclePlot(gElement, nodeId, isRepTree, isLeftChart) {
     let startX = gElement.attr("x");
     let rectWidth = gElement.attr("width");
@@ -86,6 +87,44 @@ function constructRectIciclePlot(gElement, nodeId, isRepTree, isLeftChart, partI
             .attr("fill", color)
             .attr("class", "glyphRectangle")
     }
+}
+
+function makeStackedChartIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChart) {
+    let startY = gElement.attr("y");
+    let rectHeight = gElement.attr("height");
+
+    for (let partI = 0; partI < maxParts; partI++) {
+        constructRectIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChart, partI, startY, rectHeight);
+    }
+}
+
+function constructRectIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChart, partIndex, startY, rectHeight) {
+    const baseX = parseFloat(gElement.attr("x"))
+    const baseWidth = gElement.attr("width")
+
+    const color = getPartColor(partIndex, isLeftChart);
+    const [x, width] = getRectGlyphYPositionsIciclePlotVertical(nodeId, partIndex, isRepTree, isLeftChart, baseWidth);
+
+    if (width > 0) { //only add rectangles that have a height
+        gElement.append("rect")
+            .attr("y", startY)
+            .attr("x", baseX + x)
+            .attr("width", width)
+            .attr("height", rectHeight)
+            .attr("fill", color)
+            .attr("class", "glyphRectangle")
+    }
+}
+
+function getRectGlyphYPositionsIciclePlotVertical(id, partIndex, isRepTree, isLeftChart, baseSize) {
+
+    const partRange = getPartPercentages(id, partIndex, isRepTree, isLeftChart);
+
+    const x1 = partRange[0] * baseSize;
+    const x2 = partRange[1] * baseSize;
+    const rectWidth = x2 - x1;
+
+    return [x1, rectWidth];
 }
 
 
