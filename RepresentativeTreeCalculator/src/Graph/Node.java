@@ -5,6 +5,8 @@
  */
 package Graph;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
  */
 public class Node<N extends Node<N, E>, E extends Edge<N, E>> {
 
+    @Expose
     public final int id;
     //Transient removes the edges this node is involved in for serialization. Required for JSON as otherwise there is an infinite loop
     public transient List<E> edges = new ArrayList<>();//Edges involving this node

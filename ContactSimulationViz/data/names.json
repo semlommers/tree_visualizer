@@ -1,1 +1,1 @@
-{"feature_names": ["Wife's age", " Wife's education", "Husband's education", " Number of children ever born", "Wife's religion", "Wife's now working?", " Husband's occupation", " Standard-of-living index", "Media exposure"], "target_names": ["No-use", "Long-term", "Short-term"]}
+{"feature_names": ["type", "fixed acidity", "volatile acidity", "citric acid", "residual sugar", "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density", "pH", "sulphates", "alcohol"], "target_names": ["Bad", "Good"]}

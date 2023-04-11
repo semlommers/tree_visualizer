@@ -36,7 +36,7 @@ public class DataToJsonTree {
      */
     public static void main(String[] args) {
         try {
-            String dataFolderLocation = "./RepresentativeTreeCalculator/Data/iris";
+            String dataFolderLocation = "./RepresentativeTreeCalculator/Data/wine";
             String inputFolderLocation = dataFolderLocation + "/Input";
             String outputFileLocation = dataFolderLocation + "/Output";
 
@@ -73,7 +73,6 @@ public class DataToJsonTree {
         treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);
 
         List<TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge>> treeDistanceMeasures = Arrays.asList(
-                new EditDistanceNoChildSwapping(0,1),
                 new EditDistanceNoChildSwapping(1,0),
                 new EditDistanceNoChildSwapping(1,1),
                 new PredictionSimilarityDistance(inputFolderLocation + "/dataset.csv"));

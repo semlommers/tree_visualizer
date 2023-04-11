@@ -1,13 +1,17 @@
 package Graph.DecisionTree;
 
 import Graph.Node;
+import com.google.gson.annotations.Expose;
 
 import java.util.Collections;
 import java.util.List;
 
 public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
+    @Expose
     public Integer featureId;
+    @Expose
     public Integer predictedLabel;
+    @Expose
     public Integer[] classProportions;
 
     public DecisionTreeNode(int id, Integer featureId, Integer predictedLabel, Integer[] classProportions) {

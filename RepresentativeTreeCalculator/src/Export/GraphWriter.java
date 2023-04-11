@@ -27,7 +27,7 @@ import java.util.Set;
 public class GraphWriter<N extends Node<N, E>, E extends Edge<N, E>> {
 
     public void writeMetaDataGraph(String outputFileLocation, Tree<N, E> tree) throws IOException {
-        Gson gson = new GsonBuilder().serializeNulls().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
         FileWriter fw = new FileWriter(outputFileLocation);
 
         Collection<N> nodes = tree.getNodes();
@@ -77,7 +77,7 @@ public class GraphWriter<N extends Node<N, E>, E extends Edge<N, E>> {
     }
 
     public void writeDistanceMetricOutputLocations(String outputFileLocation, List<TreeDistanceMeasure<N, E>> distanceMeasures) throws IOException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         FileWriter fw = new FileWriter(outputFileLocation);
 
         gson.toJson(distanceMeasures, fw);

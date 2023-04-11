@@ -4,6 +4,7 @@ import Graph.DecisionTree.DecisionTreeEdge;
 import Graph.DecisionTree.DecisionTreeGraph;
 import Graph.DecisionTree.DecisionTreeNode;
 import Graph.Tree;
+import com.google.gson.annotations.Expose;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PredictionSimilarityDistance implements TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
+    @Expose
     String name = "PredictionSimilarityDistance";
     private final List<List<Double>> data = new ArrayList<>();
     Integer DIFFERENT_PREDICTION_PUNISHMENT = 1;
