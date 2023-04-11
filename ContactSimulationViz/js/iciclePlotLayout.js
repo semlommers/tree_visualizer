@@ -1,4 +1,5 @@
 function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
+    // TODO: misschien vanaf begin al groter renderen?
     let partitionLayout = d3.partition();
     partitionLayout
         .size([width, height - (marginWithinTree / 2 + fontSizeRepAmount)])
@@ -66,6 +67,15 @@ function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
 
         text.attr("transform", `translate(${textX},${textY})`); //make sure no clipping occurs
     }
+
+    treeSvg.on("click", function(event) {
+        if (focusedTree === null) {
+            focusedTree = root.data.id;
+        } else {
+            focusedTree = null;
+        }
+        updatePositions(true);
+    })
 
     return treeSvg;
 }

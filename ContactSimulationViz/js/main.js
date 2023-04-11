@@ -82,6 +82,7 @@ var sortBy = "Tree size";
 var currentDistanceMetric;
 var loadDifferentDistanceMetric = false;
 
+let focusedTree = null;
 
 var recalculate = false; //Holds whether we need to recalculate the tree grid. Can happen in case of node size change or data change
 
@@ -89,7 +90,6 @@ const maxParts = 10; //How many different parts we can have at maximum in the gl
 
 var repTreesData, allTreesData, metaData, originalExposedData, distanceMetricMetaData, namesData;
 var d3;
-//TODO: Remove deze comment
 
 
 

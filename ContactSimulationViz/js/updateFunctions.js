@@ -189,6 +189,9 @@ function recalculatePlacement(idsToHide) {
             //hidden trees cannot have a repAmount more than 1
             //scale trees according to repamount
             scaleFactor = getScaleFactorByRepAmount(repAmount);
+            if (id === focusedTree) {
+                scaleFactor = 3;
+            }
         }
         width = width * scaleFactor;
         height = height * scaleFactor;
