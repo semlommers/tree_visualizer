@@ -67,7 +67,7 @@ var currentRightColor = "DT Structure"; //What we are currently coloring the nod
 var currentLeftPolicy = "1a"; //what the current policy is for the left sides of the glyphs
 var currentRightPolicy = "1a"; //what the current policy is for the left sides of the glyphs
 var splitPolicy = false; //Whether to split to policy into infection route prevent and contact avoided.
-var currentTreeVisualization = "Node-link diagram";
+var currentTreeVisualization = "Icicle plot";
 
 var currentLeftAppPercentage = "100";
 var currentRightAppPercentage = "100";

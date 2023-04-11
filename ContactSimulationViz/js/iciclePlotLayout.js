@@ -23,7 +23,17 @@ function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
     const node = g.append("g") //nodes
         .attr("class", "node")
         .selectAll("g")
-        .data(root.descendants())
+        .data(function(d) {
+            let nodes = d.descendants();
+            let visualizedNodes = []
+            for (let i = 0; i < nodes.length; i++) {
+                let node = nodes[i];
+                if ((node.x1 - node.x0) > 0) { // Remove if node is to small to visualize
+                    visualizedNodes.push(node);
+                }
+            }
+            return visualizedNodes;
+        })
         .join("g")
         .attr('x', function(d) { return d.x0; })
         .attr('y', function(d) { return d.y0; })

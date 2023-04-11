@@ -9,6 +9,7 @@ function preprocessData() {
         const id = node.id;
         metaDataFromNodeById.set(id, node);
     }
+    metaData = undefined;
 
     for (let i = 0; i < allTreesData.length; i++) {
         const tree = allTreesData[i];
@@ -18,6 +19,7 @@ function preprocessData() {
         //add extra meta data for each tree.
         addExtraMetaData(tree, 0, id);
     }
+    allTreesData = undefined;
 
     for (let i = 0; i < namesData.target_names.length; i++) {
         classProportionsColorSchemeOrderDisplay.push(namesData.target_names[i]);

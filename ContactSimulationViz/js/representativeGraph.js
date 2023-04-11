@@ -20,8 +20,8 @@ function generateTreeGrid() {
         const id = treeRoot.data.id;
 
         const treeSvg = createSingleTree(treeGridSVG, xOffset, yOffset, treeRoot, id, true);
-        treeSvg
-            .on("click", function(event) { showTreesRepresented(event, treeRoot) }) //TODO: Change click function to work on all of svg, not just nodes.
+        // treeSvg
+        //     .on("click", function(event) { showTreesRepresented(event, treeRoot) }) //TODO: Change click function to work on all of svg, not just nodes.
 
     }
 
