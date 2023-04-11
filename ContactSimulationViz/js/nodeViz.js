@@ -10,6 +10,8 @@ function makeNodeGlyph(gElement, nodeId, isRepTree) {
         makeStackedChart(gElement, nodeId, isRepTree, true);
     } else if (currentTreeVisualization === "Icicle plot") {
         makeStackedChartIciclePlotVertical(gElement, nodeId, isRepTree, true);
+    } else if (currentTreeVisualization === "Sunburst plot") {
+        makeStackedChartSunburstVertical(gElement, nodeId, isRepTree, true);
     } else {
         console.error("No valid tree visualization selected");
         return;

@@ -79,6 +79,8 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
         return nodeLinkDiagramLayout(treeSvg, root, width, height, isRepTree);
     } else if (currentTreeVisualization === "Icicle plot") {
         return iciclePlotLayout(treeSvg, root, width, height, isRepTree);
+    } else if (currentTreeVisualization === "Sunburst plot") {
+        return sunBurstLayout(treeSvg, root, width, height, isRepTree);
     } else {
         console.error("No valid tree visualization selected");
     }
