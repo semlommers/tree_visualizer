@@ -100,13 +100,17 @@ function getTreeRoots(treeData) {
  */
 function getTree(data) {
     const dataRoot = d3.hierarchy(data);
-    const treeRoot = d3.tree()
-        .nodeSize([horNodeSpace, verNodeSpace])
-        (dataRoot)
+    if (currentTreeVisualization === "Node-link diagram") {
+        const treeRoot = d3.tree()
+            .nodeSize([horNodeSpace, verNodeSpace])
+            (dataRoot)
 
 
-    moveTreeToFirstQuadrant(treeRoot);
-    return treeRoot;
+        moveTreeToFirstQuadrant(treeRoot);
+        return treeRoot;
+    }
+
+    return dataRoot;
 }
 
 
@@ -143,13 +147,20 @@ function getDisplayWidth(treeRoot) {
 }
 
 function getWidth(treeRoot) {
-    let maxX = -Infinity;
-    let minX = Infinity;
-    treeRoot.each(d => {
-        if (d.x > maxX) maxX = d.x;
-        if (d.x < minX) minX = d.x;
-    });
-    return maxX - minX;
+    if (currentTreeVisualization === "Node-link diagram") {
+        let maxX = -Infinity;
+        let minX = Infinity;
+        treeRoot.each(d => {
+            if (d.x > maxX) maxX = d.x;
+            if (d.x < minX) minX = d.x;
+        });
+        if (maxX - minX === -Infinity) {
+
+        }
+        return maxX - minX;
+    } else {
+        return 40 * nodeBaseSize;
+    }
 }
 
 
@@ -163,11 +174,18 @@ function getDisplayHeight(treeRoot) {
 }
 
 function getHeight(treeRoot) {
-    let maxY = -Infinity;
-    let minY = Infinity;
-    treeRoot.each(d => {
-        if (d.y > maxY) maxY = d.y;
-        if (d.y < minY) minY = d.y;
-    });
-    return maxY - minY;
+    if (currentTreeVisualization === "Node-link diagram") {
+        let maxY = -Infinity;
+        let minY = Infinity;
+        treeRoot.each(d => {
+            if (d.y > maxY) maxY = d.y;
+            if (d.y < minY) minY = d.y;
+        });
+        if (maxY - minY === -Infinity) {
+
+        }
+        return maxY - minY;
+    } else {
+        return 40 * nodeBaseSize;
+    }
 }

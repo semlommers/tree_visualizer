@@ -52,7 +52,7 @@ function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
 
         //position text such that the top is 2 pixels below the root
         const textX = (root.x0 + root.x1) / 2 - text.node().getBBox().width / 2;
-        const textY = root.y + fontSizeRepAmount * 0.9;
+        const textY = fontSizeRepAmount * 0.9;
 
         text.attr("transform", `translate(${textX},${textY})`); //make sure no clipping occurs
     }

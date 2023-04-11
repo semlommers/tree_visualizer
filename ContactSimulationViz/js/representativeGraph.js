@@ -32,9 +32,11 @@ function generateTreeGrid() {
 
 
 function getScaleFactorByRepAmount(repAmount) {
-
-    const scaleFactor = 1 + Math.log10(repAmount);
-    return scaleFactor
+    if (currentTreeVisualization === "Node-link diagram") {
+        return 1 + Math.log10(repAmount);
+    } else {
+        return 1
+    }
 }
 
 /**
