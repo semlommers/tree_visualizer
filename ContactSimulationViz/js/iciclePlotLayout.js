@@ -1,5 +1,4 @@
 function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
-    // TODO: misschien vanaf begin al groter renderen?
     let partitionLayout = d3.partition();
     partitionLayout
         .size([width, height - (marginWithinTree / 2 + fontSizeRepAmount)])
