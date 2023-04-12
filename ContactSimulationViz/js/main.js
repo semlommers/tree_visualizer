@@ -18,6 +18,7 @@ let horNodeSpace; //horitonzal space between nodes
 let marginWithinTree; //margin between the trees
 let horizontalMarginBetweenTrees; //Horizontal space between trees.
 let fontSizeRepAmount; //Base font size for the number that tells how much is represented
+let squarePlotSize;
 
 
 
@@ -29,13 +30,14 @@ function setVizSizes(nodeSize) {
     marginWithinTree = nodeSize * 2; //Makes sure the tree doesn't get clipped
     horizontalMarginBetweenTrees = nodeBaseSize * 2;
     fontSizeRepAmount = nodeSize * 2; //Base font size for the number that tells how much is represented
-
+    squarePlotSize = 40 * nodeSize; // Plot size for the square plots like icicle plot and sunburst plot
 }
 
 
 //Space for the layout
 const verticalMarginBetweenTrees = 4; //Vertical space between trees.
 const hiddenTreesScalingFactor = 0.001; //how much the trees that are represented by other trees are scaled down
+const squarePlotPadding = 1;
 
 
 

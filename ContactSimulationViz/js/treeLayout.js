@@ -161,7 +161,7 @@ function getWidth(treeRoot) {
         }
         return maxX - minX;
     } else {
-        return 40 * nodeBaseSize;
+        return squarePlotSize;
     }
 }
 
@@ -188,6 +188,6 @@ function getHeight(treeRoot) {
         }
         return maxY - minY;
     } else {
-        return 40 * nodeBaseSize;
+        return squarePlotSize;
     }
 }

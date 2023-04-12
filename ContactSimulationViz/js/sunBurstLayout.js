@@ -1,14 +1,9 @@
 function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
+    let radius = width/2;
+
     let partitionLayout = d3.partition();
     partitionLayout
-        .size([2 * Math.PI, height - (marginWithinTree / 2 + fontSizeRepAmount)])
-        .padding(1);
-
-    let arcGenerator = d3.arc()
-        .startAngle(function(d) { return d.x0; })
-        .endAngle(function(d) { return d.x1; })
-        .innerRadius(function(d) { return d.y0; })
-        .outerRadius(function(d) { return d.y1; });
+        .size([2 * Math.PI, radius]);
 
     root.sum(function(d) {
         if (d.children.length === 0) {
@@ -22,25 +17,34 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
             return count;
         }
     });
-    root.count();
     partitionLayout(root);
 
     const g = treeSvg.append("g")
-        .attr("transform", `translate(${height/2},${height/2 - (marginWithinTree / 2 + fontSizeRepAmount)})`); //make sure no clipping occurs
+        .attr("transform", `translate(${radius},${radius - (marginWithinTree / 2 + fontSizeRepAmount)})`); //make sure no clipping occurs
 
     const node = g.append("g") //nodes
-        .selectAll('path')
-        .data(root.descendants())
-        .join('path')
-        .attr('d', arcGenerator)
-        .attr("class", "node")
-        // .selectAll("g")
+        // .selectAll('path')
         // .data(root.descendants())
-        // .join("g")
-        // .attr('x', function(d) { return d.x0; })
-        // .attr('y', function(d) { return d.y0; })
-        // .attr('width', function(d) { return d.x1 - d.x0; })
-        // .attr('height', function(d) { return d.y1 - d.y0; })
+        // .join('path')
+        // .attr('d', arcGenerator)
+        .attr("class", "node")
+        .selectAll("g")
+        .data(function(d) {
+            let nodes = d.descendants();
+            let visualizedNodes = []
+            for (let i = 0; i < nodes.length; i++) {
+                let node = nodes[i];
+                if ((node.x1 - node.x0) > 0.05) { // Remove if node is to small to visualize
+                    visualizedNodes.push(node);
+                }
+            }
+            return visualizedNodes;
+        })
+        .join("g")
+        .attr('x0', function(d) { return d.x0; })
+        .attr('y0', function(d) { return d.y0; })
+        .attr('x1', function(d) { return d.x1; })
+        .attr('y1', function(d) { return d.y1; })
         .attr("id", function(d) {
             return d.data.id
         })
@@ -63,37 +67,60 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
 
 
         //position text such that the top is 2 pixels below the root
-        const textX = (root.x0 + root.x1) / 2 - text.node().getBBox().width / 2;
-        const textY = root.y + fontSizeRepAmount * 0.9;
+        const textX = width/2 - fontSizeRepAmount/2;
+        const textY = fontSizeRepAmount;
 
         text.attr("transform", `translate(${textX},${textY})`); //make sure no clipping occurs
     }
+
+    treeSvg.on("click", function(event) {
+        if (focusedTree === null) {
+            focusedTree = root.data.id;
+        } else {
+            focusedTree = null;
+        }
+        updatePositions(true);
+    })
 
     return treeSvg;
 }
 
 function makeStackedChartSunburstVertical(gElement, nodeId, isRepTree, isLeftChart) {
-    let startY = gElement.attr("y");
-    let rectHeight = gElement.attr("height");
+    let startY = gElement.attr("y0");
+    let arcHeight = gElement.attr("y1");
 
     for (let partI = 0; partI < maxParts; partI++) {
-        constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart, partI, startY, rectHeight);
+        constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart, partI, startY, arcHeight);
     }
 }
 
-function constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart, partIndex, startY, rectHeight) {
-    const baseX = parseFloat(gElement.attr("x"))
-    const baseWidth = gElement.attr("width")
+function constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart, partIndex, startY, arcHeight) {
+
+    const startAngle = parseFloat(gElement.attr("x0"))
+    const endAngle = gElement.attr("x1")
+    const arcSize = endAngle - startAngle;
 
     const color = getPartColor(partIndex, isLeftChart);
-    const [x, width] = getRectGlyphYPositionsSunburstPlotVertical(nodeId, partIndex, isRepTree, isLeftChart, baseWidth);
+    const [x, width] = getRectGlyphYPositionsSunburstPlotVertical(nodeId, partIndex, isRepTree, isLeftChart, arcSize);
 
     if (width > 0) { //only add rectangles that have a height
-        gElement.append("rect")
-            .attr("y", startY)
-            .attr("x", baseX + x)
-            .attr("width", width)
-            .attr("height", rectHeight)
+        let radius = squarePlotSize + marginWithinTree;
+        let padding = squarePlotPadding;
+
+        let arc = d3.arc()
+            .innerRadius(startY)
+            .outerRadius(arcHeight - padding)
+            .startAngle(startAngle + x)
+            .endAngle(startAngle + x + width);
+
+        if ((startAngle + x + width) === parseFloat(endAngle)) { // Add padding if last glyph
+            arc.padAngle(Math.min((endAngle - startAngle) / 2, 2 * padding / radius))
+                .padRadius(radius)
+        }
+
+
+        gElement.append("path")
+            .attr("d", arc)
             .attr("fill", color)
             .attr("class", "glyphRectangle")
     }
