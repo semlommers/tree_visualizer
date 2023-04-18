@@ -1,1 +1,1 @@
-[{"name":"EditDistance10"},{"name":"EditDistance11"},{"name":"PredictionSimilarityDistance"}]
+[{"name":"EditDistance10"},{"name":"EditDistance11"},{"name":"PredictionSimilarityDistance"},{"name":"RuleSimilarityDistance"}]
