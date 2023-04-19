@@ -202,6 +202,11 @@ function decisionTreeComparisonCount(nodeId, isRepTree){
     }
 }
 
+function correctClassificationCount(nodeId, isRepTree) {
+    const metadata = metaDataFromNodeById.get(nodeId);
+    return metadata.correctVsIncorrectClassifiedData;
+}
+
 /**
  * 
  * @param {*} nodesWithMetaData 

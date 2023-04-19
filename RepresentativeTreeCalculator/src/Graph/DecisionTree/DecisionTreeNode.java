@@ -13,16 +13,20 @@ public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
     public Integer predictedLabel;
     @Expose
     public Integer[] classProportions;
+    @Expose
+    public Integer[] correctVsIncorrectClassifiedData;
 
     public DecisionTreeNode(int id, Integer featureId, Integer predictedLabel, Integer[] classProportions) {
         super(id);
         this.featureId = featureId;
         this.predictedLabel = predictedLabel;
         this.classProportions = classProportions;
+        this.correctVsIncorrectClassifiedData = new Integer[]{0,0};
     }
 
     public DecisionTreeNode(int id) {
         super(id);
+        this.correctVsIncorrectClassifiedData = new Integer[]{0,0};
     }
 
     @Override
@@ -39,5 +43,13 @@ public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
         List<DecisionTreeEdge> edges = super.getOutgoingEdges();
         Collections.sort(edges);
         return edges;
+    }
+
+    public void addPredictionStatistics(boolean correct) {
+        if (correct) {
+            this.correctVsIncorrectClassifiedData[0]++;
+        } else {
+            this.correctVsIncorrectClassifiedData[1]++;
+        }
     }
 }

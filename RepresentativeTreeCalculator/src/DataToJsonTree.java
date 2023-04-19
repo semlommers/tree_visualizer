@@ -1,6 +1,7 @@
 
 import Graph.GraphAlgorithms.DistanceMeasures.PredictionSimilarityDistance;
 import Graph.GraphAlgorithms.DistanceMeasures.RuleSimilarityDistance;
+import Graph.GraphAlgorithms.MetaDataAlgorithms.DataInstanceMetaDataConstructor;
 import Import.RandomForestParser;
 import Graph.DecisionTree.DecisionTreeEdge;
 import Graph.DecisionTree.DecisionTreeNode;
@@ -63,7 +64,6 @@ public class DataToJsonTree {
         Files.copy(Paths.get(inputFolderLocation + "/names.json"), Paths.get(outputFileLocation + "/names.json"), StandardCopyOption.REPLACE_EXISTING);
 
         GraphWriter<DecisionTreeNode, DecisionTreeEdge> treeWriter = new GraphWriter<>();
-        treeWriter.writeMetaDataGraph(outputFileLocation + "/NodesAndMeta.json", decisionTreeGraph);
 
         System.out.println("Finding the forest");
         ForestFinder<DecisionTreeGraph, Tree<DecisionTreeNode, DecisionTreeEdge>, DecisionTreeNode, DecisionTreeEdge>
@@ -80,6 +80,11 @@ public class DataToJsonTree {
                 new RuleSimilarityDistance(inputFolderLocation + "/dataset.csv"));
         RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
         representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasures, outputFileLocation);
+
+        DataInstanceMetaDataConstructor dataInstanceMetaDataConstructor = new DataInstanceMetaDataConstructor(inputFolderLocation + "/dataset.csv");
+        dataInstanceMetaDataConstructor.addMisclassifiedDataCounterToForest(forest);
+
+        treeWriter.writeMetaDataGraph(outputFileLocation + "/NodesAndMeta.json", forest);
     }
 
     private void printStatistics(DecisionTreeGraph dtg) {

@@ -23,6 +23,12 @@ public class DecisionTreeGraph extends Tree<DecisionTreeNode, DecisionTreeEdge> 
     }
 
     public int predictTarget(List<Double> inputData) {
+        DecisionTreeNode leafNode = getLeafNodeByPrediction(inputData);
+
+        return leafNode.predictedLabel;
+    }
+
+    public DecisionTreeNode getLeafNodeByPrediction(List<Double> inputData) {
         DecisionTreeNode currentNode = calculateRoot();
         List<DecisionTreeEdge> childEdges = currentNode.getOutgoingEdgesSorted();
 
@@ -43,10 +49,10 @@ public class DecisionTreeGraph extends Tree<DecisionTreeNode, DecisionTreeEdge> 
             if (!childFound) {
                 Log.printOnce("ERROR: node with id: " + currentNode.id + " has children but value: " + value +
                         " falls not in any range");
-                return -1;
+                return null;
             }
         }
 
-        return currentNode.predictedLabel;
+        return currentNode;
     }
 }

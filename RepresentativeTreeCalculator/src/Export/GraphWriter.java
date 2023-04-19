@@ -26,12 +26,17 @@ import java.util.Set;
  */
 public class GraphWriter<N extends Node<N, E>, E extends Edge<N, E>> {
 
-    public void writeMetaDataGraph(String outputFileLocation, Tree<N, E> tree) throws IOException {
+    public void writeMetaDataGraph(String outputFileLocation, Set<Tree<N, E>> trees) throws IOException {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
         FileWriter fw = new FileWriter(outputFileLocation);
 
-        Collection<N> nodes = tree.getNodes();
-        gson.toJson(nodes, fw);
+        Collection<N> allNodes = new ArrayList<>();
+
+        for (Tree<N, E> tree : trees) {
+            Collection<N> nodes = tree.getNodes();
+            allNodes.addAll(nodes);
+        }
+        gson.toJson(allNodes, fw);
 
         fw.flush();
         fw.close();

@@ -35,6 +35,10 @@ const classProportionsColorSchemeOrder = ["class1", "class2", "class3", "class4"
 const classProportionsColorScheme = ['#1f78b4','#33a02c','#e31a1c','#ff7f00','#a6cee3','#b2df8a','#fb9a99','#fdbf6f','#cab2d6'];
 const classProportionsColorSchemeOrderDisplay = [];
 
+const correctClassifiedSchemeOrder = ["correct", "incorrect"]
+const correctClassifiedColorScheme = ['#4daf4a','#ff0000'];
+const correctClassifiedSchemeOrderDisplay = ["Correct classification", "Incorrect classification"]
+
 //"DEAD", "RECOVERED", 
 const distributionChartColorSchemeOrder = ["EXPOSED", "ASYMPTOMATIC", "PRESYMPTOMATIC", "SYMPTOMATIC", "SEVERELY_SYMPTOMATIC"];
 const distributionChartColorScheme = ["#fee5d9", "#bcbddc", "#fcae91", "#fb6a4a", "#cb181d"];

@@ -63,6 +63,9 @@ function getPartColor(index, isLeftChart) {
     if (color == "DT Comparison") {
         return decisionTreeColorScheme[index];
     }
+    if (color == "Correct Classification") {
+        return correctClassifiedColorScheme[index];
+    }
     console.error("No valid color selected")
 }
 
@@ -134,6 +137,8 @@ function getPartCounts(id, isRepTree, isLeftChart) {
         counts = decisionTreeStructureCount(id, isRepTree);
     } else if (color == "DT Comparison") {
         counts = decisionTreeComparisonCount(id, isRepTree);
+    } else if (color == "Correct Classification") {
+        counts = correctClassificationCount(id, isRepTree);
     } else {
         console.error(currentLeftColor + "is not a valid node color and parts cannot be drawn");
         counts = [0];

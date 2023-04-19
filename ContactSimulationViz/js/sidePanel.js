@@ -114,7 +114,8 @@ function createNodeColorSelectors(selectorDiv) {
     const colorOptions = [
         { "NAME": "DT Structure"},
         { "NAME": "DT Comparison"},
-        { "NAME": "Class Proportions"}
+        { "NAME": "Class Proportions"},
+        { "NAME": "Correct Classification"}
         // { "NAME": "Infection Location" },
         // { "NAME": "Infection Time" },
         // { "NAME": "Age" },
@@ -243,6 +244,9 @@ function createStateColorLegend(colorLegendDiv, isLeft) {
     } else if (currentColor == "DT Comparison") {
         colors = decisionTreeColorScheme;
         names = decisionTreeSchemeOrderDisplay;
+    } else if (currentColor == "Correct Classification") {
+        colors = correctClassifiedColorScheme;
+        names = correctClassifiedSchemeOrderDisplay;
     }
 
     if (currentPolicy == "None") {
