@@ -116,10 +116,6 @@ function createNodeColorSelectors(selectorDiv) {
         { "NAME": "DT Comparison"},
         { "NAME": "Class Proportions"},
         { "NAME": "Correct Classification"}
-        // { "NAME": "Infection Location" },
-        // { "NAME": "Infection Time" },
-        // { "NAME": "Age" },
-        // { "NAME": "Infector State" }
     ];
 
     const leftChangeFunction = function() {
@@ -223,19 +219,7 @@ function createStateColorLegend(colorLegendDiv, isLeft) {
 
     //get the colors and names to display
     let colors, names
-    if (currentColor == "Infector State") { //Color arc by infector state
-        colors = infectionColorScheme;
-        names = infectionColorSchemeOrderDisplay;
-    } else if (currentColor == "None") {
-        colors = noneColorScheme;
-        names = noneColorSchemeOrderDisplay;
-    } else if (currentColor == "Infection Location") {
-        colors = locationColorScheme;
-        names = locationColorSchemeOrderDisplay;
-    } else if (currentColor == "Age") {
-        colors = ageColorScheme;
-        names = ageColorSchemeOrderDisplay;
-    } else if (currentColor == "Class Proportions") {
+    if (currentColor == "Class Proportions") {
         colors = classProportionsColorScheme;
         names = classProportionsColorSchemeOrderDisplay;
     } else if (currentColor == "DT Structure") {
@@ -364,22 +348,6 @@ function createDistributionChartSelectors(divToAddTo) {
 
     createComboBox(comboBoxDiv, "levelComboBox", comboOptions, sortBy, selectRightLevelFunction, false);
 
-}
-
-
-
-
-function createDistributionLegend(distributionDiv) {
-    const legend = distributionDiv.append("div")
-        .attr("class", "distributionChartLegend");
-
-    const names = distributionChartColorSchemeOrderDisplay;
-    const colors = distributionChartColorScheme;
-    for (let i = 0; i < names.length; i++) {
-        const color = colors[i];
-        const name = names[i];
-        createStateColorLegendItem(color, name, true, legend);
-    }
 }
 
 function createLeftRightSubtitles(sidePanelDiv) {

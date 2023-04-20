@@ -37,18 +37,6 @@ function updateNodeGlyphs(isRepTree) {
 function getPartColor(index) {
     let color = currentColor;
 
-    if (color == "Infector State") { //Color part by infector state
-        return infectionColorScheme[index];
-    }
-    if (color == "None") {
-        return noneColorScheme[index];
-    }
-    if (color == "Infection Location") {
-        return locationColorScheme[index];
-    }
-    if (color == "Age") {
-        return ageColorScheme[index];
-    }
     if (color == "Class Proportions") {
         return classProportionsColorScheme[index];
     }

@@ -1,106 +1,5 @@
 //Holds several methods to count how many nodes are in states
 
-
-
-/**
- * Counts how many nodes that the node with id={id} represents were infected by a node with each state
-// Order:[RemovedByIsolation,RemovedByPolicy, EXPOSED,ASYMPTOMATIC,PRESYMPTOMATIC,SYMPTOMATIC,SEVERELY_SYMPTOMATIC,RECOVERED,DEAD]
- * @param {} nodeId 
- * @param {If true, takes the trees that are represented by this node into account as well} isRepTree
- * @param {Which policy data to use} policy
- * @param {How much the appPercentage of the policy is} appPercentage
- */
-function infectorStateCount(nodeId, isRepTree, policy, appPercentage) {
-    let nodesMetaData;
-    if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
-    } else { //only use the tree itself
-        nodesMetaData = [metaDataFromNodeById.get(nodeId)];
-    }
-
-    const count = getStateArray(nodesMetaData, infectionColorSchemeOrder, policy, appPercentage, getInfectorState);
-    return count;
-}
-
-/**
- * Counts how many nodes that the node with id={id} represents were removed by a policy
- * Order:[RemovedByIsolation,RemovedByPolicy, notRemovedByPolicy]
- * @param {} nodeId 
- * @param {If true, takes the trees that are represented by this node into account as well} isRepTree
- * @param {Which policy data to use} policy
- * @param {How much the appPercentage of the policy is} appPercentage
- */
-function noneCount(nodeId, isRepTree, policy, appPercentage) {
-    let nodesWithMetaData;
-    if (isRepTree) { //use all representative trees for the data
-        nodesWithMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
-    } else { //only use the tree itself
-        nodesWithMetaData = [metaDataFromNodeById.get(nodeId)];
-    }
-    const count = getStateArray(nodesWithMetaData, noneColorSchemeOrder, policy, appPercentage, getNoneState);
-    return count;
-}
-
-
-
-/**
- * Counts how many nodes that the node with id={id} represents were infected at a location
- * @param {} nodeId 
- * @param {If true, takes the trees that are represented by this node into account as well} isRepTree
- * @param {Which policy data to use} policy
- * @param {How much the appPercentage of the policy is} appPercentage
- */
-function locationCount(nodeId, isRepTree, policy, appPercentage) {
-    let nodesMetaData;
-    if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
-    } else { //only use the tree itself
-        nodesMetaData = [metaDataFromNodeById.get(nodeId)];
-    }
-
-    const count = getStateArray(nodesMetaData, locationColorSchemeOrder, policy, appPercentage, getLocation);
-    return count;
-}
-
-/**
- * Counts how many nodes that the node with id={id} represents are in a certain age group
- * @param {} nodeId 
- * @param {If true, takes the trees that are represented by this node into account as well} isRepTree
- * @param {Which policy data to use} policy
- * @param {How much the appPercentage of the policy is} appPercentage
- */
-function ageCount(nodeId, isRepTree, policy, appPercentage) {
-    let nodesMetaData;
-    if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
-    } else { //only use the tree itself
-        nodesMetaData = [metaDataFromNodeById.get(nodeId)];
-    }
-
-    const count = getStateArray(nodesMetaData, ageColorSchemeOrder, policy, appPercentage, getAge);
-    return count;
-}
-
-
-/**
- * Counts how many nodes that the node with id={id} represents are in a certain exposed time group
- * @param {} nodeId 
- * @param {If true, takes the trees that are represented by this node into account as well} isRepTree
- * @param {Which policy data to use} policy
- * @param {How much the appPercentage of the policy is} appPercentage
- */
-function timeCount(nodeId, isRepTree, policy, appPercentage) {
-    let nodesMetaData;
-    if (isRepTree) { //use all representative trees for the data
-        nodesMetaData = getRepresentedNodesMetaData(nodeId, currentDistance);
-    } else { //only use the tree itself
-        nodesMetaData = [metaDataFromNodeById.get(nodeId)];
-    }
-
-    const count = getStateArray(nodesMetaData, infectionTimeColorSchemeOrder, policy, appPercentage, getInfectionTime);
-    return count;
-}
-
 function classProportionsCount(nodeId) {
     const metadata = metaDataFromNodeById.get(nodeId);
     return metadata.classProportions;
@@ -208,54 +107,6 @@ function correctClassificationCount(nodeId) {
 }
 
 /**
- * 
- * @param {*} nodesWithMetaData 
- * @param {*} stateNames 
- * @param {*} policy 
- * @param {*} appPercentage 
- * @param {*} stateFunction 
- * @returns 
- */
-function getStateArray(nodesWithMetaData, stateNames, policy, appPercentage, stateFunction) {
-    let count = new Array(maxParts).fill(0); //make array of the correct size filled with 0's
-
-    for (const nodeMetaData of nodesWithMetaData) {
-        const state = stateFunction(nodeMetaData);
-
-
-
-        //which state this node has
-        let stateIndex = -1;
-
-        //policies are not a specific state, so do these seperatly
-        if (isRemovedByPolicy(nodeMetaData, policy, appPercentage)) { //is the node removed by the policy
-            stateIndex = stateNames.indexOf("removedByPolicy");
-        }
-
-        //Whether this node was the original of a removal chain and we are 
-        if (isRemovedByPolicy(nodeMetaData, policy, appPercentage, true)) {
-            stateIndex = stateNames.indexOf("removedByPolicyOrigin");
-        }
-
-        if (stateIndex != -1 && splitPolicy == false) { //if splitPolicy is disabled, color everything according to origin
-            stateIndex = stateNames.indexOf("removedByPolicyOrigin");
-        }
-
-        if (stateIndex == -1) { //not yet removed by a policy
-            for (let j = 2; j < stateNames.length; j++) { //first 2 states are policies
-                if (state.toUpperCase() == stateNames[j].toUpperCase()) { //compare without regard for capitalization
-                    stateIndex = j;
-                    break;
-                }
-            }
-        }
-        count[stateIndex] = count[stateIndex] + 1;
-    }
-    return count;
-}
-
-
-/**
  * Holds whether the node with the specified metadata is removed by the policy
  */
 function isRemovedByPolicy(nodeMetaData, policy, appPercentage, origin = false) {
@@ -275,10 +126,6 @@ function isRemovedByPolicy(nodeMetaData, policy, appPercentage, origin = false) 
         }
     }
     return false;
-}
-
-function isRemovedByIsolation(nodeMetaData) {
-    return isRemovedByPolicy(nodeMetaData, "1x"); //1x contains all the nodes that are removed by isolation
 }
 
 
@@ -337,26 +184,6 @@ function getNoneState(nodeMetaData) {
     if (state.toUpperCase() != "initial".toUpperCase()) { //root node
         state = "Other";
     }
-    return state;
-}
-
-/**
- * returns the location of the node, parsed to fall into one of the specified categories
- * @param {*} nodeMetaData 
- */
-function getLocation(nodeMetaData) {
-    let state = nodeMetaData.infectionLocation;
-
-    //collapse familystates
-    if (familyStates.indexOf(state) != -1) {
-        state = "Family";
-    }
-
-    //if not one of the specified state, it is an other strate
-    if (!(locationColorSchemeOrder.includes(state))) {
-        state = "Other";
-    }
-
     return state;
 }
 
