@@ -63,7 +63,7 @@ function makeStackedChart(gElement, nodeId, isRepTree, isLeftChart) {
 
 function constructRect(gElement, nodeId, isRepTree, isLeftChart, partIndex, startX, rectWidth) {
 
-    const color = getPartColor(partIndex, isLeftChart);
+    const color = getPartColor(partIndex);
     const [y, height] = getRectGlyphYPositions(nodeId, partIndex, isRepTree, isLeftChart);
 
     if (height > 0) { //only add rectangles that have a height

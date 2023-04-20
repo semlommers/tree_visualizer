@@ -2,71 +2,42 @@ const barChartHeight = 100;
 
 function createComponentBarChart(divToAddTo) {
 
-    let leftColors = [];
-    let rightColors = [];
+    let colors = [];
     for (let i = 0; i < maxParts; i++) {
-        leftColors[i] = getPartColor(i, true);
-        rightColors[i] = getPartColor(i, false);
+        colors[i] = getPartColor(i);
     }
 
     //get the distribution
-    let leftValues = new Array(maxParts).fill(0);
-    let rightValues = new Array(maxParts).fill(0);
+    let values = new Array(maxParts).fill(0);
     metaDataFromNodeById.forEach((metaData, id) => {
         //only count it this node is at the right depth
         const nodeDepth = metaData.depth;
 
-        if (currentLeftDistributionSelection.includes("All") || currentLeftDistributionSelection.includes(nodeDepth)) {
-            const partCountsLeft = getPartCounts(id, false, true);
+        if (currentDistributionSelection.includes("All") || currentDistributionSelection.includes(nodeDepth)) {
+            const partCounts = getPartCounts(id, false);
             for (let i = 0; i < maxParts; i++) {
-                leftValues[i] += partCountsLeft[i];
-            }
-        }
-
-        if (currentRightDistributionSelection.includes("All") || currentRightDistributionSelection.includes(nodeDepth)) {
-            const partCountsRight = getPartCounts(id, false, false);
-            for (let i = 0; i < maxParts; i++) {
-                rightValues[i] += partCountsRight[i];
+                values[i] += partCounts[i];
             }
         }
     })
 
-    //add an additional normalizing step as we are only showing the values from a single level which is confusing.
-    //Bar charts need to display height proportional to the total.
-    let totalNodes;
-    if (normalizeComponentChart) { //if normalize is true, simply show each level by itself
-        totalNodes = -1;
-    } else {
-        totalNodes = metaDataFromNodeById.size;
-    }
 
+    const barchartDiv = divToAddTo.append("div").attr("class", "barChartsContainer")
 
-    const barchartsDiv = divToAddTo.append("div").attr("class", "barChartsContainer")
-
-    const leftBarChartG = barchartsDiv.append("svg")
+    const barChartG = barchartDiv.append("svg")
         .attr("class", "barChartSvg")
         .attr("height", barChartHeight)
         .append("g")
 
-    createBarChart(leftBarChartG, barChartHeight, leftValues, leftColors, totalNodes)
-
-    const rightBarChartG = barchartsDiv.append("svg")
-        .attr("class", "barChartSvg")
-        .attr("height", barChartHeight)
-        .append("g")
-
-    createBarChart(rightBarChartG, barChartHeight, rightValues, rightColors, totalNodes)
+    createBarChart(barChartG, barChartHeight, values, colors)
 
 }
 
 
 
-function createBarChart(gElement, totalHeight, dataValues, colors, sum) {
+function createBarChart(gElement, totalHeight, dataValues, colors) {
     const parts = dataValues.length;
-    if (sum === undefined || sum == -1) { //either not given or explicitly set to not use. Otherwise it's a value
-        sum = dataValues.reduce((accumulator, currentVal) => accumulator + currentVal)
-    }
-
+    let sum = dataValues.reduce((accumulator, currentVal) => accumulator + currentVal)
 
     let currentY = 0;
     for (let partI = 0; partI < parts; partI++) {

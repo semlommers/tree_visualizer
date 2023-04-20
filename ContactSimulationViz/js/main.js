@@ -64,7 +64,7 @@ var currentDistance = initDistanceSliderVal; //Current distance
 var maxMaxDistance = 0;
 
 
-var currentLeftColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
+var currentColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
 var currentRightColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
 var currentLeftPolicy = "1a"; //what the current policy is for the left sides of the glyphs
 var currentRightPolicy = "1a"; //what the current policy is for the left sides of the glyphs
@@ -74,7 +74,7 @@ var currentTreeVisualization = "Icicle plot";
 var currentLeftAppPercentage = "100";
 var currentRightAppPercentage = "100";
 
-var currentLeftDistributionSelection = "All"; //which levels of the distribution we are currently showing
+var currentDistributionSelection = "All"; //which levels of the distribution we are currently showing
 var currentRightDistributionSelection = "All"; //which levels of the distribution we are currently showing
 var normalizeComponentChart = false; //whether we normalize the bar chart against the total amount of nodes or not.
 

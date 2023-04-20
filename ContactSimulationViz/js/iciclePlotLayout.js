@@ -94,7 +94,7 @@ function constructRectIciclePlot(gElement, nodeId, isRepTree, isLeftChart, partI
     const baseY = parseFloat(gElement.attr("y"))
     const baseHeight = gElement.attr("height")
 
-    const color = getPartColor(partIndex, isLeftChart);
+    const color = getPartColor(partIndex);
     const [y, height] = getRectGlyphYPositionsIciclePlot(nodeId, partIndex, isRepTree, isLeftChart, baseHeight);
 
     if (height > 0) { //only add rectangles that have a height
@@ -121,7 +121,7 @@ function constructRectIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChar
     const baseX = parseFloat(gElement.attr("x"))
     const baseWidth = gElement.attr("width")
 
-    const color = getPartColor(partIndex, isLeftChart);
+    const color = getPartColor(partIndex);
     const [x, width] = getRectGlyphYPositionsIciclePlotVertical(nodeId, partIndex, isRepTree, isLeftChart, baseWidth);
 
     if (width > 0) { //only add rectangles that have a height

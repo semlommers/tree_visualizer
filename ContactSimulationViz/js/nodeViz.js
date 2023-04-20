@@ -34,13 +34,8 @@ function updateNodeGlyphs(isRepTree) {
     });
 }
 
-function getPartColor(index, isLeftChart) {
-    let color;
-    if (isLeftChart) {
-        color = currentLeftColor;
-    } else {
-        color = currentRightColor;
-    }
+function getPartColor(index) {
+    let color = currentColor;
 
     if (color == "Infector State") { //Color part by infector state
         return infectionColorScheme[index];
@@ -80,7 +75,7 @@ function getPartColor(index, isLeftChart) {
  * @returns 
  */
 function getPartPercentages(id, partIndex, isRepTree, isLeftChart) {
-    const counts = getPartCounts(id, isRepTree, isLeftChart);
+    const counts = getPartCounts(id, isRepTree);
 
     let startValue = 0; //value of all parts up to index {partIndex}
     let sum = 0;
@@ -106,41 +101,24 @@ function getPartPercentages(id, partIndex, isRepTree, isLeftChart) {
 
 
 
-function getPartCounts(id, isRepTree, isLeftChart) {
+function getPartCounts(id, isRepTree) {
     let partCounts = new Array(maxParts).fill(0); //array length equal to amount of parts. Fill them in one by one
 
-    let counts, color, policy, appPercentage;
+    let counts, color;
 
-    if (isLeftChart) { //get the right data
-        color = currentLeftColor;
-        policy = currentLeftPolicy
-        appPercentage = currentLeftAppPercentage;
-    } else {
-        color = currentRightColor;
-        policy = currentRightPolicy
-        appPercentage = currentRightAppPercentage;
-    }
-
+    color = currentColor;
 
     //get the array, some will have fewer values which we will pad. Each will have how many nodes are "saved" as the first entry
-    if (color == "Infector State") { //Color part by infector state
-        counts = infectorStateCount(id, isRepTree, policy, appPercentage);
-    } else if (color == "None") {
-        counts = noneCount(id, isRepTree, policy, appPercentage);
-    } else if (color == "Infection Location") {
-        counts = locationCount(id, isRepTree, policy, appPercentage);
-    } else if (color == "Age") {
-        counts = ageCount(id, isRepTree, policy, appPercentage);
-    } else if (color == "Class Proportions") {
-        counts = classProportionsCount(id, isRepTree, policy, appPercentage);
+    if (color == "Class Proportions") {
+        counts = classProportionsCount(id);
     } else if (color == "DT Structure") {
         counts = decisionTreeStructureCount(id, isRepTree);
     } else if (color == "DT Comparison") {
         counts = decisionTreeComparisonCount(id, isRepTree);
     } else if (color == "Correct Classification") {
-        counts = correctClassificationCount(id, isRepTree);
+        counts = correctClassificationCount(id);
     } else {
-        console.error(currentLeftColor + "is not a valid node color and parts cannot be drawn");
+        console.error(color + "is not a valid node color and parts cannot be drawn");
         counts = [0];
     }
 

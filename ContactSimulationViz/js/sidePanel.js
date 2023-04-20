@@ -123,7 +123,7 @@ function createNodeColorSelectors(selectorDiv) {
     ];
 
     const leftChangeFunction = function() {
-        currentLeftColor = this.value; //keep the color up to date
+        currentColor = this.value; //keep the color up to date
         changePending();
     };
 
@@ -132,7 +132,7 @@ function createNodeColorSelectors(selectorDiv) {
         changePending();
     };
 
-    createLeftRightComboBoxes(selectorDiv, colorOptions, "leftNodeColorSelector", "rightNodeColorSelector", currentLeftColor, currentRightColor, leftChangeFunction, rightChangeFunction);
+    createLeftRightComboBoxes(selectorDiv, colorOptions, "leftNodeColorSelector", "rightNodeColorSelector", currentColor, currentRightColor, leftChangeFunction, rightChangeFunction);
 }
 
 function createSortOptions(selectorDiv) {
@@ -212,9 +212,9 @@ function createStateColorLegend(colorLegendDiv, isLeft) {
     let startI = 0;
 
     //get the colorname and policy name
-    let currentColor, currentPolicy;
-    if (isLeft) {
-        currentColor = currentLeftColor;
+    let currentPolicy;
+    if (true) {
+        currentColor = currentColor;
         currentPolicy = currentLeftPolicy;
     } else {
         currentColor = currentRightColor;
@@ -326,13 +326,13 @@ function createDistributionChartSelectors(divToAddTo) {
     }
 
     const selectLeftLevelFunction = function() {
-        currentLeftDistributionSelection = [];
+        currentDistributionSelection = [];
         for (let option of this.selectedOptions) {
             if (option.value == "All") {
-                currentLeftDistributionSelection.push("All")
+                currentDistributionSelection.push("All")
             } else {
                 //take only the number. Represent as int for ease of manipulation later
-                currentLeftDistributionSelection.push(parseInt(option.value.split(" ")[1]))
+                currentDistributionSelection.push(parseInt(option.value.split(" ")[1]))
             }
         }
         updateGlobalChart();

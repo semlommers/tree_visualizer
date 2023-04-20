@@ -100,7 +100,7 @@ function constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart,
     const endAngle = gElement.attr("x1")
     const arcSize = endAngle - startAngle;
 
-    const color = getPartColor(partIndex, isLeftChart);
+    const color = getPartColor(partIndex);
     const [x, width] = getRectGlyphYPositionsSunburstPlotVertical(nodeId, partIndex, isRepTree, isLeftChart, arcSize);
 
     if (width > 0) { //only add rectangles that have a height

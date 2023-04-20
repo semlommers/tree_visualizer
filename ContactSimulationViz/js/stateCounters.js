@@ -202,7 +202,7 @@ function decisionTreeComparisonCount(nodeId, isRepTree){
     }
 }
 
-function correctClassificationCount(nodeId, isRepTree) {
+function correctClassificationCount(nodeId) {
     const metadata = metaDataFromNodeById.get(nodeId);
     return metadata.correctVsIncorrectClassifiedData;
 }
