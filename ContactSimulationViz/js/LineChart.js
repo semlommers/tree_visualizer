@@ -1,4 +1,4 @@
-//Simple line chart including dataprocessing for underneath the R_t slider.
+//Simple line chart including data processing for underneath the R_t slider.
 
 let treesPerSize = []; //for each R_t value (represented by the index), holds how many trees there are
 
@@ -28,12 +28,12 @@ function createScentedRtLineChart(chartDiv, scentIndex) {
 
 
 /**
- * 
- * @param {*} chartDiv 
- * @param {*} usableWidth 
- * @param {*} usableHeight 
- * @param {series of values corresponding to y axis} inputData 
- * @param {dataIndex for what is currently selected} scentIndex 
+ *
+ * @param {*} chartDiv
+ * @param {*} usableWidth
+ * @param {*} usableHeight
+ * @param  inputData series of values corresponding to y axis
+ * @param  scentIndex dataIndex for what is currently selected
  */
 function createLineChart(chartDiv, usableWidth, usableHeight, inputData, scentIndex) {
     const margin = { top: 0, right: 0, bottom: 0, left: 0 };
@@ -49,24 +49,27 @@ function createLineChart(chartDiv, usableWidth, usableHeight, inputData, scentIn
             "translate(" + margin.left + "," + margin.top + ")");
 
     //setup x and y scale functions
-    var x = d3.scaleLinear()
+    const x = d3.scaleLinear()
         .range([0, width])
-        .domain([0, inputData.length - 1])
+        .domain([0, inputData.length - 1]);
 
-    var y = d3.scaleLinear()
+    const y = d3.scaleLinear()
         .range([height, 0])
         .domain([0, d3.max(inputData)]);
 
     //x,y functions for the data base on axis
-    var shape = d3.line()
-        .x(function(d) { return x(d[0]); })
-        .y(function(d) { return y(d[1]); });
+    const shape = d3.line()
+        .x(function (d) {
+            return x(d[0]);
+        })
+        .y(function (d) {
+            return y(d[1]);
+        });
 
 
-
-    //get x,y positions for the SHAPE to fill. If filled=false this is just a line, otherwise we add points to fill underneat
+    //get x,y positions for the SHAPE to fill. If filled=false this is just a line, otherwise we add points to fill underneath
     let data = [];
-    let scentData = [];
+    let scentData;
     const dataLength = inputData.length;
 
     for (let i = 0; i < dataLength; i++) {
@@ -93,26 +96,11 @@ function createLineChart(chartDiv, usableWidth, usableHeight, inputData, scentIn
 
 /**
  * Completes the shape by drawing a value down from the last value, then through the origin, and finally back to the start. Modifies the array
- * @param {array of [x,y] values} data 
+ * @param  data array of [x,y] values
  */
 function completeShape(data) {
-    dataLength = data.length;
+    let dataLength = data.length;
     data[dataLength] = [dataLength - 1, 0]; //go to 0 on the y-axis
     data[dataLength + 1] = [0, 0]; //go to 0,0
     data[dataLength + 2] = [0, data[0][1]]; //close the shape
-}
-
-function updateScentedLineChart(id, maxDataIndex) {
-
-    for (let i = 0; i < maxDataIndex; i++) {
-        data[i] = [i, treesPerSize[i]];
-    }
-    data[maxDataIndex] = [maxDataIndex - 1, 0]; //go to 0 on the y-axis
-    data[maxDataIndex + 1] = [0, 0]; //go to 0,0 on the y-axis
-    data[maxDataIndex + 2] = [0, inputData[0]]; //close the shape
-
-    const svgLine = svg.append("path")
-        .datum(data2)
-        .attr("class", "scentedLine")
-        .attr("d", line)
 }
