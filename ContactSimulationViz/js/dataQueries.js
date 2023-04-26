@@ -32,6 +32,7 @@ function initializeRepTreeData() {
     // Reset the global variables related to repTrees
     repTreeById = new Map();
     repNodeById = new Map();
+    maxMaxDistance = 0;
     treeOrder = [];
     treeBaseWidthById = new Map();
     treeBaseHeightById = new Map();
