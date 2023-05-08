@@ -16,7 +16,7 @@ function preprocessData() {
         const id = tree.id;
         allTreeById.set(id, tree);
 
-        //add extra meta data for each tree.
+        //add extra metadata for each tree.
         addExtraMetaData(tree, 0, id);
     }
     allTreesData = undefined;

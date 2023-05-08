@@ -28,7 +28,7 @@ function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
             let visualizedNodes = []
             for (let i = 0; i < nodes.length; i++) {
                 let node = nodes[i];
-                if ((node.x1 - node.x0) > 0) { // Remove if node is to small to visualize
+                if ((node.x1 - node.x0) > 0) { // Remove if node is too small to visualize
                     visualizedNodes.push(node);
                 }
             }

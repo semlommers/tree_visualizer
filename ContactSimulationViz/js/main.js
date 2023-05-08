@@ -6,15 +6,11 @@ const metaDataInputLocation = "data/NodesAndMeta.json";
 const distanceMetricsMetaDataLocation = "data/DistanceMeasures.json"
 const namesLocation = "data/names.json"
 
-const simMetaDataInputLocation = "data/SimMeta.csv";
-// const originalExposedDataInputLocation = "data/OriginalExposed.csv"
-
-//Visual variables
-//Variables for the tree visualization
+//Visual variables for the tree visualization
 let nodeBaseSize = 4; //radius of the node
 let linkBaseSize; //Width of links
 let verNodeSpace; //vertical space between nodes
-let horNodeSpace; //horitonzal space between nodes
+let horNodeSpace; //horizontal space between nodes
 let marginWithinTree; //margin between the trees
 let horizontalMarginBetweenTrees; //Horizontal space between trees.
 let fontSizeRepAmount; //Base font size for the number that tells how much is represented
@@ -25,8 +21,8 @@ let squarePlotSize;
 function setVizSizes(nodeSize) {
     nodeBaseSize = nodeSize;
     linkBaseSize = nodeSize / 2; //constant link size depending on node size
-    verNodeSpace = nodeSize * 2 + 3; //Vertical space between nodes. *2 as this is the diamater of a node. 
-    horNodeSpace = nodeSize * 2 + 2; // Horizontal space between nodes. *2 as this is the diamater of a node.
+    verNodeSpace = nodeSize * 2 + 3; //Vertical space between nodes. *2 as this is the diameter of a node.
+    horNodeSpace = nodeSize * 2 + 2; // Horizontal space between nodes. *2 as this is the diameter of a node.
     marginWithinTree = nodeSize * 2; //Makes sure the tree doesn't get clipped
     horizontalMarginBetweenTrees = nodeBaseSize * 2;
     fontSizeRepAmount = nodeSize * 2; //Base font size for the number that tells how much is represented
@@ -49,51 +45,38 @@ const initDistanceSliderVal = 15; //start the slider at 0
 
 const popupWidth = 500; //width of the popup when clicking a node to see which trees it represents.
 
-var treeOrder = []; //order of the trees in the viz
-var treeBaseWidthById = new Map(); //Base width of the tree by id of the root. Uses nodes of {@code nodeBaseSize} size
-var treeBaseHeightById = new Map(); //Base  height of the tree by id of the root. Uses nodes of {@code nodeBaseSize} size
+let treeOrder = []; //order of the trees in the viz
+let treeBaseWidthById = new Map(); //Base width of the tree by id of the root. Uses nodes of {@code nodeBaseSize} size
+let treeBaseHeightById = new Map(); //Base  height of the tree by id of the root. Uses nodes of {@code nodeBaseSize} size
 
-var repTreeById = new Map(); //holds the representative tree data by id of the root
-var repNodeById = new Map(); //holds all node data represented by the specified node
-var allTreeById = new Map(); //holds the alltree data by id of the root
-var metaDataFromNodeById = new Map(); //holds the meta data for each node by id of the node.
-var nodesRepresentedBy;
-
-
-var currentDistance = initDistanceSliderVal; //Current distance
-var maxMaxDistance = 0;
+let repTreeById = new Map(); //holds the representative tree data by id of the root
+let repNodeById = new Map(); //holds all node data represented by the specified node
+let allTreeById = new Map(); //holds the allTree data by id of the root
+let metaDataFromNodeById = new Map(); //holds the metadata for each node by id of the node.
+let nodesRepresentedBy;
 
 
-var currentColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
-var currentRightColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
-var currentLeftPolicy = "1a"; //what the current policy is for the left sides of the glyphs
-var currentRightPolicy = "1a"; //what the current policy is for the left sides of the glyphs
-var splitPolicy = false; //Whether to split to policy into infection route prevent and contact avoided.
-var currentTreeVisualization = "Icicle plot";
+let currentDistance = initDistanceSliderVal; //Current distance
+let maxMaxDistance = 0;
 
-var currentLeftAppPercentage = "100";
-var currentRightAppPercentage = "100";
 
-var currentDistributionSelection = "All"; //which levels of the distribution we are currently showing
-var currentRightDistributionSelection = "All"; //which levels of the distribution we are currently showing
-var normalizeComponentChart = false; //whether we normalize the bar chart against the total amount of nodes or not.
+let currentColor = "DT Structure"; //What we are currently coloring the nodes by for the left sides of the glyphs
+let currentTreeVisualization = "Icicle plot";
 
-var sortEnabled = false;
-var sortBy = "Tree size";
+let currentDistributionSelection = "All"; //which levels of the distribution we are currently showing
+let currentRightDistributionSelection = "All"; //which levels of the distribution we are currently showing
 
-var currentDistanceMetric;
-var loadDifferentDistanceMetric = false;
+let currentDistanceMetric;
+let loadDifferentDistanceMetric = false;
 
 let focusedTree = null;
 
-var recalculate = false; //Holds whether we need to recalculate the tree grid. Can happen in case of node size change or data change
+let recalculate = false; //Holds whether we need to recalculate the tree grid. Can happen in case of node size change or data change
 
 const maxParts = 10; //How many different parts we can have at maximum in the glyph.
 
-var repTreesData, allTreesData, metaData, originalExposedData, distanceMetricMetaData, namesData;
-var d3;
-
-
+let repTreesData, allTreesData, metaData, distanceMetricMetaData, namesData;
+let d3;
 
 
 //Load in all the javascript files
@@ -107,19 +90,13 @@ requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.
                     distanceMetricMetaData = distanceMetricMetaDataInput;
                     currentDistanceMetric = distanceMetricMetaData[0].name;
                     d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
-                        // d3.csv(simMetaDataInputLocation).then(function(simMetaDataInput) {
-                        // d3.csv(originalExposedDataInputLocation).then(function(originalExposedDataInput) {
-                        // repTreesData = repTreesDataInput;
                         repTreesData = repTreesDataInput;
                         allTreesData = allTreesDataInput;
                         metaData = metaDataInput;
                         namesData = namesDataInput;
-                        // simMetaData = simMetaDataInput;
-                        // originalExposedData = originalExposedDataInput;
                         setVizSizes(nodeBaseSize);
                         mainRepresentativeGraph();
                         updateAll(); //update to use slider values
-                        // });
                     });
                 });
             });

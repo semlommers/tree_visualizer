@@ -123,49 +123,8 @@ function createNodeColorSelectors(selectorDiv) {
         changePending();
     };
 
-    const rightChangeFunction = function() {
-        currentRightColor = this.value; //keep the color up to date
-        changePending();
-    };
-
-    createLeftRightComboBoxes(selectorDiv, colorOptions, "leftNodeColorSelector", "rightNodeColorSelector", currentColor, currentRightColor, leftChangeFunction, rightChangeFunction);
+    createLeftRightComboBoxes(selectorDiv, colorOptions, "leftNodeColorSelector", currentColor, leftChangeFunction);
 }
-
-function createSortOptions(selectorDiv) {
-
-    const sortDiv = selectorDiv.append("div")
-        .attr("class", "sortDiv")
-
-    sortDiv.append("p")
-        .attr("class", "text subtitle")
-        .text("Sort")
-
-    const sortEnabledChangeFunction = function() {
-        sortEnabled = this.checked; //keep it updated
-        changePending();
-    };
-
-    createCheckBox(sortDiv, "sortCheckBox", sortEnabled, sortEnabledChangeFunction);
-
-
-    sortDiv.append("p")
-        .attr("class", "text subtitle")
-        .text("by")
-
-    const comboOptions = [
-        { "NAME": "Tree size" },
-        { "NAME": "Difference" },
-        { "NAME": "Root width" }
-    ]
-
-    const sortByChangeFunction = function() {
-        sortBy = this.value; //keep it updated
-        changePending();
-    };
-
-    createComboBox(sortDiv, "sortComboBox", comboOptions, sortBy, sortByChangeFunction);
-}
-
 function createRecalculateButton(selectorDiv) {
 
     const recalculateDiv = selectorDiv.append("div")
@@ -207,16 +166,6 @@ function createStateColorLegend(colorLegendDiv, isLeft) {
 
     let startI = 0;
 
-    //get the colorname and policy name
-    let currentPolicy;
-    if (true) {
-        currentColor = currentColor;
-        currentPolicy = currentLeftPolicy;
-    } else {
-        currentColor = currentRightColor;
-        currentPolicy = currentRightPolicy;
-    }
-
     //get the colors and names to display
     let colors, names
     if (currentColor == "Class Proportions") {
@@ -233,27 +182,12 @@ function createStateColorLegend(colorLegendDiv, isLeft) {
         names = correctClassifiedSchemeOrderDisplay;
     }
 
-    if (currentPolicy == "None") {
-        startI = 2;
-    }
-
 
 
 
     for (let i = startI; i < names.length; i++) {
         const color = colors[i];
         let name = names[i];
-        if (!splitPolicy) //If we aren't looking into the detailed split policy we merge them together
-        {
-            if (name == "Infection route prevented earlier") {
-                //skip the detailed view
-                continue;
-            }
-            if (name == "Contact avoided due to isolation") {
-                //rename as it now represents all states
-                name = "Infection route prevented";
-            }
-        }
         createStateColorLegendItem(color, name, isLeft, halfColorDiv);
     }
 
@@ -342,11 +276,11 @@ function createDistributionChartSelectors(divToAddTo) {
     };
     const comboBoxDiv = divToAddTo.append("div").attr("class", "comboBoxesDiv")
 
-    createComboBox(comboBoxDiv, "levelComboBox", comboOptions, sortBy, selectLeftLevelFunction, false);
+    createComboBox(comboBoxDiv, "levelComboBox", comboOptions, "Tree size", selectLeftLevelFunction, false);
 
     createCheckBox(comboBoxDiv, "normalizeCheckbox", false, normalizeCheckBoxFunction, "Normalized")
 
-    createComboBox(comboBoxDiv, "levelComboBox", comboOptions, sortBy, selectRightLevelFunction, false);
+    createComboBox(comboBoxDiv, "levelComboBox", comboOptions, "Tree size", selectRightLevelFunction, false);
 
 }
 
@@ -365,13 +299,12 @@ function createLeftRightSubtitles(sidePanelDiv) {
 }
 
 
-function createLeftRightComboBoxes(divToAppendTo, colorOptions, leftId, rightId, leftInitColor, rightInitColor, leftChangeFunction, rightChangeFunction) {
+function createLeftRightComboBoxes(divToAppendTo, colorOptions, leftId, leftInitColor, leftChangeFunction) {
 
     const comboBoxDiv = divToAppendTo.append("div")
         .attr("class", "comboBoxesDiv")
 
     createComboBox(comboBoxDiv, leftId, colorOptions, leftInitColor, leftChangeFunction);
-    createComboBox(comboBoxDiv, rightId, colorOptions, rightInitColor, rightChangeFunction);
 }
 
 function createComboBox(divToAppendTo, id, valueList, initVal, changeFunction, multiple) {

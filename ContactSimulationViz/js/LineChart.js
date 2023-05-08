@@ -32,7 +32,7 @@ function createScentedRtLineChart(chartDiv, scentIndex) {
  * @param {*} chartDiv
  * @param {*} usableWidth
  * @param {*} usableHeight
- * @param  inputData series of values corresponding to y axis
+ * @param  inputData series of values corresponding to y-axis
  * @param  scentIndex dataIndex for what is currently selected
  */
 function createLineChart(chartDiv, usableWidth, usableHeight, inputData, scentIndex) {
@@ -57,7 +57,7 @@ function createLineChart(chartDiv, usableWidth, usableHeight, inputData, scentIn
         .range([height, 0])
         .domain([0, d3.max(inputData)]);
 
-    //x,y functions for the data base on axis
+    //x,y functions for the database on axis
     const shape = d3.line()
         .x(function (d) {
             return x(d[0]);
