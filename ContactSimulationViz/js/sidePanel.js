@@ -72,7 +72,7 @@ function createVisualizationTypeSelector(selectorDiv) {
         .text("Visualization type")
 
     let visualizationTypes = [
-        {"NAME": "Node-link diagram"},
+        // {"NAME": "Node-link diagram"},
         {"NAME": "Icicle plot"},
         {"NAME": "Sunburst plot"}
     ]
