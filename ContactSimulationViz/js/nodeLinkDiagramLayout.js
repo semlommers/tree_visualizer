@@ -2,7 +2,7 @@ function nodeLinkDiagramLayout(treeSvg, root, width, height, isRepTree) {
     const g = treeSvg.append("g")
         .attr("transform", `translate(${marginWithinTree / 2},${marginWithinTree / 2 + fontSizeRepAmount})`); //make sure no clipping occurs
 
-    const link = g.append("g") //links
+    g.append("g") //links
         .attr("class", "edge")
         .selectAll("path")
         .data(root.links())
@@ -29,7 +29,7 @@ function nodeLinkDiagramLayout(treeSvg, root, width, height, isRepTree) {
 
 
     //add how many trees this node represents if the data is present
-    if (isRepTree && typeof root.data.representations !== 'undefined') {
+    if (isRepTree && typeof root.data["representations"] !== 'undefined') {
         const repNumber = getAmountOfTreesRepresented(root, currentDistance);
 
         const textG = treeSvg.append("g").attr("class", "textG")
