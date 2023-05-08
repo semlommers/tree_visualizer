@@ -85,23 +85,23 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
     return treeSvg;
 }
 
-function makeStackedChartSunburstVertical(gElement, nodeId, isRepTree, isLeftChart) {
+function makeStackedChartSunburstVertical(gElement, nodeId, isRepTree) {
     let startY = gElement.attr("y0");
     let arcHeight = gElement.attr("y1");
 
     for (let partI = 0; partI < maxParts; partI++) {
-        constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart, partI, startY, arcHeight);
+        constructRectSunburstVertical(gElement, nodeId, isRepTree, partI, startY, arcHeight);
     }
 }
 
-function constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart, partIndex, startY, arcHeight) {
+function constructRectSunburstVertical(gElement, nodeId, isRepTree, partIndex, startY, arcHeight) {
 
     const startAngle = parseFloat(gElement.attr("x0"))
     const endAngle = gElement.attr("x1")
     const arcSize = endAngle - startAngle;
 
     const color = getPartColor(partIndex);
-    const [x, width] = getRectGlyphYPositionsSunburstPlotVertical(nodeId, partIndex, isRepTree, isLeftChart, arcSize);
+    const [x, width] = getRectGlyphYPositionsSunburstPlotVertical(nodeId, partIndex, isRepTree, arcSize);
 
     if (width > 0) { //only add rectangles that have a height
         let radius = squarePlotSize + marginWithinTree;
@@ -126,9 +126,9 @@ function constructRectSunburstVertical(gElement, nodeId, isRepTree, isLeftChart,
     }
 }
 
-function getRectGlyphYPositionsSunburstPlotVertical(id, partIndex, isRepTree, isLeftChart, baseSize) {
+function getRectGlyphYPositionsSunburstPlotVertical(id, partIndex, isRepTree, baseSize) {
 
-    const partRange = getPartPercentages(id, partIndex, isRepTree, isLeftChart);
+    const partRange = getPartPercentages(id, partIndex, isRepTree);
 
     const x1 = partRange[0] * baseSize;
     const x2 = partRange[1] * baseSize;

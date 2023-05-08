@@ -52,19 +52,19 @@ function nodeLinkDiagramLayout(treeSvg, root, width, height, isRepTree) {
 }
 
 
-function makeStackedChart(gElement, nodeId, isRepTree, isLeftChart) {
+function makeStackedChart(gElement, nodeId, isRepTree) {
     let [startX, rectWidth] = getRectGlyphXPositions()
 
     for (let partI = 0; partI < maxParts; partI++) {
-        constructRect(gElement, nodeId, isRepTree, isLeftChart, partI, startX, rectWidth);
+        constructRect(gElement, nodeId, isRepTree, partI, startX, rectWidth);
     }
 }
 
 
-function constructRect(gElement, nodeId, isRepTree, isLeftChart, partIndex, startX, rectWidth) {
+function constructRect(gElement, nodeId, isRepTree, partIndex, startX, rectWidth) {
 
     const color = getPartColor(partIndex);
-    const [y, height] = getRectGlyphYPositions(nodeId, partIndex, isRepTree, isLeftChart);
+    const [y, height] = getRectGlyphYPositions(nodeId, partIndex, isRepTree);
 
     if (height > 0) { //only add rectangles that have a height
         gElement.append("rect")
@@ -77,9 +77,9 @@ function constructRect(gElement, nodeId, isRepTree, isLeftChart, partIndex, star
     }
 }
 
-function getRectGlyphYPositions(id, partIndex, isRepTree, isLeftChart) {
+function getRectGlyphYPositions(id, partIndex, isRepTree) {
 
-    const partRange = getPartPercentages(id, partIndex, isRepTree, isLeftChart);
+    const partRange = getPartPercentages(id, partIndex, isRepTree);
     const rectSize = nodeBaseSize * 2; //nodeBaseSize is radius
 
     const y1 = partRange[0] * rectSize - rectSize / 2;

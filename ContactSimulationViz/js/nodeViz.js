@@ -6,12 +6,11 @@
  */
 function makeNodeGlyph(gElement, nodeId, isRepTree) {
     if (currentTreeVisualization === "Node-link diagram") {
-        //make left chart
-        makeStackedChart(gElement, nodeId, isRepTree, true);
+        makeStackedChart(gElement, nodeId, isRepTree);
     } else if (currentTreeVisualization === "Icicle plot") {
-        makeStackedChartIciclePlotVertical(gElement, nodeId, isRepTree, true);
+        makeStackedChartIciclePlotVertical(gElement, nodeId, isRepTree);
     } else if (currentTreeVisualization === "Sunburst plot") {
-        makeStackedChartSunburstVertical(gElement, nodeId, isRepTree, true);
+        makeStackedChartSunburstVertical(gElement, nodeId, isRepTree);
     } else {
         console.error("No valid tree visualization selected");
         return;
@@ -26,7 +25,7 @@ function updateNodeGlyphs(isRepTree) {
         .selectAll(".node")
         .selectAll("g");
 
-    gElements.selectAll("*").remove(); //remove all rectangles so we can add only those that are needed again
+    gElements.selectAll("*").remove(); //remove all rectangles, so we can add only those that are needed again
 
     gElements.each(function() {
         const nodeId = parseInt(d3.select(this).attr("id"));
@@ -37,16 +36,16 @@ function updateNodeGlyphs(isRepTree) {
 function getPartColor(index) {
     let color = currentColor;
 
-    if (color == "Class Proportions") {
+    if (color === "Class Proportions") {
         return classProportionsColorScheme[index];
     }
-    if (color == "DT Structure") {
+    if (color === "DT Structure") {
         return decisionTreeStructureColorScheme[index];
     }
-    if (color == "DT Comparison") {
+    if (color === "DT Comparison") {
         return decisionTreeColorScheme[index];
     }
-    if (color == "Correct Classification") {
+    if (color === "Correct Classification") {
         return correctClassifiedColorScheme[index];
     }
     console.error("No valid color selected")
@@ -55,14 +54,13 @@ function getPartColor(index) {
 
 
 /**
- * returns [startPercentage,endPercentage] that indicates how much of the value this part has. 
- * @param {*} id 
- * @param {*} partIndex 
- * @param {*} isRepTree 
- * @param {*} isLeftChart
- * @returns 
+ * returns [startPercentage,endPercentage] that indicates how much of the value this part has.
+ * @param {*} id
+ * @param {*} partIndex
+ * @param {*} isRepTree
+ * @returns
  */
-function getPartPercentages(id, partIndex, isRepTree, isLeftChart) {
+function getPartPercentages(id, partIndex, isRepTree) {
     const counts = getPartCounts(id, isRepTree);
 
     let startValue = 0; //value of all parts up to index {partIndex}
@@ -74,7 +72,7 @@ function getPartPercentages(id, partIndex, isRepTree, isLeftChart) {
         }
     }
 
-    if (sum == 0) {
+    if (sum === 0) {
         console.log("Shouldn't happen. Something went wrong in data reading/parsing")
         return [0, 0];
     }
@@ -97,13 +95,13 @@ function getPartCounts(id, isRepTree) {
     color = currentColor;
 
     //get the array, some will have fewer values which we will pad. Each will have how many nodes are "saved" as the first entry
-    if (color == "Class Proportions") {
+    if (color === "Class Proportions") {
         counts = classProportionsCount(id);
-    } else if (color == "DT Structure") {
+    } else if (color === "DT Structure") {
         counts = decisionTreeStructureCount(id, isRepTree);
-    } else if (color == "DT Comparison") {
+    } else if (color === "DT Comparison") {
         counts = decisionTreeComparisonCount(id, isRepTree);
-    } else if (color == "Correct Classification") {
+    } else if (color === "Correct Classification") {
         counts = correctClassificationCount(id);
     } else {
         console.error(color + "is not a valid node color and parts cannot be drawn");
@@ -117,7 +115,7 @@ function getPartCounts(id, isRepTree) {
 }
 
 
-function getRectGlyphXPositions(isLeftChart) {
+function getRectGlyphXPositions() {
     let startX = -nodeBaseSize
     let rectWidth = nodeBaseSize * 2;
 
@@ -126,29 +124,13 @@ function getRectGlyphXPositions(isLeftChart) {
 
 function addNodeInformationToolTip(gElement, nodeId) {
     let nodeMetaData = metaDataFromNodeById.get(nodeId);
-    const nodeIsLeaf = (nodeMetaData.predictedLabel != null);
+    const nodeIsLeaf = (nodeMetaData["predictedLabel"] != null);
 
     if (nodeIsLeaf) {
         gElement.append("title")
-            .text("Prediction: " + nodeMetaData.predictedLabel)
+            .text("Prediction: " + nodeMetaData["predictedLabel"])
     } else {
         gElement.append("title")
-            .text("Split feature: " + nodeMetaData.featureId)
-    }
-}
-
-
-function isRectIndexFromLeftChart(rectIndex) {
-    return rectIndex < maxParts;
-}
-
-
-
-
-function getStartX(isLeftChart) {
-    if (isLeftChart) {
-        return -nodeBaseSize;
-    } else {
-        return 0;
+            .text("Split feature: " + nodeMetaData["featureId"])
     }
 }

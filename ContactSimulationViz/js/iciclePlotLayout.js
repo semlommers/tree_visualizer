@@ -79,21 +79,21 @@ function iciclePlotLayout(treeSvg, root, width, height, isRepTree) {
     return treeSvg;
 }
 
-function makeStackedChartIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChart) {
+function makeStackedChartIciclePlotVertical(gElement, nodeId, isRepTree) {
     let startY = gElement.attr("y");
     let rectHeight = gElement.attr("height");
 
     for (let partI = 0; partI < maxParts; partI++) {
-        constructRectIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChart, partI, startY, rectHeight);
+        constructRectIciclePlotVertical(gElement, nodeId, isRepTree, partI, startY, rectHeight);
     }
 }
 
-function constructRectIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChart, partIndex, startY, rectHeight) {
+function constructRectIciclePlotVertical(gElement, nodeId, isRepTree, partIndex, startY, rectHeight) {
     const baseX = parseFloat(gElement.attr("x"))
     const baseWidth = gElement.attr("width")
 
     const color = getPartColor(partIndex);
-    const [x, width] = getRectGlyphYPositionsIciclePlotVertical(nodeId, partIndex, isRepTree, isLeftChart, baseWidth);
+    const [x, width] = getRectGlyphYPositionsIciclePlotVertical(nodeId, partIndex, isRepTree, baseWidth);
 
     if (width > 0) { //only add rectangles that have a height
         gElement.append("rect")
@@ -106,9 +106,9 @@ function constructRectIciclePlotVertical(gElement, nodeId, isRepTree, isLeftChar
     }
 }
 
-function getRectGlyphYPositionsIciclePlotVertical(id, partIndex, isRepTree, isLeftChart, baseSize) {
+function getRectGlyphYPositionsIciclePlotVertical(id, partIndex, isRepTree, baseSize) {
 
-    const partRange = getPartPercentages(id, partIndex, isRepTree, isLeftChart);
+    const partRange = getPartPercentages(id, partIndex, isRepTree);
 
     const x1 = partRange[0] * baseSize;
     const x2 = partRange[1] * baseSize;
