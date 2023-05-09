@@ -11,7 +11,7 @@ function showTreesRepresented(event, treeRoot) {
         return;
     }
 
-    //add an svg to the treegridSVG at the correct position
+    //add a svg to the treeGridSVG at the correct position
     const popupTreeGridSvg = d3.select("#treeGrid").append("svg")
         .attr("class", "popupTreeGrid")
         .attr("id", "popupTreeGrid" + id)
@@ -20,7 +20,7 @@ function showTreesRepresented(event, treeRoot) {
 
     const treesRepresented = getTreeHierarchiesRepresented(id);
 
-    //use function from offsetCalculator to calculate the offests
+    //use function from offsetCalculator to calculate the offsets
     let offSets = getOffSets(treesRepresented, popupWidth,false);
 
     addPadding(offSets);//add padding to tree positions
@@ -35,7 +35,7 @@ function showTreesRepresented(event, treeRoot) {
         const idI = repTreeRoot.data.id;
 
         //use function from treeLayout to layout a single tree
-        createSingleTree(popupTreeGridSvg, xOffset, yOffset, repTreeRoot, idI);
+        createSingleTree(popupTreeGridSvg, xOffset, yOffset, repTreeRoot, idI, false);
 
         //use helper function from representativeGraph to get width and height
         const height = yOffset + getDisplayHeight(repTreeRoot);
@@ -64,8 +64,7 @@ function getTreeHierarchiesRepresented(id) {
     const treesRepresented = getTreesRepresentedById(id,currentDistance)
     
     //use function from representativeGraph to get the tree layouts
-    let treeRoots = getTreeRoots(treesRepresented);
-    return treeRoots;
+    return getTreeRoots(treesRepresented);
 }
 
 function removeAllPopups() {
