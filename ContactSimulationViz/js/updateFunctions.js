@@ -35,7 +35,7 @@ function updateAll() {
 
 
 function updateColors() {
-    updateColorLegend(); //Make sure color legend is up to date
+    updateColorLegend(); //Make sure color legend is up-to-date
     updateNodeGlyphs(true); //update the glyphs for the visible trees. 
 }
 
@@ -64,13 +64,13 @@ function updateNodesRepresentedBy() {
 }
 
 function updateNodesRepresentedByForSubTree(node) {
-    let reps = node.representations;
+    let reps = node["representations"];
     let repNodeId = node.id;
 
     for (let i = 0; i < reps.length; i++) {
         const repIData = reps[i];
         if (repIData.distance <= currentDistance) {
-            const repIds = repIData.representationIds;
+            const repIds = repIData["representationIds"];
             for (let j = 0; j < repIds.length; j++) {
                 nodesRepresentedBy.set(repIds[j], repNodeId)
             }
@@ -133,8 +133,7 @@ function updateRepresentationText() {
         .select("text")
         .text(function() {
             const treeId = parseInt(d3.select(this).node().parentNode.parentNode.getAttribute("id").substring(3))
-            const repAmount = getAmountOfTreesRepresentedById(treeId, currentDistance);
-            return repAmount;
+            return getAmountOfTreesRepresentedById(treeId, currentDistance);
         })
 }
 
@@ -149,7 +148,7 @@ function updateScentWidget(distance) {
 /**
  * Animates the changes in the trees
  * @param {*} idsToHide 
- * @param {if false, no animation will be used} animate 
+ * @param animate if false, no animation will be used
  */
 function updateTreesAnimated(idsToHide, animate=true) {
     const updatedPlacement = recalculatePlacement(idsToHide);
@@ -158,7 +157,7 @@ function updateTreesAnimated(idsToHide, animate=true) {
     const offSets = updatedPlacement[2]
 
     let transitionTime = 1000;
-    if (animate == false) {
+    if (animate === false) {
         transitionTime = 0;
     }
 
@@ -187,7 +186,7 @@ function recalculatePlacement(idsToHide) {
             horizontalMargin = horizontalMargin * scaleFactor; //shrink margin only if hidden
         } else { //otherwise scale tree
             //hidden trees cannot have a repAmount more than 1
-            //scale trees according to repamount
+            //scale trees according to repAmount
             scaleFactor = getScaleFactorByRepAmount(repAmount);
             if (id === focusedTree) {
                 scaleFactor = 3;
@@ -231,7 +230,7 @@ function animateChanges(widthArray, heightArray, offsetArray,transitionTime) {
 
 
     //Note, d3 using svg is not fast enough to animate the amount of elements we are using. 
-    //TODO: Trim down glyphs to only contains parts that exist. Needs a refactor. If we want to animate glyps, it needs a different technology (canvas?)
+    //TODO: Trim down glyphs to only contains parts that exist. Needs a refactor. If we want to animate glyphs, it needs a different technology (canvas?)
 
     d3.select("#treeGrid")
         .interrupt()
@@ -264,7 +263,7 @@ function animateChanges(widthArray, heightArray, offsetArray,transitionTime) {
             resizeSVG(svg);
         })
         .catch((error) => {
-            // console.error(error);
+            console.error(error);
             //ignore the error. Can come from it being interrupted in which
             //case there is no need to resize
         })
