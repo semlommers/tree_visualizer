@@ -1,10 +1,10 @@
 /**
- * Returns an array of [x,y] offsets to layout the rectangles without overlap.
- * 
- * @param {Array of widths} widths 
- * @param {array of heights} heights 
- * @param {The horizontal margin after each node. Used when filtering out nodes} horMargins
- * @param {the maximum width we can use to layout} maxWidth
+ * Returns an array of [x,y] offsets to lay out the rectangles without overlap.
+ *
+ * @param widths array of heights
+ * @param heights array of heights
+ * @param horMargins The horizontal margin after each node. Used when filtering out nodes
+ * @param maxWidth the maximum width we can use to layout
  */
 function calculateOffsets(widths, heights, horMargins, maxWidth) {
     return snakeLayout(widths, heights, horMargins, maxWidth);
@@ -12,11 +12,11 @@ function calculateOffsets(widths, heights, horMargins, maxWidth) {
 
 
 /**
- * Returns an array of [x,y] offsets to layout the rectangles without overlap in strips.
- * @param {Array of widths} widths 
- * @param {array of heights} heights 
- * @param {The horizontal margin after each node. Used when filtering out nodes} horMargins
- * @param {the maximum width we can use to layout} maxWidth
+ * Returns an array of [x,y] offsets to lay out the rectangles without overlap in strips.
+ * @param inputWidths Array of widths
+ * @param inputHeights array of heights
+ * @param horMargins The horizontal margin after each node. Used when filtering out nodes
+ * @param maxWidth the maximum width we can use to layout
 
  */
 function snakeLayout(inputWidths, inputHeights, horMargins, maxWidth) {
@@ -50,25 +50,22 @@ function snakeLayout(inputWidths, inputHeights, horMargins, maxWidth) {
 
 
 
-        //whether this is the lastelemnt
-        let lastElement = (i + 1) == widths.length;
+        //whether this is the last element
+        let lastElement = (i + 1) === widths.length;
 
-        //If this is the last elemet or the next element does not fit we need to lay this strip out
+        //If this is the last element or the next element does not fit we need to lay this strip out
         if (lastElement || (stripWidth + widths[i + 1]) > maxWidth) {
             //layout the nodes in the strip            
             for (let j = stripStartIndex; j <= i; j++) {
-                // Not used because we invert the tree and want to align the roots
-                let extraYOffset = stripMaxHeight - heights[j];//if the tree is smaller, shift it down more to align at bottom
-
                 let extraXOffset = 0;
-                if (stripDirection == "Left") {
+                if (stripDirection === "Left") {
                     extraXOffset = -widths[j];//move it to the left by the width of this tree so that the element fits (coordinates at left bottom)
                     extraXOffset -= (maxWidth - stripWidth);//ensure it is always flush against the left side
                 }
                 outputPositions[j] = [currentXOffset + extraXOffset, stripYOffset];
 
                 //increase or decrease depending on direction
-                if (stripDirection == "Right") {
+                if (stripDirection === "Right") {
                     currentXOffset += widths[j];
                 } else {
                     currentXOffset -= widths[j];
@@ -80,7 +77,7 @@ function snakeLayout(inputWidths, inputHeights, horMargins, maxWidth) {
             stripWidth = 0;
             stripMaxHeight = 0;
             stripStartIndex = i + 1;//start the new strip at the next element
-            if (stripDirection == "Right") {
+            if (stripDirection === "Right") {
                 stripDirection = "Left";
                 currentXOffset = maxWidth;
             } else {
@@ -94,7 +91,7 @@ function snakeLayout(inputWidths, inputHeights, horMargins, maxWidth) {
 /**
  * Add the margins to the values for easier calculation. Does not modify the original values
  * @param {*} inputValues 
- * @param {The horizontal margin after each node. Used when filtering out nodes} horMargins
+ * @param horMargins The horizontal margin after each node. Used when filtering out nodes
 
  * @returns 
  */
@@ -111,7 +108,7 @@ function addMargin(inputValues, horMargins) {
 /**
  * Add the margins to the values for easier calculation. Does not modify the original values
  * @param {*} inputValues 
- * @param {The constand added margin} margin
+ * @param margin The constant added margin
 
  * @returns 
  */
