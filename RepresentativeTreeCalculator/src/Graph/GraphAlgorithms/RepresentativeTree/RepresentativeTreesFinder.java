@@ -5,6 +5,7 @@
  */
 package Graph.GraphAlgorithms.RepresentativeTree;
 
+import Export.DistanceMatrixExport;
 import Export.GraphWriter;
 import Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMappingCalculator;
 import Utility.Log;
@@ -14,6 +15,8 @@ import Graph.GraphAlgorithms.DominatingSetCalculator;
 import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
 import Graph.Node;
 import Graph.Tree;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -36,7 +39,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
 
         for (TreeDistanceMeasure<N, E> dm : dms) {
             //calculate the representative trees
-            Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm);
+            Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm, outputFileLocation + "/DistanceMatrices/");
             List<RepresentativeTree<N, E>> allRepTrees = new ArrayList<>(repTrees);
 
 
@@ -51,10 +54,14 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
     /**
      * Returns a set of representativeTrees for the collection of {@code trees}.
      */
-    private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm) {
+    private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm, String outputFileLocation) throws IOException {
 
         //Holds the graphs as nodes, and uses the specified distance measure as weights between the nodes
         Graph<N, E> g = makeWeightedGraph(trees, dm);
+
+        DistanceMatrixExport<N, E> distanceMatrixExport = new DistanceMatrixExport<>();
+        distanceMatrixExport.distanceMatrixExport(outputFileLocation, g, dm.getName());
+
 
         Log.printOnce("Weighted graph made for " + dm.getName());
 
