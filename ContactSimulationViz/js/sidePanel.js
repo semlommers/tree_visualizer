@@ -1,6 +1,5 @@
 function createSidePanel() {
     createSelectors();
-    createDistributionChartPanel();
     createColorLegends();
 }
 
@@ -15,15 +14,14 @@ function createSelectors() {
     createVisualizationTypeSelector(selectorDiv);
     createSizeSlider(selectorDiv);
     createNodeColorSelectors(selectorDiv);
-    // createSortOptions(selectorDiv);
     createRecalculateButton(selectorDiv);
 }
 
 
 function createDistanceSlider(selectorDiv) {
 
-    createSlider(selectorDiv, "DistanceSlider", "Rt tree distance", 0, maxMaxDistance, parseInt(maxMaxDistance / 2))
-    currentDistance = parseInt(maxMaxDistance / 2);
+    createSlider(selectorDiv, "DistanceSlider", "Max tree distance", 0, maxMaxDistance, Math.round(maxMaxDistance / 2))
+    currentDistance = Math.round(maxMaxDistance / 2);
 
     d3.select("#DistanceSlider")
         .on("input", function() {
@@ -33,7 +31,7 @@ function createDistanceSlider(selectorDiv) {
             changePending();
         })
 
-    //create it at the end of the sliderdiv so the slider aligns with the scented widget
+    //create it at the end of the sliderDiv so the slider aligns with the scented widget
     createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), (maxMaxDistance / 2));
 }
 
@@ -104,11 +102,15 @@ function createSizeSlider(selectorDiv) {
 
 function createNodeColorSelectors(selectorDiv) {
 
-    selectorDiv.append("p")
-        .attr("class", "text title")
-        .text("Node Property")
+    let containerDiv = selectorDiv.append("div")
+        .style("display", "grid")
+        .style("justify-content", "center");
 
-    createLeftRightSubtitles(selectorDiv);
+    containerDiv.append("p")
+        .attr("class", "text title")
+        .text("Color encoding")
+
+    // createLeftRightSubtitles(selectorDiv);
 
     //get the properties of the selectors
     const colorOptions = [
@@ -123,7 +125,7 @@ function createNodeColorSelectors(selectorDiv) {
         changePending();
     };
 
-    createLeftRightComboBoxes(selectorDiv, colorOptions, "leftNodeColorSelector", currentColor, leftChangeFunction);
+    createComboBox(containerDiv, "leftNodeColorSelector", colorOptions, currentColor, leftChangeFunction);
 }
 function createRecalculateButton(selectorDiv) {
 
@@ -143,7 +145,7 @@ function createRecalculateButton(selectorDiv) {
 
 
 function createColorLegends() {
-    const colorLegendDiv = d3.select("#sidePanel")
+    d3.select("#sidePanel")
         .append("div")
         .attr("id", "colorLegendDiv")
         .attr("class", "colorLegend SidePanelPanelDiv")
@@ -155,40 +157,46 @@ function updateColorLegend() {
 
     const colorLegendDiv = d3.select("#sidePanel").select("#colorLegendDiv");
     colorLegendDiv.selectAll("*").remove(); //remove current legend
-    createStateColorLegend(colorLegendDiv, true);
-    createStateColorLegend(colorLegendDiv, false);
+    createStateColorLegend(colorLegendDiv);
 }
 
-function createStateColorLegend(colorLegendDiv, isLeft) {
-    const halfColorDiv = colorLegendDiv.append("div")
+function createStateColorLegend(colorLegendDiv) {
+    const halfColorDivLeft = colorLegendDiv.append("div")
         .attr("class", "halfColorLegendDiv")
+
+    const halfColorDivRight = colorLegendDiv.append("div")
+        .attr("class", "halfColorLegendDiv")
+
+    let halfColorDivs = [halfColorDivLeft, halfColorDivRight];
 
 
     let startI = 0;
 
     //get the colors and names to display
     let colors, names
-    if (currentColor == "Class Proportions") {
+    if (currentColor === "Class Proportions") {
         colors = classProportionsColorScheme;
         names = classProportionsColorSchemeOrderDisplay;
-    } else if (currentColor == "DT Structure") {
+    } else if (currentColor === "DT Structure") {
         colors = decisionTreeStructureColorScheme;
         names = decisionTreeStructureSchemeOrderDisplay;
-    } else if (currentColor == "DT Comparison") {
+    } else if (currentColor === "DT Comparison") {
         colors = decisionTreeColorScheme;
         names = decisionTreeSchemeOrderDisplay;
-    } else if (currentColor == "Correct Classification") {
+    } else if (currentColor === "Correct Classification") {
         colors = correctClassifiedColorScheme;
         names = correctClassifiedSchemeOrderDisplay;
     }
 
 
 
-
+    let isLeft = true;
     for (let i = startI; i < names.length; i++) {
+        let halfColorDiv = halfColorDivs[i % 2]
         const color = colors[i];
         let name = names[i];
         createStateColorLegendItem(color, name, isLeft, halfColorDiv);
+        isLeft = !isLeft;
     }
 
 }
@@ -246,7 +254,7 @@ function createDistributionChartSelectors(divToAddTo) {
     const selectLeftLevelFunction = function() {
         currentDistributionSelection = [];
         for (let option of this.selectedOptions) {
-            if (option.value == "All") {
+            if (option.value === "All") {
                 currentDistributionSelection.push("All")
             } else {
                 //take only the number. Represent as int for ease of manipulation later
@@ -259,7 +267,7 @@ function createDistributionChartSelectors(divToAddTo) {
     const selectRightLevelFunction = function() {
         currentRightDistributionSelection = [];
         for (let option of this.selectedOptions) {
-            if (option.value == "All") {
+            if (option.value === "All") {
                 currentRightDistributionSelection.push("All")
             } else {
                 //take only the number. Represent as int for ease of manipulation later
@@ -283,30 +291,6 @@ function createDistributionChartSelectors(divToAddTo) {
     createComboBox(comboBoxDiv, "levelComboBox", comboOptions, "Tree size", selectRightLevelFunction, false);
 
 }
-
-function createLeftRightSubtitles(sidePanelDiv) {
-
-    const subTitleDiv = sidePanelDiv.append("div")
-        .attr("class", "subtitleDiv");
-
-    subTitleDiv.append("p")
-        .attr("class", "text subtitle")
-        .text("Left");
-
-    subTitleDiv.append("p")
-        .attr("class", "text subtitle")
-        .text("Right");
-}
-
-
-function createLeftRightComboBoxes(divToAppendTo, colorOptions, leftId, leftInitColor, leftChangeFunction) {
-
-    const comboBoxDiv = divToAppendTo.append("div")
-        .attr("class", "comboBoxesDiv")
-
-    createComboBox(comboBoxDiv, leftId, colorOptions, leftInitColor, leftChangeFunction);
-}
-
 function createComboBox(divToAppendTo, id, valueList, initVal, changeFunction, multiple) {
 
     //attach the combobox
@@ -340,9 +324,8 @@ function createComboBox(divToAppendTo, id, valueList, initVal, changeFunction, m
 
 function createCheckBox(divToAppendTo, id, initVal, changeFunction, labelName) {
 
-    if (labelName != undefined) {
-        const label = divToAppendTo.append("label").text(labelName);
-        divToAppendTo = label;
+    if (labelName !== undefined) {
+        divToAppendTo = divToAppendTo.append("label").text(labelName);
     }
 
     // const checkboxDiv = divToAppendTo
@@ -350,7 +333,7 @@ function createCheckBox(divToAppendTo, id, initVal, changeFunction, labelName) {
     //     .attr("class", "checkdiv")
 
     //attach the checkbox itself
-    const checkbox = divToAppendTo.append("input")
+    divToAppendTo.append("input")
         .attr("class", "sidePanelCheckBox")
         .attr("id", id)
         .attr("type", "checkbox")
@@ -362,11 +345,11 @@ function createCheckBox(divToAppendTo, id, initVal, changeFunction, labelName) {
 function createButton(divToAppendTo, id, text, clickFunction) {
 
     const buttonDiv = divToAppendTo
-        .insert("div") //insert combodiv before svg
+        .insert("div") //insert comboDiv before svg
         .attr("class", "buttonDiv")
 
     //attach the checkbox itself
-    const button = buttonDiv.append("button")
+    buttonDiv.append("button")
         .attr("class", "button")
         .attr("id", id)
         .text(text)
@@ -377,7 +360,7 @@ function createButton(divToAppendTo, id, text, clickFunction) {
 function createSlider(divToAppendTo, id, text, minVal, maxVal, initVal) {
 
     const sliderDiv = divToAppendTo
-        .insert("div") //insert sliderdiv before svg
+        .insert("div") //insert sliderDiv before svg
         .attr("id", id + "div")
         .attr("class", "sliderdiv")
 
