@@ -1,9 +1,9 @@
 /**
- * 
- * @param {*} treeRoots 
- * @param {*} containerWidth 
- * @param {If true, scales the trees according to how many nodes they represent } represtativeTrees 
- * @returns 
+ *
+ * @param {*} treeRoots
+ * @param {*} containerWidth
+ * @param representativeTrees If true, scales the trees according to how many nodes they represent
+ * @returns
  */
 function getOffSets(treeRoots, containerWidth, representativeTrees) {
     //uses the tree with the maximum width to figure out the minimum size of the container to prevent clipping
@@ -29,20 +29,18 @@ function getOffSets(treeRoots, containerWidth, representativeTrees) {
 
 
     //Holds the [x,y] offset of the trees in order. Calculate from left bottom instead of left top.
-    const offSets = calculateOffsets(widths, heights, horMargins, containerWidth);
-    return offSets;
+    return calculateOffsets(widths, heights, horMargins, containerWidth);
 }
 
 /**
- * 
- * @param {*} d3 
- * @param {*} svgToAddTo 
- * @param {*} xOffset 
- * @param {*} yOffset 
- * @param {*} root 
- * @param {*} treeId 
- * @param {if true, treats this tree as a representative tree. If false, does not take the representations into account} isRepTree 
- * @returns 
+ *
+ * @param {*} svgToAddTo
+ * @param {*} xOffset
+ * @param {*} yOffset
+ * @param {*} root
+ * @param {*} treeId
+ * @param isRepTree if true, treats this tree as a representative tree. If false, does not take the representations into account
+ * @returns
  */
 function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree) {
 
@@ -67,7 +65,7 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
         .data(root) //bind the data
 
     //add a background so everything is clickable
-    const background = treeSvg.append("g")
+    treeSvg.append("g")
         .append("rect")
         .attr("x", 0)
         .attr("y", 0)
@@ -90,19 +88,18 @@ function createSingleTree(svgToAddTo, xOffset, yOffset, root, treeId, isRepTree)
 function getTreeRoots(treeData) {
     let treeRoots = [];
     for (let i = 0; i < treeData.length; i++) {
-        const treeRoot = getTree(treeData[i]);
-        treeRoots[i] = treeRoot;
+        treeRoots[i] = getTree(treeData[i]);
     }
     return treeRoots;
 }
 /**
- * Returns a tree layout of the data with the correct nodesizes and all positive coordinates.
+ * Returns a tree layout of the data with the correct node sizes and all positive coordinates.
  * @param {*} data 
  * @returns 
  */
 function getTree(data) {
     const dataRoot = d3.hierarchy(data);
-    if (currentTreeVisualization === "Node-link diagram") {
+    if (currentTreeVisualization === "Node-link diagram") { //TODO: Remove if we decide not to use the node-link diagram anymore
         const treeRoot = d3.tree()
             .nodeSize([horNodeSpace, verNodeSpace])
             (dataRoot)
@@ -119,7 +116,7 @@ function getTree(data) {
 /**
  * Moves the position of the nodes in the tree with root {@code root} 
  * such that it is completely in the first quadrant with at least one node with x=0 and one node with y=0.
- * @param {The tree we are moving} root 
+ * @param root The tree we are moving
  */
 function moveTreeToFirstQuadrant(root) {
     //put back into  quadrant 1 starting at 0,0
@@ -140,12 +137,12 @@ function moveTreeToFirstQuadrant(root) {
 
 /**
  * Returns the width of the svg as it will be rendered on screen for a single tree
- * @param {} treeRoot 
+ * @param treeRoot
  * @returns 
  */
 function getDisplayWidth(treeRoot) {
-    const width = getWidth(treeRoot) + marginWithinTree; //TODO: Adjust width and offset for label placement
-    return width;
+     //TODO: Adjust width and offset for label placement
+    return getWidth(treeRoot) + marginWithinTree;
 }
 
 function getWidth(treeRoot) {
@@ -168,7 +165,7 @@ function getWidth(treeRoot) {
 
 /**
  * Returns the height of the svg as it will be rendered on screen for a single tree
- * @param {} treeRoot 
+ * @param treeRoot
  * @returns 
  */
 function getDisplayHeight(treeRoot) {
