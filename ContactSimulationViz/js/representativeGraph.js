@@ -26,7 +26,7 @@ function generateTreeGrid() {
     }
 
 
-    //size treegridsvg according to it's bounding box
+    //size treeGridSVG according to it's bounding box
     resizeSVG(treeGridSVG);
 }
 
@@ -41,7 +41,7 @@ function getScaleFactorByRepAmount(repAmount) {
 
 /**
  * Sets the width and height of the svg element to fit the content
- * @param {The d3 svg element we are resizing} svg 
+ * @param svg The d3 svg element we are resizing
  */
 function resizeSVG(svg) {
     //size svg according to it's bounding box
