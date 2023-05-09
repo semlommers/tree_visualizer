@@ -7,7 +7,7 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
 
     root.sum(function(d) {
         if (d.children.length === 0) {
-            let classProportions = metaDataFromNodeById.get(d.id).classProportions;
+            let classProportions = metaDataFromNodeById.get(d.id)["classProportions"];
             let count = 0;
 
             for (let i = 0; i < classProportions.length; i++) {
@@ -23,10 +23,6 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
         .attr("transform", `translate(${radius},${radius - (marginWithinTree / 2 + fontSizeRepAmount)})`); //make sure no clipping occurs
 
     const node = g.append("g") //nodes
-        // .selectAll('path')
-        // .data(root.descendants())
-        // .join('path')
-        // .attr('d', arcGenerator)
         .attr("class", "node")
         .selectAll("g")
         .data(function(d) {
@@ -34,7 +30,7 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
             let visualizedNodes = []
             for (let i = 0; i < nodes.length; i++) {
                 let node = nodes[i];
-                if ((node.x1 - node.x0) > 0.05) { // Remove if node is to small to visualize
+                if ((node.x1 - node.x0) > 0.05) { // Remove if node is too small to visualize
                     visualizedNodes.push(node);
                 }
             }
@@ -56,7 +52,7 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
 
 
     //add how many trees this node represents if the data is present
-    if (isRepTree && typeof root.data.representations !== 'undefined') {
+    if (isRepTree && typeof root.data["representations"] !== 'undefined') {
         const repNumber = getAmountOfTreesRepresented(root, currentDistance);
 
         const textG = treeSvg.append("g").attr("class", "textG")
@@ -68,12 +64,10 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
 
         //position text such that the top is 2 pixels below the root
         const textX = width/2 - fontSizeRepAmount/2;
-        const textY = fontSizeRepAmount;
-
-        text.attr("transform", `translate(${textX},${textY})`); //make sure no clipping occurs
+        text.attr("transform", `translate(${textX},${fontSizeRepAmount})`); //make sure no clipping occurs
     }
 
-    treeSvg.on("click", function(event) {
+    treeSvg.on("click", function() {
         if (focusedTree === null) {
             focusedTree = root.data.id;
         } else {
