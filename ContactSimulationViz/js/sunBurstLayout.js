@@ -30,7 +30,7 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
             let visualizedNodes = []
             for (let i = 0; i < nodes.length; i++) {
                 let node = nodes[i];
-                if ((node.x1 - node.x0) > 0) { // Remove if node is too small to visualize
+                if ((node.x1 - node.x0) > 0.05) { // Remove if node is too small to visualize
                     visualizedNodes.push(node);
                 }
             }
@@ -89,14 +89,6 @@ function makeStackedChartSunburstVertical(gElement, nodeId, isRepTree) {
     let startY = gElement.attr("y0");
     let arcHeight = gElement.attr("y1");
 
-    let lastNonZero = 0;
-    let partCounts = getPartCounts(nodeId, isRepTree)
-    for (let partI = 0; partI < maxParts; partI++) {
-        if (partCounts[partI] > 0) {
-            lastNonZero = partI;
-        }
-    }
-
     for (let partI = 0; partI < maxParts; partI++) {
         constructRectSunburstVertical(gElement, nodeId, isRepTree, partI, startY, arcHeight);
     }
@@ -112,19 +104,12 @@ function constructRectSunburstVertical(gElement, nodeId, isRepTree, partIndex, s
     const [x, width] = getRectGlyphYPositionsSunburstPlotVertical(nodeId, partIndex, isRepTree, arcSize);
 
     if (width > 0) { //only add rectangles that have a height
-        let radius = squarePlotSize + marginWithinTree;
-        let padding = squarePlotPadding;
 
         let arc = d3.arc()
             .innerRadius(startY)
             .outerRadius(arcHeight)
             .startAngle(startAngle + x)
             .endAngle(startAngle + x + width);
-
-        // if ((startAngle + x + width) === parseFloat(endAngle)) { // Add padding if last glyph
-        //     arc.endAngle(startAngle + x + width - 0.05);
-        // }
-
 
         gElement.append("path")
             .attr("d", arc)
