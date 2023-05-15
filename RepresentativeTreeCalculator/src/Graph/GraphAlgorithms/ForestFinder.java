@@ -10,11 +10,8 @@ import Graph.Graph;
 import Graph.GraphFactory;
 import Graph.Node;
 import Graph.Tree;
-import Utility.Log;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -39,47 +36,64 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
     public Set<T> getForest() {
         Set<T> trees = new HashSet<>();
 
-        //start by making all nodes the root of a tree, and merge them together
-        Collection<N> nodes = completeGraph.getNodes();
-        int counter = 0;
-        for (N node : nodes) {
-            Log.printProgress("Node " + counter + " of " + nodes.size() + " nodes", 30000);
-            T newTree = GraphFactory.getNewGraph(graphType);
-            Node<N,E> test = node.deepCopy();
-            newTree.addNode((N) test);
-
-            //give the tree the id of the root
-            newTree.id = node.id;
-            trees.add(newTree);
-            counter++;
-        }
-
-        counter = 0;
-        Collection<E> edges = completeGraph.getEdges();
-        for (E e : edges) {
-            Log.printProgress("Edge " + counter + " of " + edges.size() + " edges", 30000);
-            T sourceTree = null; //holds the Tree the source of this edge is in.
-            T targetTree = null;//holds the Tree the source of this edge is in.
-
-            //check which trees the edge ends in
-            for (T t : trees) {
-                if (t.hasNodeWithId(e.source.id)) {
-                    assert (!t.hasNodeWithId(e.target.id));//if it is a tree this cannot happen
-                    sourceTree = t;
-                }
-                if (t.hasNodeWithId(e.target.id)) {
-                    assert (!t.hasNodeWithId(e.source.id));//if it is a tree this cannot happen
-                    targetTree = t;
+        Collection<N> nodes = new ArrayList<>(completeGraph.getNodes());
+        for (N n : nodes) {
+            // Extract the root node
+            N root = n;
+            List<E> incomingEdges = root.getIncomingEdges();
+            while (incomingEdges.size() != 0) {
+                root = incomingEdges.get(0).source;
+                incomingEdges = root.getIncomingEdges();
+            }
+            boolean alreadyExists = false;
+            for (T tree : trees) {
+                if (tree.id == root.id) {
+                    alreadyExists = true;
+                    break;
                 }
             }
-            assert (sourceTree != null);
-            assert (targetTree != null);
-            //ends in two existing trees, merge them and continue with next edge
-            mergeTrees(trees, sourceTree, targetTree, e);//merge the trees as they are connected
-            counter++;
+            if (!alreadyExists) {
+                T newTree = extractTreeByRoot(n);
+                trees.add(newTree);
+            }
         }
 
         return trees;
+    }
+
+    public T extractTreeWithNode(N node) {
+        // Extract the root node
+        N root = node;
+        List<E> incomingEdges = root.getIncomingEdges();
+        while (incomingEdges.size() != 0) {
+            root = incomingEdges.get(0).source;
+            incomingEdges = root.getIncomingEdges();
+        }
+
+        return extractTreeByRoot(root);
+    }
+
+    public T extractTreeByRoot(N root) {
+        // Create the tree
+        Queue<N> treeNodes = new LinkedList<>();
+        treeNodes.add(root);
+        T newTree = GraphFactory.getNewGraph(graphType);
+        newTree.id = root.id;
+        newTree.addNode(root);
+
+        // Add the entire trees
+        while (!treeNodes.isEmpty()) {
+            N treeNode = treeNodes.poll();
+            List<E> childrenEdges = treeNode.getOutgoingEdges();
+            for (E edge : childrenEdges) {
+                N targetNode = edge.target;
+                newTree.addNode(targetNode);
+                newTree.addEdgeWithoutNodeUpdate(edge);
+                treeNodes.add(targetNode);
+            }
+        }
+
+        return newTree;
     }
 
     /**
