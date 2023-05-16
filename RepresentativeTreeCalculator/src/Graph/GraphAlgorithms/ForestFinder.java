@@ -53,7 +53,7 @@ public class ForestFinder<G extends Graph<N, E>, T extends Tree<N, E>, N extends
                 }
             }
             if (!alreadyExists) {
-                T newTree = extractTreeByRoot(n);
+                T newTree = extractTreeByRoot(root);
                 trees.add(newTree);
             }
         }
