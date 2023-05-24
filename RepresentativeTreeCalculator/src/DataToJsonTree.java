@@ -71,7 +71,7 @@ public class DataToJsonTree {
 
         treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);
 
-        DataInstanceMetaDataConstructor dataInstanceMetaDataConstructor = new DataInstanceMetaDataConstructor(inputFolderLocation + "/dataset.csv");
+        DataInstanceMetaDataConstructor dataInstanceMetaDataConstructor = new DataInstanceMetaDataConstructor(inputFolderLocation + "/testDataset.csv");
         dataInstanceMetaDataConstructor.addDataInstanceMetaDataToForest(forest);
 
         HashMap<Integer, Integer> dataToCorrectClass = dataInstanceMetaDataConstructor.getDataToCorrectClass();
@@ -81,12 +81,12 @@ public class DataToJsonTree {
                 new EditDistanceNoChildSwapping(1,1),
                 new EditDistanceNoChildSwapping(1,2),
 //                new EditDistanceNoChildSwapping(1,3),
-                new PredictionSimilarityDistance(inputFolderLocation + "/dataset.csv"),
-                new RuleSimilarityDistance(inputFolderLocation + "/dataset.csv"),
-//                new RuleSimilarityDistanceSum(inputFolderLocation + "/dataset.csv"),
-//                new RuleSimilarityDistanceUnion(inputFolderLocation + "/dataset.csv"),
-                new RuleSimilarityDistanceExMatrixJacard(inputFolderLocation + "/dataset.csv"),
-                new RuleSimilarityDistanceExMatrixOverlap(inputFolderLocation + "/dataset.csv"));
+                new PredictionSimilarityDistance(inputFolderLocation + "/trainDataset.csv"),
+                new RuleSimilarityDistance(inputFolderLocation + "/trainDataset.csv"),
+//                new RuleSimilarityDistanceSum(inputFolderLocation + "/trainDataset.csv"),
+//                new RuleSimilarityDistanceUnion(inputFolderLocation + "/trainDataset.csv"),
+                new RuleSimilarityDistanceExMatrixJacard(inputFolderLocation + "/trainDataset.csv"),
+                new RuleSimilarityDistanceExMatrixOverlap(inputFolderLocation + "/trainDataset.csv"));
         RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
         representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasures, outputFileLocation, dataToCorrectClass);
 
