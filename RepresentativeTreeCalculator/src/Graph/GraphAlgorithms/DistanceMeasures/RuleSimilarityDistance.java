@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class RuleSimilarityDistance implements TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
+public class RuleSimilarityDistance extends TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
     @Expose
     String name = "RuleSimilarityDistance";
     private final List<MinMaxValues> baseMinMaxValues = new ArrayList<>();

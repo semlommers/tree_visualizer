@@ -8,19 +8,30 @@ package Graph.GraphAlgorithms.DistanceMeasures;
 import Graph.Edge;
 import Graph.Node;
 import Graph.Tree;
+import com.google.gson.annotations.Expose;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author MaxSondag, SemLommers
  */
-public interface TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N, E>> {
+public abstract class TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N, E>> {
+    @Expose
+    Map<Integer, List<Double>> accuracyByDistance = new HashMap<>();
+
+    public void setAccuracyForDistance(Integer distance, List<Double> accuracies) {
+        accuracyByDistance.put(distance, accuracies);
+    }
 
     /**
      * Distance between two trees. Values are rounded up in case of
      * internal double values
      */
-    int getDistance(Tree<N, E> t1, Tree<N, E> t2);
+    public abstract int getDistance(Tree<N, E> t1, Tree<N, E> t2);
 
-    String getName();
+    public abstract String getName();
 
 }

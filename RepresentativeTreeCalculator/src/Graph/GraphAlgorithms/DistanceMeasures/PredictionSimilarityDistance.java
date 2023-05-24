@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PredictionSimilarityDistance implements TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
+public class PredictionSimilarityDistance extends TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
     @Expose
     String name = "PredictionSimilarityDistance";
     private final List<List<Double>> data = new ArrayList<>();

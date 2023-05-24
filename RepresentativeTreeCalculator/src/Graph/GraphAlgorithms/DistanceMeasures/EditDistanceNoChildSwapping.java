@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
 import java.util.List;
 import java.util.Objects;
 
-public class EditDistanceNoChildSwapping implements TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
+public class EditDistanceNoChildSwapping extends TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge> {
     @Expose
     String name = "EditDistance";
     private final Integer addNodeCost;
