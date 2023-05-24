@@ -1,14 +1,11 @@
 
-import Graph.GraphAlgorithms.DistanceMeasures.PredictionSimilarityDistance;
-import Graph.GraphAlgorithms.DistanceMeasures.RuleSimilarityDistance;
+import Graph.GraphAlgorithms.DistanceMeasures.*;
 import Graph.GraphAlgorithms.MetaDataAlgorithms.DataInstanceMetaDataConstructor;
 import Import.RandomForestParser;
 import Graph.DecisionTree.DecisionTreeEdge;
 import Graph.DecisionTree.DecisionTreeNode;
-import Graph.GraphAlgorithms.DistanceMeasures.EditDistanceNoChildSwapping;
 import Graph.DecisionTree.DecisionTreeGraph;
 import Export.GraphWriter;
-import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
 import Graph.GraphAlgorithms.ForestFinder;
 import Graph.GraphAlgorithms.RepresentativeTree.RepresentativeTreesFinder;
 import Graph.Tree;
@@ -17,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -38,7 +36,7 @@ public class DataToJsonTree {
      */
     public static void main(String[] args) {
         try {
-            String dataFolderLocation = "./RepresentativeTreeCalculator/Data/wine";
+            String dataFolderLocation = "./RepresentativeTreeCalculator/Data/wineSplit";
             String inputFolderLocation = dataFolderLocation + "/Input";
             String outputFileLocation = dataFolderLocation + "/Output";
 
@@ -73,16 +71,24 @@ public class DataToJsonTree {
 
         treeWriter.writeForest(outputFileLocation + "/AllTrees.json", forest);
 
+        DataInstanceMetaDataConstructor dataInstanceMetaDataConstructor = new DataInstanceMetaDataConstructor(inputFolderLocation + "/dataset.csv");
+        dataInstanceMetaDataConstructor.addDataInstanceMetaDataToForest(forest);
+
+        HashMap<Integer, Integer> dataToCorrectClass = dataInstanceMetaDataConstructor.getDataToCorrectClass();
+
         List<TreeDistanceMeasure<DecisionTreeNode, DecisionTreeEdge>> treeDistanceMeasures = Arrays.asList(
                 new EditDistanceNoChildSwapping(1,0),
                 new EditDistanceNoChildSwapping(1,1),
+                new EditDistanceNoChildSwapping(1,2),
+//                new EditDistanceNoChildSwapping(1,3),
                 new PredictionSimilarityDistance(inputFolderLocation + "/dataset.csv"),
-                new RuleSimilarityDistance(inputFolderLocation + "/dataset.csv"));
+                new RuleSimilarityDistance(inputFolderLocation + "/dataset.csv"),
+//                new RuleSimilarityDistanceSum(inputFolderLocation + "/dataset.csv"),
+//                new RuleSimilarityDistanceUnion(inputFolderLocation + "/dataset.csv"),
+                new RuleSimilarityDistanceExMatrixJacard(inputFolderLocation + "/dataset.csv"),
+                new RuleSimilarityDistanceExMatrixOverlap(inputFolderLocation + "/dataset.csv"));
         RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge> representativeTreesFinder = new RepresentativeTreesFinder<DecisionTreeNode, DecisionTreeEdge>();
-        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasures, outputFileLocation);
-
-        DataInstanceMetaDataConstructor dataInstanceMetaDataConstructor = new DataInstanceMetaDataConstructor(inputFolderLocation + "/dataset.csv");
-        dataInstanceMetaDataConstructor.addMisclassifiedDataCounterToForest(forest);
+        representativeTreesFinder.getAndWriteRepresentativeTreeData(forest, treeDistanceMeasures, outputFileLocation, dataToCorrectClass);
 
         treeWriter.writeMetaDataGraph(outputFileLocation + "/NodesAndMeta.json", forest);
     }
