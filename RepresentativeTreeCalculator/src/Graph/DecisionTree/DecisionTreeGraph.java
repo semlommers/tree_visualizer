@@ -2,13 +2,13 @@ package Graph.DecisionTree;
 
 import Graph.Tree;
 import Utility.Log;
+import Utility.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class DecisionTreeGraph extends Tree<DecisionTreeNode, DecisionTreeEdge> {
+
+    private final HashMap<Integer, Integer> dataInstanceToPrediction = new HashMap<>();
 
     @Override
     public DecisionTreeNode getNode(int id) {
@@ -20,6 +20,14 @@ public class DecisionTreeGraph extends Tree<DecisionTreeNode, DecisionTreeEdge> 
         List<DecisionTreeEdge> edges = new ArrayList<>(edgeMapping.values());
         Collections.sort(edges);
         return edges;
+    }
+
+    public void addDataInstanceToPrediction(int instanceId, int prediction) {
+        dataInstanceToPrediction.put(instanceId, prediction);
+    }
+
+    public Integer getDataInstancePredictionById(int instanceId) {
+        return dataInstanceToPrediction.get(instanceId);
     }
 
     public int predictTarget(List<Double> inputData) {

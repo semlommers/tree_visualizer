@@ -8,10 +8,7 @@ import Graph.Tree;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DataInstanceMetaDataConstructor {
     private final List<List<Double>> data = new ArrayList<>();
@@ -36,14 +33,18 @@ public class DataInstanceMetaDataConstructor {
         }
     }
 
-    public void addMisclassifiedDataCounterToForest(Set<Tree<DecisionTreeNode, DecisionTreeEdge>> forest) {
-        for (List<Double> instance : data) {
+    public void addDataInstanceMetaDataToForest(Set<Tree<DecisionTreeNode, DecisionTreeEdge>> forest) {
+        // IMPORTANT: Run this before calculating the representative trees
+        for (int i = 0; i < data.size(); i++) {
+            List<Double> instance = data.get(i);
             int correctLabel = instance.get(instance.size() - 1).intValue();
 
             for (Tree<DecisionTreeNode, DecisionTreeEdge> tree : forest) {
                 DecisionTreeGraph decisionTree = (DecisionTreeGraph) tree;
                 DecisionTreeNode leafNode = decisionTree.getLeafNodeByPrediction(instance);
                 boolean correctPrediction = (leafNode.predictedLabel.equals(correctLabel));
+
+                decisionTree.addDataInstanceToPrediction(i, leafNode.predictedLabel);
 
                 DecisionTreeNode currentNode = leafNode;
                 List<DecisionTreeEdge> incomingEdges = currentNode.getIncomingEdges();
@@ -56,5 +57,15 @@ public class DataInstanceMetaDataConstructor {
                 }
             }
         }
+    }
+
+    public HashMap<Integer, Integer> getDataToCorrectClass() {
+        HashMap<Integer, Integer> result = new HashMap<>();
+        for (int i = 0; i < data.size(); i++) {
+            List<Double> instance = data.get(i);
+            int correctLabel = instance.get(instance.size() - 1).intValue();
+            result.put(i, correctLabel);
+        }
+        return result;
     }
 }

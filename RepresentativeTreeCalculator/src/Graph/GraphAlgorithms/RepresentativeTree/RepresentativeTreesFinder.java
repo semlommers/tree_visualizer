@@ -7,6 +7,7 @@ package Graph.GraphAlgorithms.RepresentativeTree;
 
 import Export.DistanceMatrixExport;
 import Export.GraphWriter;
+import Graph.DecisionTree.DecisionTreeGraph;
 import Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMappingCalculator;
 import Utility.Log;
 import Graph.Edge;
@@ -28,7 +29,7 @@ import java.util.*;
  */
 public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E>> {
 
-    public void getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, List<TreeDistanceMeasure<N, E>> dms, String outputFileLocation) throws IOException {
+    public void getAndWriteRepresentativeTreeData(Set<Tree<N, E>> forest, List<TreeDistanceMeasure<N, E>> dms, String outputFileLocation, HashMap<Integer, Integer> dataToCorrectClass) throws IOException {
         Log.printProgress(forest.size() + " total trees");
         String outputFolderLocation = outputFileLocation + "/RepTrees/";
         Files.createDirectories(Paths.get(outputFolderLocation));
@@ -39,7 +40,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
 
         for (TreeDistanceMeasure<N, E> dm : dms) {
             //calculate the representative trees
-            Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm, outputFileLocation + "/DistanceMatrices/");
+            Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm, outputFileLocation + "/DistanceMatrices/", dataToCorrectClass);
             List<RepresentativeTree<N, E>> allRepTrees = new ArrayList<>(repTrees);
 
 
@@ -54,7 +55,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
     /**
      * Returns a set of representativeTrees for the collection of {@code trees}.
      */
-    private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm, String outputFileLocation) throws IOException {
+    private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm, String outputFileLocation, HashMap<Integer, Integer> dataToCorrectClass) throws IOException {
 
         //Holds the graphs as nodes, and uses the specified distance measure as weights between the nodes
         Graph<N, E> g = makeWeightedGraph(trees, dm);
@@ -77,6 +78,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         //initialize the representing trees, they only get filtered down, so these are all Representative trees that will exists.
         //maps from id to a representative tree
         HashMap<Integer, RepresentativeTree<N, E>> repTrees = initRepTrees(currentDsIds, trees);
+        List<Double> accuracies = null;
 
         //go through the distances
         int distance = 0;
@@ -105,12 +107,92 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
                 }
                 repTree.addToMapping(distance, treesMapped, tmCalc);
             }
+
+            if (currentDsIds.size() != dsTrimmed.size() || distance == 0) {
+                accuracies = computeAccuracies(dataToCorrectClass, dsTrimmed, repTrees);
+            }
+            dm.setAccuracyForDistance(distance, accuracies);
+
             currentDsIds = dsTrimmed;
             distance++;
         }
 
         return repTrees.values();
 
+    }
+
+    private List<Double> computeAccuracies(HashMap<Integer, Integer> dataToCorrectClass, List<Integer> treeIdsInForest, HashMap<Integer, RepresentativeTree<N, E>> repTrees) {
+        Integer numberOfClasses = 0;
+        for (Integer value : dataToCorrectClass.values()) {
+            if (value > numberOfClasses) {
+                numberOfClasses = value;
+            }
+        }
+
+        List<Double> correctCount = new ArrayList<>();
+        List<Double> totalCount = new ArrayList<>();
+        for (int i = 0; i <= numberOfClasses; i++) {
+            correctCount.add(0.0);
+            totalCount.add(0.0);
+        }
+
+        for (Integer dataInstanceId : dataToCorrectClass.keySet()) {
+            Integer correctClass = dataToCorrectClass.get(dataInstanceId);
+
+            // Increase the size of the list if not large enough
+            totalCount.set(correctClass, totalCount.get(correctClass) + 1.0);
+
+            ArrayList<Integer> votes = new ArrayList<>();
+            for (int i = 0; i <= numberOfClasses; i++) {
+                votes.add(0);
+            }
+            for (Integer treeId : treeIdsInForest) {
+                RepresentativeTree<N, E> repTree = repTrees.get(treeId);
+                DecisionTreeGraph decisionTree = (DecisionTreeGraph) repTree.originalTree;
+                Integer predictionByTree = decisionTree.getDataInstancePredictionById(dataInstanceId);
+                votes.set(predictionByTree, votes.get(predictionByTree) + 1);
+            }
+
+            ArrayList<Integer> modelPrediction = new ArrayList<>();
+            Integer maxVotes = 0;
+            for (int i = 0; i < votes.size(); i++) {
+                if (votes.get(i) > maxVotes) {
+                    maxVotes = votes.get(i);
+                    modelPrediction = new ArrayList<>();
+                    modelPrediction.add(i);
+                } else if (Objects.equals(votes.get(i), maxVotes)) {
+                    // Identify if the votes get a tie
+                    modelPrediction.add(i);
+                }
+            }
+
+            Integer finalPrediction;
+            if (modelPrediction.size() > 1) {
+                // Pick random if tie
+                Random random = new Random(14);
+                finalPrediction = modelPrediction.get(random.nextInt(modelPrediction.size()));
+            } else {
+                finalPrediction = modelPrediction.get(0);
+            }
+
+            // Majority votes on correct class
+            if (Objects.equals(finalPrediction, correctClass)) {
+                // Increase the size of the list if not large enough
+                correctCount.set(correctClass, correctCount.get(correctClass) + 1.0);
+            }
+        }
+
+        List<Double> accuracies = new ArrayList<>();
+        // Total accuracy
+        double totalCorrect = correctCount.stream().mapToDouble(Double::doubleValue).sum();
+        double total = totalCount.stream().mapToDouble(Double::doubleValue).sum();
+        accuracies.add(totalCorrect / total);
+
+        // Per class accuracy
+        for (int i = 0; i < correctCount.size(); i++) {
+            accuracies.add(correctCount.get(i) / totalCount.get(i));
+        }
+        return accuracies;
     }
 
     @SuppressWarnings("unchecked")
