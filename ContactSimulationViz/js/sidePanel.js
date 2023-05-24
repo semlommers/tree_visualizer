@@ -33,6 +33,17 @@ function createDistanceSlider(selectorDiv) {
 
     //create it at the end of the sliderDiv so the slider aligns with the scented widget
     createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), (maxMaxDistance / 2));
+
+    createAccuracyTexts(selectorDiv.select("#DistanceSliderdiv"), currentDistance);
+}
+
+function createAccuracyTexts(selectorDiv, distance) {
+    let accuraciesDiv = selectorDiv.append("div").attr("id", "AccuraciesText");
+    let accuracies = currentDistanceMetricMetaData["accuracyByDistance"][distance];
+    accuraciesDiv.append("div").text("Total accuracy: " + Math.round(accuracies[0] * 100) / 100);
+    for (let i = 1; i < accuracies.length; i++) {
+        accuraciesDiv.append("div").text("Accuracy class " + i + ": " + Math.round(accuracies[i] * 100) / 100);
+    }
 }
 
 function createDistanceMetricSelector(selectorDiv) {

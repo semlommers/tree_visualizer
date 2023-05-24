@@ -67,6 +67,7 @@ let currentDistributionSelection = "All"; //which levels of the distribution we 
 let currentRightDistributionSelection = "All"; //which levels of the distribution we are currently showing
 
 let currentDistanceMetric;
+let currentDistanceMetricMetaData;
 let loadDifferentDistanceMetric = false;
 
 let focusedTree = null;
@@ -89,6 +90,7 @@ requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.
                 d3.json(namesLocation).then(function (namesDataInput) {
                     distanceMetricMetaData = distanceMetricMetaDataInput;
                     currentDistanceMetric = distanceMetricMetaData[0].name;
+                    currentDistanceMetricMetaData = distanceMetricMetaData[0];
                     d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
                         repTreesData = repTreesDataInput;
                         allTreesData = allTreesDataInput;

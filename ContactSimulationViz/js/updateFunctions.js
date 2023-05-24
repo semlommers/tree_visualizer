@@ -7,6 +7,7 @@ function updateSliderPreview() {
     updateRepresentationText();
 
     updateScentWidget(currentDistance)
+    updateAccuracies(currentDistance)
 }
 
 
@@ -87,12 +88,22 @@ function updateDistanceMetricUsed() {
     d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
         repTreesData = repTreesDataInput;
         initializeRepTreeData();
+        updateCurrentDistanceMetricMetaData();
         updateDistanceSlider();
         updateNodesRepresentedBy();
         d3.select("#treeGrid").selectAll("*").remove();
         generateTreeGrid();
         updatePositions(true);
     });
+}
+
+function updateCurrentDistanceMetricMetaData() {
+    for (let i = 0; i < distanceMetricMetaData.length; i++) {
+        if (distanceMetricMetaData[i].name === currentDistanceMetric) {
+            currentDistanceMetricMetaData = distanceMetricMetaData[i];
+            break;
+        }
+    }
 }
 
 function updateDistanceSlider() {
@@ -143,6 +154,13 @@ function updateScentWidget(distance) {
     d3.select("#RtScentedChart").remove();
     //make new
     createScentedRtLineChart(d3.select("#DistanceSliderdiv"), distance);
+}
+
+function updateAccuracies(distance) {
+    // Delete old
+    d3.select("#AccuraciesText").remove();
+    // Make new
+    createAccuracyTexts(d3.select("#DistanceSliderdiv"), distance);
 }
 
 /**
