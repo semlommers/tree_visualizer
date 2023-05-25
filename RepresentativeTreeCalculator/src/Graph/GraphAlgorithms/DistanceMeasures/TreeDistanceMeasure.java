@@ -21,9 +21,15 @@ import java.util.Map;
 public abstract class TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N, E>> {
     @Expose
     Map<Integer, List<Double>> accuracyByDistance = new HashMap<>();
+    @Expose
+    Map<Integer, List<Double>> accuracyToOriginalModelByDistance = new HashMap<>();
 
     public void setAccuracyForDistance(Integer distance, List<Double> accuracies) {
         accuracyByDistance.put(distance, accuracies);
+    }
+
+    public void setAccuracyToOriginalForDistance(Integer distance, List<Double> accuracies) {
+        accuracyToOriginalModelByDistance.put(distance, accuracies);
     }
 
     /**

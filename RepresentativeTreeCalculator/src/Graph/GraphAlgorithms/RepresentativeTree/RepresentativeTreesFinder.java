@@ -17,7 +17,6 @@ import Graph.GraphAlgorithms.DistanceMeasures.TreeDistanceMeasure;
 import Graph.Node;
 import Graph.Tree;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,9 +37,11 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
 
         GraphWriter<N, E> tw = new GraphWriter<>();
 
+        HashMap<Integer, Integer> dataToPredictedClass = getDataToPredictedClass(forest, dataToCorrectClass.keySet());
+
         for (TreeDistanceMeasure<N, E> dm : dms) {
             //calculate the representative trees
-            Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm, outputFileLocation + "/DistanceMatrices/", dataToCorrectClass);
+            Collection<RepresentativeTree<N, E>> repTrees = calculateRepresentativeTrees(trees, dm, outputFileLocation + "/DistanceMatrices/", dataToCorrectClass, dataToPredictedClass);
             List<RepresentativeTree<N, E>> allRepTrees = new ArrayList<>(repTrees);
 
 
@@ -52,10 +53,52 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         tw.writeDistanceMetricOutputLocations(outputFileLocation + "/DistanceMeasures.json", dms);
     }
 
+    private HashMap<Integer, Integer> getDataToPredictedClass(Set<Tree<N,E>> forest, Set<Integer> dataIds) {
+        HashMap<Integer, Integer> dataToPredictedClass = new HashMap<>();
+
+        for (Integer dataId : dataIds) {
+            List<Integer> votes = new ArrayList<>();
+            for (Tree<N, E> tree : forest) {
+                DecisionTreeGraph decisionTree = (DecisionTreeGraph) tree;
+                Integer prediction = decisionTree.getDataInstancePredictionById(dataId);
+                while (votes.size() <= prediction) {
+                    votes.add(0);
+                }
+                votes.set(prediction, votes.get(prediction) + 1);
+            }
+
+            ArrayList<Integer> modelPrediction = new ArrayList<>();
+            Integer maxVotes = 0;
+            for (int i = 0; i < votes.size(); i++) {
+                if (votes.get(i) > maxVotes) {
+                    maxVotes = votes.get(i);
+                    modelPrediction = new ArrayList<>();
+                    modelPrediction.add(i);
+                } else if (Objects.equals(votes.get(i), maxVotes)) {
+                    // Identify if the votes get a tie
+                    modelPrediction.add(i);
+                }
+            }
+
+            Integer finalPrediction;
+            if (modelPrediction.size() > 1) {
+                // Pick random if tie
+                Random random = new Random(14);
+                finalPrediction = modelPrediction.get(random.nextInt(modelPrediction.size()));
+            } else {
+                finalPrediction = modelPrediction.get(0);
+            }
+
+            dataToPredictedClass.put(dataId, finalPrediction);
+        }
+
+        return dataToPredictedClass;
+    }
+
     /**
      * Returns a set of representativeTrees for the collection of {@code trees}.
      */
-    private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm, String outputFileLocation, HashMap<Integer, Integer> dataToCorrectClass) throws IOException {
+    private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm, String outputFileLocation, HashMap<Integer, Integer> dataToCorrectClass, HashMap<Integer, Integer> dataToPredictedClass) throws IOException {
 
         //Holds the graphs as nodes, and uses the specified distance measure as weights between the nodes
         Graph<N, E> g = makeWeightedGraph(trees, dm);
@@ -79,6 +122,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         //maps from id to a representative tree
         HashMap<Integer, RepresentativeTree<N, E>> repTrees = initRepTrees(currentDsIds, trees);
         List<Double> accuracies = null;
+        List<Double> accuraciesToOriginalModel = null;
 
         //go through the distances
         int distance = 0;
@@ -110,8 +154,10 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
 
             if (currentDsIds.size() != dsTrimmed.size() || distance == 0) {
                 accuracies = computeAccuracies(dataToCorrectClass, dsTrimmed, repTrees);
+                accuraciesToOriginalModel = computeAccuracies(dataToPredictedClass, dsTrimmed, repTrees);
             }
             dm.setAccuracyForDistance(distance, accuracies);
+            dm.setAccuracyToOriginalForDistance(distance, accuraciesToOriginalModel);
 
             currentDsIds = dsTrimmed;
             distance++;
