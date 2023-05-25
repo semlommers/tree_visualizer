@@ -44,6 +44,12 @@ function createAccuracyTexts(selectorDiv, distance) {
     for (let i = 1; i < accuracies.length; i++) {
         accuraciesDiv.append("div").text("Accuracy class " + i + ": " + Math.round(accuracies[i] * 100) / 100);
     }
+    accuraciesDiv.append("div").text("Accuracies to original model");
+    let accuraciesToOriginal = currentDistanceMetricMetaData["accuracyToOriginalModelByDistance"][distance];
+    accuraciesDiv.append("div").text("Total accuracy: " + Math.round(accuraciesToOriginal[0] * 100) / 100);
+    for (let i = 1; i < accuraciesToOriginal.length; i++) {
+        accuraciesDiv.append("div").text("Accuracy class " + i + ": " + Math.round(accuraciesToOriginal[i] * 100) / 100);
+    }
 }
 
 function createDistanceMetricSelector(selectorDiv) {
