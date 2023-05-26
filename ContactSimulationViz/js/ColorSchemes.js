@@ -13,3 +13,5 @@ const classProportionsColorSchemeOrderDisplay = [];
 const correctClassifiedSchemeOrder = ["correct", "incorrect"]
 const correctClassifiedColorScheme = ['#4daf4a','#ff0000'];
 const correctClassifiedSchemeOrderDisplay = ["Correct classification", "Incorrect classification"]
+
+const accuraciesColors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];

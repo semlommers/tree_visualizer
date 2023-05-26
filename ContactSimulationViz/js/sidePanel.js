@@ -10,6 +10,7 @@ function createSelectors() {
         .attr("class", "SidePanelPanelDiv");
 
     createDistanceSlider(selectorDiv);
+    createAccuracyWidgetDiv(selectorDiv);
     createDistanceMetricSelector(selectorDiv);
     createVisualizationTypeSelector(selectorDiv);
     createSizeSlider(selectorDiv);
@@ -33,23 +34,37 @@ function createDistanceSlider(selectorDiv) {
 
     //create it at the end of the sliderDiv so the slider aligns with the scented widget
     createScentedRtLineChart(selectorDiv.select("#DistanceSliderdiv"), (maxMaxDistance / 2));
-
-    createAccuracyTexts(selectorDiv.select("#DistanceSliderdiv"), currentDistance);
 }
 
-function createAccuracyTexts(selectorDiv, distance) {
-    let accuraciesDiv = selectorDiv.append("div").attr("id", "AccuraciesText");
+function createAccuracyWidgetDiv(selectorDiv) {
+    let parentDiv = selectorDiv.append("div").attr("id", "AccuraciesWidgetDivParent");
+    createAccuracyWidget(parentDiv, currentDistance);
+}
+
+function createAccuracyWidget(parentDiv, distance) {
+    let accuraciesDiv = parentDiv.append("div").attr("id", "AccuraciesWidgetDiv");
     let accuracies = currentDistanceMetricMetaData["accuracyByDistance"][distance];
-    accuraciesDiv.append("div").text("Total accuracy: " + Math.round(accuracies[0] * 100) / 100);
+    accuraciesDiv.append("div")
+        .text("Total accuracy: " + Math.round(accuracies[0] * 100) / 100)
+        .style("color", accuraciesColors[0]);
     for (let i = 1; i < accuracies.length; i++) {
-        accuraciesDiv.append("div").text("Accuracy class " + i + ": " + Math.round(accuracies[i] * 100) / 100);
+        accuraciesDiv.append("div")
+            .text("Accuracy class " + i + ": " + Math.round(accuracies[i] * 100) / 100)
+            .style("color", accuraciesColors[i]);
     }
+    createAccuracyLineCharts(accuraciesDiv, distance, currentDistanceMetricMetaData["accuracyByDistance"])
+
     accuraciesDiv.append("div").text("Accuracies to original model");
     let accuraciesToOriginal = currentDistanceMetricMetaData["accuracyToOriginalModelByDistance"][distance];
-    accuraciesDiv.append("div").text("Total accuracy: " + Math.round(accuraciesToOriginal[0] * 100) / 100);
+    accuraciesDiv.append("div")
+        .text("Total accuracy: " + Math.round(accuraciesToOriginal[0] * 100) / 100)
+        .style("color", accuraciesColors[0]);
     for (let i = 1; i < accuraciesToOriginal.length; i++) {
-        accuraciesDiv.append("div").text("Accuracy class " + i + ": " + Math.round(accuraciesToOriginal[i] * 100) / 100);
+        accuraciesDiv.append("div")
+            .text("Accuracy class " + i + ": " + Math.round(accuraciesToOriginal[i] * 100) / 100)
+            .style("color", accuraciesColors[i]);
     }
+    createAccuracyLineCharts(accuraciesDiv, distance, currentDistanceMetricMetaData["accuracyToOriginalModelByDistance"])
 }
 
 function createDistanceMetricSelector(selectorDiv) {

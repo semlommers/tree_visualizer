@@ -90,6 +90,7 @@ function updateDistanceMetricUsed() {
         initializeRepTreeData();
         updateCurrentDistanceMetricMetaData();
         updateDistanceSlider();
+        updateSliderPreview();
         updateNodesRepresentedBy();
         d3.select("#treeGrid").selectAll("*").remove();
         generateTreeGrid();
@@ -158,9 +159,9 @@ function updateScentWidget(distance) {
 
 function updateAccuracies(distance) {
     // Delete old
-    d3.select("#AccuraciesText").remove();
+    d3.select("#AccuraciesWidgetDiv").remove();
     // Make new
-    createAccuracyTexts(d3.select("#DistanceSliderdiv"), distance);
+    createAccuracyWidget(d3.select("#AccuraciesWidgetDivParent"), distance);
 }
 
 /**
