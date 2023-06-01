@@ -23,6 +23,8 @@ public abstract class TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N
     Map<Integer, List<Double>> accuracyByDistance = new HashMap<>();
     @Expose
     Map<Integer, List<Double>> accuracyToOriginalModelByDistance = new HashMap<>();
+    @Expose
+    Map<Integer, List<Double>> treeIdToManifoldCoordinates = new HashMap<>();
 
     public void setAccuracyForDistance(Integer distance, List<Double> accuracies) {
         accuracyByDistance.put(distance, accuracies);
@@ -30,6 +32,10 @@ public abstract class TreeDistanceMeasure<N extends Node<N, E>, E extends Edge<N
 
     public void setAccuracyToOriginalForDistance(Integer distance, List<Double> accuracies) {
         accuracyToOriginalModelByDistance.put(distance, accuracies);
+    }
+
+    public void setTreeIdToManifoldCoordinates(Integer treeId, List<Double> coordinates) {
+        treeIdToManifoldCoordinates.put(treeId, coordinates);
     }
 
     /**

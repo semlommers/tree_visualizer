@@ -8,5 +8,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.10.1" level="project" />
+    <orderEntry type="library" name="github.haifengl.smile.core" level="project" />
+    <orderEntry type="library" name="github.haifengl.smile.math" level="project" />
+    <orderEntry type="library" name="bytedeco.javacpp.platform" level="project" />
+    <orderEntry type="library" name="bytedeco.openblas.platform" level="project" />
+    <orderEntry type="library" name="bytedeco.arpack.ng.platform" level="project" />
   </component>
 </module>

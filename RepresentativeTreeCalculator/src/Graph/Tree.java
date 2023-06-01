@@ -12,7 +12,7 @@ import java.util.Map.Entry;
  *
  * @author MaxSondag, SemLommers
  */
-public class Tree<N extends Node<N, E>, E extends Edge<N, E>> extends Graph<N, E> {
+public class Tree<N extends Node<N, E>, E extends Edge<N, E>> extends Graph<N, E> implements Comparable<Tree<N, E>> {
 
     //returns if possibleAncestor is an ancestor of n
     public boolean isAncestor(N possibleAncestor, N n) {
@@ -109,4 +109,8 @@ public class Tree<N extends Node<N, E>, E extends Edge<N, E>> extends Graph<N, E
     }
 
 
+    @Override
+    public int compareTo(Tree<N, E> o) {
+        return Integer.compare(this.id, o.id);
+    }
 }

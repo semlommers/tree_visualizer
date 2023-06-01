@@ -5,7 +5,7 @@
  */
 package Graph.GraphAlgorithms.RepresentativeTree;
 
-import Export.DistanceMatrixExport;
+import Graph.GraphAlgorithms.Manifold.ManifoldLearning;
 import Export.GraphWriter;
 import Graph.DecisionTree.DecisionTreeGraph;
 import Graph.GraphAlgorithms.NodeMappingAlgorithms.TreeMappingCalculator;
@@ -34,6 +34,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         Files.createDirectories(Paths.get(outputFolderLocation));
 
         List<Tree<N, E>> trees = new ArrayList<>(forest);
+        Collections.sort(trees);
 
         GraphWriter<N, E> tw = new GraphWriter<>();
 
@@ -101,10 +102,11 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
     private Collection<RepresentativeTree<N, E>> calculateRepresentativeTrees(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> dm, String outputFileLocation, HashMap<Integer, Integer> dataToCorrectClass, HashMap<Integer, Integer> dataToPredictedClass) throws IOException {
 
         //Holds the graphs as nodes, and uses the specified distance measure as weights between the nodes
-        Graph<N, E> g = makeWeightedGraph(trees, dm);
+        ManifoldLearning<N, E> manifoldLearning = new ManifoldLearning<N, E>(trees.size());
+        Graph<N, E> g = makeWeightedGraph(trees, dm, manifoldLearning);
 
-        DistanceMatrixExport<N, E> distanceMatrixExport = new DistanceMatrixExport<>();
-        distanceMatrixExport.distanceMatrixExport(outputFileLocation, g, dm.getName());
+        manifoldLearning.distanceMatrixExport(outputFileLocation, dm.getName());
+        manifoldLearning.computeAndStoreManifold(dm);
 
 
         Log.printOnce("Weighted graph made for " + dm.getName());
@@ -242,7 +244,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
     }
 
     @SuppressWarnings("unchecked")
-    private Graph<N, E> makeWeightedGraph(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> tdm) {
+    private Graph<N, E> makeWeightedGraph(List<Tree<N, E>> trees, TreeDistanceMeasure<N, E> tdm, ManifoldLearning<N, E> manifoldLearning) {
         Graph<N, E> g = new Graph<N, E>();
 
         //make nodes for each tree
@@ -257,6 +259,7 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
         int count = 0;//counter for progress
         for (int i = 0; i < (trees.size() - 1); i++) {
             Tree<N, E> t1 = trees.get(i);
+            manifoldLearning.addIdMapping(i, t1.id);
             for (int j = i + 1; j < trees.size(); j++) {
 
                 count++;
@@ -267,6 +270,8 @@ public class RepresentativeTreesFinder<N extends Node<N, E>, E extends Edge<N, E
                 Tree<N, E> t2 = trees.get(j);
 
                 int distance = tdm.getDistance(t1, t2);
+
+                manifoldLearning.addDistance(i, j, distance);
 
                 N n1 = nodeMapping.get(t1.id);
                 N n2 = nodeMapping.get(t2.id);
