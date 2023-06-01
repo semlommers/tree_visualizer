@@ -31,7 +31,6 @@ public class ManifoldLearning<N extends Node<N, E>, E extends Edge<N, E>> {
 
     public void addIdMapping(Integer id, Integer treeId) {
         Integer result = idToTreeId.put(id, treeId);
-        assert result == null; // TODO: REMOVE
     }
 
     public void computeAndStoreManifold(TreeDistanceMeasure<N, E> distanceMeasure) {
