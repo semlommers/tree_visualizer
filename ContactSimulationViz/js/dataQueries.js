@@ -162,6 +162,24 @@ function getTreesRepresentedById(id, distance) {
     return allTreesRepresented;
 }
 
+function getTreeIdsRepresentedById(id, distance) {
+    const repTree = repTreeById.get(id);
+    let reps = repTree["representations"];
+
+    let repTreeIds = [];
+    for (let i = 0; i < reps.length; i++) {
+        const repIData = reps[i];
+        if (repIData.distance <= distance) {
+            const repIds = repIData["representationIds"];
+            for (let j = 0; j < repIds.length; j++) {
+                repTreeIds.push(repIds[j]);
+            }
+        }
+    }
+
+    return repTreeIds;
+}
+
 
 /**
  * Get all nodes that the node with nodeId represents at the specified distance. treeId is the tree nodeId belong to

@@ -20,6 +20,13 @@ function generateTreeGrid() {
         const id = treeRoot.data.id;
 
         const treeSvg = createSingleTree(treeGridSVG, xOffset, yOffset, treeRoot, id, true);
+        treeSvg.on("mouseenter", function (event) {
+            let id = parseInt(event.target.id.substring(3));
+            highlightTreesRepresentedBy(id);
+        });
+        treeSvg.on("mouseleave", function (event) {
+            resetHighlight();
+        });
         // treeSvg
         //     .on("click", function(event) { showTreesRepresented(event, treeRoot) }) //TODO: Change click function to work on all of svg, not just nodes.
 

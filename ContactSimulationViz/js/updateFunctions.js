@@ -95,6 +95,7 @@ function updateDistanceMetricUsed() {
         d3.select("#treeGrid").selectAll("*").remove();
         generateTreeGrid();
         updatePositions(true);
+        updateManifoldPlot();
     });
 }
 
@@ -105,6 +106,11 @@ function updateCurrentDistanceMetricMetaData() {
             break;
         }
     }
+}
+
+function updateManifoldPlot() {
+    d3.select("#tab11Content").selectAll("*").remove();
+    createSecondaryPanel();
 }
 
 function updateDistanceSlider() {
