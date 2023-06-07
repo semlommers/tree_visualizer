@@ -79,9 +79,12 @@ const maxParts = 10; //How many different parts we can have at maximum in the gl
 let repTreesData, allTreesData, metaData, distanceMetricMetaData, namesData;
 let d3;
 
+let isHandlerDragging = false;
+let draggingTabContent;
+
 
 //Load in all the javascript files
-requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.js", "js/dataQueries.js", "js/stateCounters.js", "js/nodeViz.js", "js/sidePanel.js", "js/treeLayout.js", "js/representativeGraph.js", "js/popup.js", "js/updateFunctions.js", "js/offsetCalculator.js", "js/iciclePlotLayout.js", "js/nodeLinkDiagramLayout.js", "js/sunBurstLayout.js"], function(d3Var) {
+requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.js", "js/dataQueries.js", "js/stateCounters.js", "js/nodeViz.js", "js/sidePanel.js", "js/treeLayout.js", "js/representativeGraph.js", "js/popup.js", "js/updateFunctions.js", "js/offsetCalculator.js", "js/iciclePlotLayout.js", "js/nodeLinkDiagramLayout.js", "js/sunBurstLayout.js", "js/mainPanel.js", "js/secondaryPanel.js"], function(d3Var) {
     //load in all the data
     d3 = d3Var;
     d3.json(distanceMetricsMetaDataLocation).then(function(distanceMetricMetaDataInput) {
@@ -114,7 +117,7 @@ function mainRepresentativeGraph() {
     createSidePanel()
 
 
-    generateTreeGrid();
+    createMainPanel();
 
 
     window.addEventListener('resize', function() { updatePositions() }, true);

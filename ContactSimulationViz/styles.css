@@ -21,15 +21,60 @@
     flex-direction: column;
 }
 
+#mainPanel {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+}
+
+.contentPanel {
+    height: 100%;
+    flex: 1 1 auto;
+}
+
 #treeGridDiv {
     height: 100%;
     flex-grow: 1;
-    overflow: scroll;
+    overflow-y: scroll;
     padding: 0;
+}
+
+.box {
+    border-radius: 5px;
+
+    /* Use box-sizing so that element's outer width will match width property */
+    box-sizing: border-box;
+
+    /* Allow box to grow and shrink, and ensure they are all equally sized */
+    flex: 1 1 auto;
+}
+
+.handler {
+    width: 20px;
+    padding: 0;
+    cursor: col-resize;
+    flex: 0 0 auto;
+}
+
+.handler::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 100%;
+    background: #000000;
+    margin: 0 auto;
 }
 
 #treeGrid {
     overflow: visible;
+}
+
+#secondaryPanel {
+    height: 100%;
+    padding-bottom: 20px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 body,
@@ -49,7 +94,7 @@ Css code for the visualization of the trees
     /*visible*/
 }
 
-#treeGrid .hidden {
+#treeGrid .hiddenNodes {
     opacity: 0.4;
     /*Blur it out*/
 }

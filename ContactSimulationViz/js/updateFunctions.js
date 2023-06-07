@@ -131,7 +131,7 @@ function hideTrees(idsToHide) {
             const treeId = parseInt(d3.select(this).attr('id').substring(3));
             //substring 3 as id is "tidXXX" where XXX is a number
             if (idsToHide.includes(treeId)) {
-                return "svgtree hidden"; //todo: Only change hidden of visible without needing to specify the rest
+                return "svgtree hiddenNodes"; //todo: Only change hidden of visible without needing to specify the rest
             } else {
                 return "svgtree visible";
             }
