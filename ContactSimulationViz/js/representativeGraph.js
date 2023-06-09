@@ -27,9 +27,26 @@ function generateTreeGrid() {
         treeSvg.on("mouseleave", function (event) {
             resetHighlight();
         });
-        // treeSvg
-        //     .on("click", function(event) { showTreesRepresented(event, treeRoot) }) //TODO: Change click function to work on all of svg, not just nodes.
 
+        treeSvg.on("click", function(event) {
+            if (focusedTree === null) {
+                focusedTree = treeRoot.data.id;
+            } else {
+                if (secondaryFocusedTree === null) {
+                    if (focusedTree === treeRoot.data.id) {
+                        focusedTree = null;
+                        resetHighlight();
+                    } else {
+                        secondaryFocusedTree = treeRoot.data.id;
+                    }
+                } else {
+                    focusedTree = null;
+                    secondaryFocusedTree = null;
+                    resetHighlight();
+                }
+            }
+            updatePositions(true);
+        })
     }
 
 

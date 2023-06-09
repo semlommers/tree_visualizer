@@ -76,7 +76,7 @@ function createMainPanel() {
     });
 
     generateTreeGrid();
-    createSecondaryPanel();
+    createManifoldPlot();
 
 }
 

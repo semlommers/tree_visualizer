@@ -163,6 +163,9 @@ function getTreesRepresentedById(id, distance) {
 }
 
 function getTreeIdsRepresentedById(id, distance) {
+    if (id === -1) {
+        return [];
+    }
     const repTree = repTreeById.get(id);
     let reps = repTree["representations"];
 

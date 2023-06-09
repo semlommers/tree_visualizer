@@ -110,7 +110,7 @@ function updateCurrentDistanceMetricMetaData() {
 
 function updateManifoldPlot() {
     d3.select("#tab11Content").selectAll("*").remove();
-    createSecondaryPanel();
+    createManifoldPlot();
 }
 
 function updateDistanceSlider() {
@@ -213,9 +213,6 @@ function recalculatePlacement(idsToHide) {
             //hidden trees cannot have a repAmount more than 1
             //scale trees according to repAmount
             scaleFactor = getScaleFactorByRepAmount(repAmount);
-            if (id === focusedTree) {
-                scaleFactor = 3;
-            }
         }
         width = width * scaleFactor;
         height = height * scaleFactor;
@@ -281,6 +278,16 @@ function animateChanges(widthArray, heightArray, offsetArray,transitionTime) {
             const treeId = parseInt(d3.select(this).attr('id').substring(3))
             const yOffset = yOffsetMap.get(treeId);
             return yOffset;
+        })
+        .style("outline", function () {
+            const treeId = parseInt(d3.select(this).attr('id').substring(3))
+            if (treeId === focusedTree) {
+                return "1px solid red";
+            } else if (treeId === secondaryFocusedTree) {
+                return "1px solid #00d0ff"
+            } else {
+                return "none"
+            }
         })
         .end()
         .then(() => {

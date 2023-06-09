@@ -73,15 +73,6 @@ function sunBurstLayout(treeSvg, root, width, height, isRepTree) {
         text.attr("transform", `translate(${textX},${fontSizeRepAmount})`); //make sure no clipping occurs
     }
 
-    treeSvg.on("click", function() {
-        if (focusedTree === null) {
-            focusedTree = root.data.id;
-        } else {
-            focusedTree = null;
-        }
-        updatePositions(true);
-    })
-
     return treeSvg;
 }
 

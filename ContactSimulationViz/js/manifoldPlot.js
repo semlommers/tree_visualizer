@@ -1,4 +1,4 @@
-function createSecondaryPanel() {
+function createManifoldPlot() {
     const div = d3.select("#tab11Content");
 
     const w = 400;
@@ -52,16 +52,30 @@ function createSecondaryPanel() {
 }
 
 function highlightTreesRepresentedBy(repTreeId) {
-    let treeToHighlight
+    let treeToHighlight;
+    let secondaryTreeToHighlight;
     if (focusedTree == null) {
         treeToHighlight = repTreeId;
     } else {
         treeToHighlight = focusedTree;
+        if (secondaryFocusedTree == null) {
+            secondaryTreeToHighlight = repTreeId;
+        } else {
+            secondaryTreeToHighlight = secondaryFocusedTree;
+        }
     }
-    let representedTreeIds = getTreeIdsRepresentedById(treeToHighlight, currentDistance)
+
+    let representedTreeIds = getTreeIdsRepresentedById(treeToHighlight, currentDistance);
+    let secondaryRepresentedTreeIds = [];
+    if (secondaryTreeToHighlight !== undefined) {
+        secondaryRepresentedTreeIds = getTreeIdsRepresentedById(secondaryTreeToHighlight, currentDistance)
+    }
+
     let circles = d3.select("#manifoldPlot").selectAll("circle").attr("fill", function (d) {
         if (representedTreeIds.includes(parseInt(d))) {
             return "red";
+        } else if (secondaryRepresentedTreeIds.includes(parseInt(d))) {
+            return "#00d0ff";
         } else {
             return "black";
         }
@@ -69,9 +83,5 @@ function highlightTreesRepresentedBy(repTreeId) {
 }
 
 function resetHighlight() {
-    if (focusedTree == null) {
-        let circles = d3.select("#manifoldPlot").selectAll("circle").attr("fill", function (d) {
-            return "black";
-        });
-    }
+    highlightTreesRepresentedBy(-1);
 }
