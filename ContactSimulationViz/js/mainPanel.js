@@ -4,6 +4,7 @@ function createMainPanel() {
     let sidePanel = d3.select("#sidePanel");
 
 
+    // TODO: clean this at the end
     // let firstTabs = sidePanel.insert("ul", ":first-child").attr("class", "nav nav-pills").style("justify-content", "center");
     // let firstTab1 = firstTabs.append("li").attr("class", "active");
     // firstTab1.append("a").attr("data-toggle", "pill").attr("href", "#tab1Content").text("Overview");
