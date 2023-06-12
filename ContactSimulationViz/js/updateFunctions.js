@@ -29,11 +29,19 @@ function updateAll() {
 	//only moving and recoloring. Update via position
         updatePositions(true);
     }
+    updateSecondaryPanel();
 
-    updateGlobalChart();
+    // updateGlobalChart(); // TODO: remove if it breaks nothing
     changeNoLongerPending();
 }
 
+function updateSecondaryPanel() {
+    resetHighlight();
+    resetExplorationPanel();
+    if (focusedTree != null) {
+        createRepresentedTreeGrid(focusedTree);
+    }
+}
 
 function updateColors() {
     updateColorLegend(); //Make sure color legend is up-to-date
@@ -85,6 +93,8 @@ function updateNodesRepresentedByForSubTree(node) {
 }
 
 function updateDistanceMetricUsed() {
+    focusedTree = null;
+    secondaryFocusedTree = null;
     d3.json(repTreesDataInputBaseLocation + currentDistanceMetric + ".json").then(function(repTreesDataInput) {
         repTreesData = repTreesDataInput;
         initializeRepTreeData();

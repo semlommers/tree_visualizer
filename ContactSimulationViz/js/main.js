@@ -85,7 +85,7 @@ let draggingTabContent;
 
 
 //Load in all the javascript files
-requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.js", "js/dataQueries.js", "js/stateCounters.js", "js/nodeViz.js", "js/sidePanel.js", "js/treeLayout.js", "js/representativeGraph.js", "js/popup.js", "js/updateFunctions.js", "js/offsetCalculator.js", "js/iciclePlotLayout.js", "js/nodeLinkDiagramLayout.js", "js/sunBurstLayout.js", "js/mainPanel.js", "js/manifoldPlot.js"], function(d3Var) {
+requirejs(["js/d3/d3.js", "js/ColorSchemes.js", "js/BarChart.js", "js/LineChart.js", "js/dataQueries.js", "js/stateCounters.js", "js/nodeViz.js", "js/sidePanel.js", "js/treeLayout.js", "js/representativeGraph.js", "js/popup.js", "js/updateFunctions.js", "js/offsetCalculator.js", "js/iciclePlotLayout.js", "js/nodeLinkDiagramLayout.js", "js/sunBurstLayout.js", "js/mainPanel.js", "js/manifoldPlot.js", "js/explorationPanel.js"], function(d3Var) {
     //load in all the data
     d3 = d3Var;
     d3.json(distanceMetricsMetaDataLocation).then(function(distanceMetricMetaDataInput) {

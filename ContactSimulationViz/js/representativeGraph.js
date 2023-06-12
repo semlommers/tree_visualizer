@@ -31,11 +31,13 @@ function generateTreeGrid() {
         treeSvg.on("click", function(event) {
             if (focusedTree === null) {
                 focusedTree = treeRoot.data.id;
+                createRepresentedTreeGrid(focusedTree);
             } else {
                 if (secondaryFocusedTree === null) {
                     if (focusedTree === treeRoot.data.id) {
                         focusedTree = null;
                         resetHighlight();
+                        resetExplorationPanel()
                     } else {
                         secondaryFocusedTree = treeRoot.data.id;
                     }
@@ -43,6 +45,7 @@ function generateTreeGrid() {
                     focusedTree = null;
                     secondaryFocusedTree = null;
                     resetHighlight();
+                    resetExplorationPanel();
                 }
             }
             updatePositions(true);
