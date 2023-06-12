@@ -327,7 +327,7 @@ function createComboBox(divToAppendTo, id, valueList, initVal, changeFunction, m
 
     //attach the combobox
     const dropDown = divToAppendTo.append("select")
-        .attr("class", "sidePanelComboBox")
+        .attr("class", "form-control")
         .attr("id", id);
 
     if (multiple) {
@@ -382,7 +382,7 @@ function createButton(divToAppendTo, id, text, clickFunction) {
 
     //attach the checkbox itself
     buttonDiv.append("button")
-        .attr("class", "button")
+        .attr("class", "btn btn-primary")
         .attr("id", id)
         .text(text)
         .on("click", clickFunction);
@@ -407,7 +407,7 @@ function createSlider(divToAppendTo, id, text, minVal, maxVal, initVal) {
 
     slideContainer.append("input")
         .attr("type", "range")
-        .attr("class", "slider")
+        .attr("class", "range")
         .attr("id", id)
         .attr("min", minVal)
         .attr("max", maxVal)
