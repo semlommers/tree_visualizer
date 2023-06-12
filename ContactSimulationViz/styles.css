@@ -151,7 +151,7 @@ Text elements in sidepanel
 
 .title {
     margin: 0;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .subtitle {
@@ -169,14 +169,10 @@ Slider
 */
 
 .sliderdiv {
-    width: 200px;
-    margin: auto;
     margin-bottom: 15px;
 }
 
 .slidecontainer {
-    /* Width of the outside container*/
-    width: 175px;
     /*height of the outside container. Make space for slider knob*/
     height: 25px;
     display: flex;
@@ -322,9 +318,9 @@ sidePanelButtonDiv
 */
 
 .recalculateDiv {
-    display: flex;
-    justify-content: center;
+    display: grid;
     align-items: baseline;
+    padding-top: 2px;
     padding-bottom: 2px;
 }
 

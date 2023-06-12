@@ -15,13 +15,12 @@ function createScentedRtLineChart(chartDiv, scentIndex) {
             treesPerSize[i] = treesPerSize[i] + 1;
         }
     }
-    const width = 150 - 25; //offset by 25 for the length of the slider knob
+    const width = 230; //offset by 25 for the length of the slider knob
     const height = 20;
 
     const lineChartDiv = chartDiv.append("div")
         .attr("id", "RtScentedChart")
         .attr("class", "LineChart")
-        .style("margin-left", "12.5px")
 
     createLineChart(lineChartDiv, width, height, treesPerSize, scentIndex);
 }

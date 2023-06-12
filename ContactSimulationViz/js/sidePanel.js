@@ -54,14 +54,13 @@ function createAccuracyWidget(parentDiv, distance) {
     }
     createAccuracyLineCharts(accuraciesDiv, distance, currentDistanceMetricMetaData["accuracyByDistance"])
 
-    accuraciesDiv.append("div").text("Accuracies to original model");
     let accuraciesToOriginal = currentDistanceMetricMetaData["accuracyToOriginalModelByDistance"][distance];
     accuraciesDiv.append("div")
-        .text("Total accuracy: " + Math.round(accuraciesToOriginal[0] * 100) / 100)
+        .text("Total faithfulness: " + Math.round(accuraciesToOriginal[0] * 100) / 100)
         .style("color", accuraciesColors[0]);
     for (let i = 1; i < accuraciesToOriginal.length; i++) {
         accuraciesDiv.append("div")
-            .text("Accuracy class " + i + ": " + Math.round(accuraciesToOriginal[i] * 100) / 100)
+            .text("Faithfulness class " + i + ": " + Math.round(accuraciesToOriginal[i] * 100) / 100)
             .style("color", accuraciesColors[i]);
     }
     createAccuracyLineCharts(accuraciesDiv, distance, currentDistanceMetricMetaData["accuracyToOriginalModelByDistance"])
@@ -70,8 +69,7 @@ function createAccuracyWidget(parentDiv, distance) {
 function createDistanceMetricSelector(selectorDiv) {
 
     let containerDiv = selectorDiv.append("div")
-        .style("display", "grid")
-        .style("justify-content", "center");
+        .style("display", "grid");
 
     containerDiv.append("p")
         .attr("class", "text title")
@@ -94,8 +92,7 @@ function createDistanceMetricSelector(selectorDiv) {
 function createVisualizationTypeSelector(selectorDiv) {
 
     let containerDiv = selectorDiv.append("div")
-        .style("display", "grid")
-        .style("justify-content", "center");
+        .style("display", "grid");
 
     containerDiv.append("p")
         .attr("class", "text title")
@@ -135,8 +132,7 @@ function createSizeSlider(selectorDiv) {
 function createNodeColorSelectors(selectorDiv) {
 
     let containerDiv = selectorDiv.append("div")
-        .style("display", "grid")
-        .style("justify-content", "center");
+        .style("display", "grid");
 
     containerDiv.append("p")
         .attr("class", "text title")
@@ -385,7 +381,8 @@ function createButton(divToAppendTo, id, text, clickFunction) {
         .attr("class", "btn btn-primary")
         .attr("id", id)
         .text(text)
-        .on("click", clickFunction);
+        .on("click", clickFunction)
+        .style("width", "100%");
 }
 
 
