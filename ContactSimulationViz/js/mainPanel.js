@@ -80,6 +80,7 @@ function createMainPanel() {
     generateTreeGrid();
     createManifoldPlot();
     resetExplorationPanel();
+    resetFeaturePerDepth();
 
 }
 
@@ -106,13 +107,29 @@ function createOverviewContent(tab1Content) {
     let explorationButton = secondTab2.append("a").attr("data-toggle", "pill").attr("href", "#tab12Content")
         .text("Exploration");
 
+    let secondTab3 = secondTabs.append("li");
+    secondTab3.append("a").attr("data-toggle", "pill").attr("href", "#tab13Content")
+        .text("Feature per depth");
+
+    let secondTab4 = secondTabs.append("li");
+    secondTab4.append("a").attr("data-toggle", "pill").attr("href", "#tab14Content")
+        .text("Split values");
+
     $('a[href="#tab11Content"]').on('hidden.bs.tab', function (e) {
+        updateExplorationPanelAnimated();
+    })
+
+    $('a[href="#tab13Content"]').on('hidden.bs.tab', function (e) {
+        updateExplorationPanelAnimated();
+    })
+
+    $('a[href="#tab14Content"]').on('hidden.bs.tab', function (e) {
         updateExplorationPanelAnimated();
     })
 
     let contentHeight = secondPanel.node().clientHeight - secondTabs.node().clientHeight;
 
-    let contentDiv = secondPanel.append("div").attr('class', "tab-content").style("height", contentHeight + "px"); // Make room for the navigation
+    let contentDiv = secondPanel.append("div").attr("id", "secondPanelTabContent").attr('class', "tab-content").style("height", contentHeight + "px"); // Make room for the navigation
 
     let tab11Content = contentDiv.append("div")
         .attr("id", "tab11Content")
@@ -120,6 +137,16 @@ function createOverviewContent(tab1Content) {
 
     let tab12Content = contentDiv.append("div")
         .attr("id", "tab12Content")
+        .attr("class", "tab-pane fade")
+        .style("height", "100%");
+
+    let tab13Content = contentDiv.append("div")
+        .attr("id", "tab13Content")
+        .attr("class", "tab-pane fade")
+        .style("height", "100%");
+
+    let tab14Content = contentDiv.append("div")
+        .attr("id", "tab14Content")
         .attr("class", "tab-pane fade")
         .style("height", "100%");
 }

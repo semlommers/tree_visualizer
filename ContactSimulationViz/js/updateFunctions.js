@@ -38,8 +38,10 @@ function updateAll() {
 function updateSecondaryPanel() {
     resetHighlight();
     resetExplorationPanel();
+    resetFeaturePerDepth();
     if (focusedTree != null) {
         createRepresentedTreeGrid(focusedTree);
+        createFeaturePerDepthPlot(focusedTree);
     }
 }
 

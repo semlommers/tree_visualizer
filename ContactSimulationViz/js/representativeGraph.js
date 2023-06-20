@@ -32,20 +32,19 @@ function generateTreeGrid() {
             if (focusedTree === null) {
                 focusedTree = treeRoot.data.id;
                 createRepresentedTreeGrid(focusedTree);
+                createFeaturePerDepthPlot(focusedTree);
             } else {
                 if (secondaryFocusedTree === null) {
                     if (focusedTree === treeRoot.data.id) {
                         focusedTree = null;
-                        resetHighlight();
-                        resetExplorationPanel()
+                        updateSecondaryPanel();
                     } else {
                         secondaryFocusedTree = treeRoot.data.id;
                     }
                 } else {
                     focusedTree = null;
                     secondaryFocusedTree = null;
-                    resetHighlight();
-                    resetExplorationPanel();
+                    updateSecondaryPanel();
                 }
             }
             updatePositions(true);
