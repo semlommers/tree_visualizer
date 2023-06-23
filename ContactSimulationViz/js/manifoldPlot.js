@@ -2,12 +2,13 @@ function createManifoldPlot() {
     const div = d3.select("#tab11Content");
 
     const w = 400;
-    const h = 256;
+    const h = 400;
 
-    let svg = div.append("svg").attr("id", "manifoldPlot").attr("width", w).attr("height", h).style("border", "solid");
+    let svg = div.append("svg").attr("id", "manifoldPlot").attr("width", w).attr("height", h).style("border", "solid")
+        .style("border-width", "1px").style("background", "#e4e4e4");
 
     // Margin object with four properties
-    const margin = {top: 20, right: 20, bottom: 20, left: 30}
+    const margin = {top: 20, right: 20, bottom: 20, left: 20}
 
     //create innerWidth and innerHeight for our margin
     const innerW = w - margin.right - margin.left;
