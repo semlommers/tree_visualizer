@@ -77,7 +77,8 @@ function snakeLayout(inputWidths, inputHeights, horMargins, maxWidth) {
             stripWidth = 0;
             stripMaxHeight = 0;
             stripStartIndex = i + 1;//start the new strip at the next element
-            if (stripDirection === "Right") {
+            if (stripDirection === "Right" && false) { // We do not use the snake layout anymore since the order of
+                                                        // the trees matter
                 stripDirection = "Left";
                 currentXOffset = maxWidth;
             } else {
