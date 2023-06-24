@@ -25,7 +25,7 @@ function createFeaturePerDepthPlot(repTreeId) {
     const g = svg.append('g')
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    let data = collectTheData(repTreeId);
+    let data = collectTheDataForFeaturePerDepthPlot(repTreeId);
 
     let keys = Object.keys(data[0]).slice(1);
     let maxKeys = keys.length;
@@ -115,7 +115,7 @@ function createFeaturePerDepthPlot(repTreeId) {
 
 
 
-function collectTheData(treeId) {
+function collectTheDataForFeaturePerDepthPlot(treeId) {
     let allNodes = [];
     let allTrees = getTreesRepresentedById(treeId, currentDistance);
     for (let i = 0; i < allTrees.length; i++) {
