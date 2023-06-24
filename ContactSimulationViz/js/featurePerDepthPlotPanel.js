@@ -146,13 +146,47 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
 
     let dataMap = [];
 
+    const sumArray = (array) => {
+        const newArray = [];
+        array.forEach(sub => {
+            sub.forEach((num, index) => {
+                if(newArray[index]){
+                    newArray[index] += num;
+                }else{
+                    newArray[index] = num;
+                }
+            });
+        });
+        return newArray;
+    }
+
+    function sortWithIndices(toSort) {
+        for (let i = 0; i < toSort.length; i++) {
+            toSort[i] = [toSort[i], i];
+        }
+        toSort.sort(function(left, right) {
+            return right[0] - left[0];
+        });
+        toSort.sortIndices = [];
+        for (let j = 0; j < toSort.length; j++) {
+            toSort.sortIndices.push(toSort[j][1]);
+            toSort[j] = toSort[j][0];
+        }
+        return toSort.sortIndices;
+    }
+
+    let columnSum = sumArray(dataArray);
+    console.log(columnSum);
+    let sortedIndices = sortWithIndices(columnSum);
+
     for (let i = 0; i < dataArray.length; i++) {
         let dataInstance = dataArray[i];
         let sum = dataInstance.reduce((partialSum, a) => partialSum + a, 0);
         let instance = {};
         instance["depth"] = i;
         for (let j = 0; j < dataInstance.length; j++) {
-            instance["feature " + j.toString()] = dataInstance[j] / sum;
+            let dataIndex = sortedIndices[j];
+            instance["feature " + dataIndex.toString()] = dataInstance[dataIndex] / sum;
         }
         dataMap.push(instance);
     }
