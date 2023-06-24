@@ -15,13 +15,16 @@ public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
     public Integer[] classProportions;
     @Expose
     public Integer[] correctVsIncorrectClassifiedData;
+    @Expose
+    public Double threshold;
 
-    public DecisionTreeNode(int id, Integer featureId, Integer predictedLabel, Integer[] classProportions) {
+    public DecisionTreeNode(int id, Integer featureId, Integer predictedLabel, Integer[] classProportions, Double threshold) {
         super(id);
         this.featureId = featureId;
         this.predictedLabel = predictedLabel;
         this.classProportions = classProportions;
         this.correctVsIncorrectClassifiedData = new Integer[]{0,0};
+        this.threshold = threshold;
     }
 
     public DecisionTreeNode(int id) {
@@ -31,7 +34,7 @@ public class DecisionTreeNode extends Node<DecisionTreeNode, DecisionTreeEdge> {
 
     @Override
     public DecisionTreeNode deepCopy() {
-        return new DecisionTreeNode(id, featureId, predictedLabel, classProportions);
+        return new DecisionTreeNode(id, featureId, predictedLabel, classProportions, threshold);
     }
 
     @Override

@@ -39,9 +39,15 @@ function updateSecondaryPanel() {
     resetHighlight();
     resetExplorationPanel();
     resetFeaturePerDepth();
+    resetFeatureThresholdsPlot()
     if (focusedTree != null) {
         createRepresentedTreeGrid(focusedTree);
-        createFeaturePerDepthPlot(focusedTree);
+        createFeaturePerDepthPlot(focusedTree, false);
+        createFeatureThresholdsPlot(focusedTree, false);
+    }
+    if (secondaryFocusedTree != null) {
+        createFeaturePerDepthPlot(secondaryFocusedTree, true);
+        createFeatureThresholdsPlot(secondaryFocusedTree, true);
     }
 }
 

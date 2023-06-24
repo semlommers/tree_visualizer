@@ -1,7 +1,7 @@
 let featureOrder = null;
 
 function resetFeaturePerDepth() {
-    const div = d3.select("#tab13Content");
+    const div = d3.select("#tab13ContentDiv");
     div.selectAll("*").remove();
 
     div.text("Please select a representative tree to see the feature used per depth.");
@@ -9,7 +9,7 @@ function resetFeaturePerDepth() {
 }
 
 function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
-    const div = d3.select("#tab13Content");
+    const div = d3.select("#tab13ContentDiv");
     if (!secondaryTree) {
         div.selectAll("*").remove();
         div.text(""); // Remove the text
@@ -166,21 +166,6 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
         return newArray;
     }
 
-    function sortWithIndices(toSort) {
-        for (let i = 0; i < toSort.length; i++) {
-            toSort[i] = [toSort[i], i];
-        }
-        toSort.sort(function(left, right) {
-            return right[0] - left[0];
-        });
-        toSort.sortIndices = [];
-        for (let j = 0; j < toSort.length; j++) {
-            toSort.sortIndices.push(toSort[j][1]);
-            toSort[j] = toSort[j][0];
-        }
-        return toSort.sortIndices;
-    }
-
     let sortedIndices;
     if (featureOrder == null) {
         let columnSum = sumArray(dataArray);
@@ -206,4 +191,19 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
     }
 
     return dataMap;
+}
+
+function sortWithIndices(toSort) {
+    for (let i = 0; i < toSort.length; i++) {
+        toSort[i] = [toSort[i], i];
+    }
+    toSort.sort(function(left, right) {
+        return right[0] - left[0];
+    });
+    toSort.sortIndices = [];
+    for (let j = 0; j < toSort.length; j++) {
+        toSort.sortIndices.push(toSort[j][1]);
+        toSort[j] = toSort[j][0];
+    }
+    return toSort.sortIndices;
 }

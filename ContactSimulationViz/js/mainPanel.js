@@ -81,6 +81,7 @@ function createMainPanel() {
     createManifoldPlot();
     resetExplorationPanel();
     resetFeaturePerDepth();
+    resetFeatureThresholdsPlot();
 
 }
 
@@ -143,6 +144,10 @@ function createOverviewContent(tab1Content) {
     let tab13Content = contentDiv.append("div")
         .attr("id", "tab13Content")
         .attr("class", "tab-pane fade")
+        .style("height", "100%");
+
+    let tab13contentDiv = tab13Content.append("div")
+        .attr("id", "tab13ContentDiv")
         .style("height", "100%")
         .style("display", "inline-flex");
 
@@ -150,6 +155,12 @@ function createOverviewContent(tab1Content) {
         .attr("id", "tab14Content")
         .attr("class", "tab-pane fade")
         .style("height", "100%");
+
+    let tab14contentDiv = tab14Content.append("div")
+        .attr("id", "tab14ContentDiv")
+        .style("height", "100%")
+        .style("display", "flex")
+        .style("overflow-y", "scroll");
 }
 
 function createDetailContent(tab2Content) {

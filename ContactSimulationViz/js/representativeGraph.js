@@ -32,7 +32,8 @@ function generateTreeGrid() {
             if (focusedTree === null) {
                 focusedTree = treeRoot.data.id;
                 createRepresentedTreeGrid(focusedTree);
-                createFeaturePerDepthPlot(focusedTree);
+                createFeaturePerDepthPlot(focusedTree, false);
+                createFeatureThresholdsPlot(focusedTree, false);
             } else {
                 if (secondaryFocusedTree === null) {
                     if (focusedTree === treeRoot.data.id) {
@@ -40,6 +41,8 @@ function generateTreeGrid() {
                         updateSecondaryPanel();
                     } else {
                         secondaryFocusedTree = treeRoot.data.id;
+                        createFeaturePerDepthPlot(secondaryFocusedTree, true);
+                        createFeatureThresholdsPlot(secondaryFocusedTree, true);
                     }
                 } else {
                     focusedTree = null;
