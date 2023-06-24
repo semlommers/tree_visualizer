@@ -78,6 +78,10 @@ function resizeSVG(svg) {
 
 
 function setBaseWidthAndHeightById(treeRoots) {
+    treeRoots.sort((a, b) => {
+        return b.data.maxDistance - a.data.maxDistance;
+    })
+
     for (let i = 0; i < treeRoots.length; i++) {
         const treeRoot = treeRoots[i];
         const width = getDisplayWidth(treeRoot);
