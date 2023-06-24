@@ -143,7 +143,8 @@ function createOverviewContent(tab1Content) {
     let tab13Content = contentDiv.append("div")
         .attr("id", "tab13Content")
         .attr("class", "tab-pane fade")
-        .style("height", "100%");
+        .style("height", "100%")
+        .style("display", "inline-flex");
 
     let tab14Content = contentDiv.append("div")
         .attr("id", "tab14Content")

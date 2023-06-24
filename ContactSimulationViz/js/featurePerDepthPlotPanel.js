@@ -1,14 +1,19 @@
+let featureOrder = null;
+
 function resetFeaturePerDepth() {
     const div = d3.select("#tab13Content");
     div.selectAll("*").remove();
 
     div.text("Please select a representative tree to see the feature used per depth.");
+    featureOrder = null;
 }
 
-function createFeaturePerDepthPlot(repTreeId) {
+function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
     const div = d3.select("#tab13Content");
-    div.selectAll("*").remove();
-    div.text(""); // Remove the text
+    if (!secondaryTree) {
+        div.selectAll("*").remove();
+        div.text(""); // Remove the text
+    }
 
     let tabHeight = d3.select("#secondPanelTabContent").node().clientHeight;
 
@@ -19,7 +24,8 @@ function createFeaturePerDepthPlot(repTreeId) {
     let svg = div.append("svg").attr("id", "featurePerDepthPlot")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .style("border", "solid");
+        .style("border", "solid")
+        .style("margin-right", "10px");
 
     // append a g element to our svg and give it a new origin inside svg
     const g = svg.append('g')
@@ -175,16 +181,24 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
         return toSort.sortIndices;
     }
 
-    let columnSum = sumArray(dataArray);
-    console.log(columnSum);
-    let sortedIndices = sortWithIndices(columnSum);
+    let sortedIndices;
+    if (featureOrder == null) {
+        let columnSum = sumArray(dataArray);
+
+        sortedIndices = sortWithIndices(columnSum);
+
+        featureOrder = sortedIndices;
+    } else {
+        sortedIndices = featureOrder;
+    }
+
 
     for (let i = 0; i < dataArray.length; i++) {
         let dataInstance = dataArray[i];
         let sum = dataInstance.reduce((partialSum, a) => partialSum + a, 0);
         let instance = {};
         instance["depth"] = i;
-        for (let j = 0; j < dataInstance.length; j++) {
+        for (let j = 0; j < sortedIndices.length; j++) {
             let dataIndex = sortedIndices[j];
             instance["feature " + dataIndex.toString()] = dataInstance[dataIndex] / sum;
         }
