@@ -19,7 +19,11 @@ function createFeatureThresholdsPlot(treeId, secondaryTree) {
         outline = "1px solid red";
     }
 
-    let div2 = div.append("div").style("display", "grid").style("outline", outline).style("margin", "5px");
+    let div2 = div.append("div")
+        .style("display", "grid")
+        .style("outline", outline)
+        .style("margin", "5px")
+        .style("height", "max-content");
 
     let data = collectTheDataForFeatureThresholdsPlot(treeId)
 
