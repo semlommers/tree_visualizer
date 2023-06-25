@@ -93,6 +93,9 @@ function createOverviewContent(tab1Content) {
     const div = firstPanel.append("div")
         .attr("id", "treeGridDiv")
         .attr("class", "treeGridDiv");
+    div.append("p").text("The representative trees under the current distance:")
+        .style("overflow", "hidden")
+        .style("height", "18px")
     div.append("svg")
         .attr("id", "treeGrid")
         .attr("class", "treeGrid")
@@ -102,7 +105,7 @@ function createOverviewContent(tab1Content) {
     let secondPanel = tabContent.append("div").attr("class", "box").attr("id", "secondPanel").style("width", "1px");
     let secondTabs = secondPanel.append("ul").attr("class", "nav nav-pills");
     let secondTab1 = secondTabs.append("li").attr("class", "active");
-    secondTab1.append("a").attr("data-toggle", "pill").attr("href", "#tab11Content").text("t-SNE");
+    secondTab1.append("a").attr("data-toggle", "pill").attr("href", "#tab11Content").text("Manifold");
 
     let secondTab2 = secondTabs.append("li");
     let explorationButton = secondTab2.append("a").attr("data-toggle", "pill").attr("href", "#tab12Content")
@@ -130,7 +133,7 @@ function createOverviewContent(tab1Content) {
 
     let contentHeight = secondPanel.node().clientHeight - secondTabs.node().clientHeight;
 
-    let contentDiv = secondPanel.append("div").attr("id", "secondPanelTabContent").attr('class', "tab-content").style("height", contentHeight + "px"); // Make room for the navigation
+    let contentDiv = secondPanel.append("div").attr("id", "secondPanelTabContent").attr('class', "tab-content").style("height", "94%"); // Make room for the navigation
 
     let tab11Content = contentDiv.append("div")
         .attr("id", "tab11Content")

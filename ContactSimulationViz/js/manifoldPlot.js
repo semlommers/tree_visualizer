@@ -1,6 +1,8 @@
 function createManifoldPlot() {
     const div = d3.select("#tab11Content");
 
+    div.append('p').text("Manifold plot of learned by the distance of " + currentDistanceMetric);
+
     const w = 400;
     const h = 400;
 

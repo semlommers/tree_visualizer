@@ -13,6 +13,9 @@ function createRepresentedTreeGrid(repTreeId) {
     const treeGridDiv = div.append("div")
         .attr("id", "ExplorationGridDiv")
         .attr("class", "treeGridDiv");
+    treeGridDiv.append("p").text("The represented trees of the current selected representative tree:")
+        .style("overflow", "hidden")
+        .style("height", "18px")
     const svg = treeGridDiv.append("svg")
         .attr("id", "explorationGrid")
         .attr("class", "treeGrid");
