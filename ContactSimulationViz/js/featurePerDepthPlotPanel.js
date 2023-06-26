@@ -17,8 +17,8 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
 
     let tabHeight = d3.select("#secondPanelTabContent").node().clientHeight;
 
-    let margin = {top: 10, right: 120, bottom: 50, left: 50};
-    let width = 460 - margin.left - margin.right;
+    let margin = {top: 10, right: 160, bottom: 50, left: 50};
+    let width = 500 - margin.left - margin.right;
     let height = tabHeight - margin.top - margin.bottom;
 
     let svg = div.append("svg").attr("id", "featurePerDepthPlot")
@@ -60,14 +60,14 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
         .call(d3.axisBottom(y).tickSizeOuter(0));
 
     let color = d3.scaleOrdinal()
-        .domain(keys)
+        .domain(Array(keys.length).keys())
         .range(featurePerDepthColors)
 
     g.append("g")
         .selectAll("g")
         .data(stack)
         .enter().append("g")
-        .attr("fill", function(d) { return color(d.key); })
+        .attr("fill", function(d) { return color(namesData["feature_names"].indexOf(d.key)); })
         .attr("feature", function (d) { return d.key })
         .selectAll("rect")
         // enter a second time = loop subgroup per subgroup to add all rectangles
@@ -104,7 +104,7 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
         .attr("cx", width + 20)
         .attr("cy", function(d,i){ return 20 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
         .attr("r", 7)
-        .style("fill", function(d){ return color(d)})
+        .style("fill", function(d){ return color(namesData["feature_names"].indexOf(d))})
 
 // Add one dot in the legend for each name.
     g.selectAll("labels")
@@ -113,7 +113,7 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
         .append("text")
         .attr("x", width + 40)
         .attr("y", function(d,i){ return 20 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
-        .style("fill", function(d){ return color(d)})
+        .style("fill", function(d){ return color(namesData["feature_names"].indexOf(d))})
         .text(function(d){ return d})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
@@ -192,7 +192,7 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
         instance["depth"] = i;
         for (let j = 0; j < sortedIndices.length; j++) {
             let dataIndex = sortedIndices[j];
-            instance["feature " + dataIndex.toString()] = dataInstance[dataIndex] / sum;
+            instance[namesData["feature_names"][dataIndex.toString()]] = dataInstance[dataIndex] / sum;
         }
         dataMap.push(instance);
     }
