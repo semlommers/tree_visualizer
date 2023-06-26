@@ -141,22 +141,71 @@ function collectTheDataForFeatureThresholdsPlot(treeId) {
         thresholds.sort((a, b) => {
             return a - b;
         });
-        let totalLength = thresholds[thresholds.length-1] - thresholds[0]
-        if (thresholds.length === 1) {
-            totalLength = 1;
+
+        let std = standardDeviation(thresholds);
+        let mean = arrayMean(thresholds);
+
+        // Apply 3 sigma rule
+        let minThreshold = mean - 3*std;
+        let maxThreshold = mean + 3*std;
+
+        let thresholdsWith3SigmaRule = []
+        for (let j = 0; j < thresholds.length; j++) {
+            if (thresholds[j] > minThreshold && thresholds[j] < maxThreshold) {
+                thresholdsWith3SigmaRule.push(thresholds[j])
+            }
         }
 
-        let extraLengthFactor = 0.2;
-        let counter = thresholds.length;
-        resultArray.push([thresholds[0] - totalLength * extraLengthFactor, counter])
-        for (let j = 0; j < thresholds.length; j++) {
-            resultArray.push([thresholds[j], counter]);
-            counter--;
-            resultArray.push([thresholds[j], counter]);
+        let counter = thresholdsWith3SigmaRule.length;
+        if (thresholds[0] > minThreshold) {
+            resultArray.push([minThreshold, counter])
         }
-        resultArray.push([thresholds[thresholds.length-1] + totalLength * extraLengthFactor, 0])
+
+        for (let j = 0; j < thresholdsWith3SigmaRule.length; j++) {
+            resultArray.push([thresholdsWith3SigmaRule[j], counter]);
+            counter--;
+            resultArray.push([thresholdsWith3SigmaRule[j], counter]);
+        }
+
+        if (thresholds[thresholds.length-1] < maxThreshold) {
+            resultArray.push([maxThreshold, 0])
+        }
+
         data.push(resultArray);
     }
 
     return data;
 }
+
+function standardDeviation(arr) {
+
+    // Creating the mean with Array.reduce
+    let mean = arr.reduce((acc, curr) => {
+        return acc + curr
+    }, 0) / arr.length;
+
+    // Assigning (value - mean) ^ 2 to
+    // every array item
+    arr = arr.map((k) => {
+        return (k - mean) ** 2
+    });
+
+    // Calculating the sum of updated array
+    let sum = arr.reduce((acc, curr) => acc + curr, 0);
+
+    // Calculating the variance
+    let variance = sum / arr.length
+
+    // Returning the standard deviation
+    return Math.sqrt(sum / arr.length)
+}
+
+function arrayMean(arr) {
+    // Creating the mean with Array.reduce
+    let mean = arr.reduce((acc, curr) => {
+        return acc + curr
+    }, 0) / arr.length;
+
+    return mean
+}
+
