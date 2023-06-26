@@ -33,10 +33,17 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
 
     let data = collectTheDataForFeaturePerDepthPlot(repTreeId);
 
-    let keys = Object.keys(data[0]).slice(1);
+    let maxSum = 0;
+    for (let i = 0; i < data.length; i++) {
+        if (maxSum < data[i].sum) {
+            maxSum = data[i].sum;
+        }
+    }
+
+    let keys = Object.keys(data[0]).slice(2);
     let maxKeys = keys.length;
     for (let i = 1; i < data.length; i++) {
-        let nextKeys = Object.keys(data[i]).slice(1);
+        let nextKeys = Object.keys(data[i]).slice(2);
         if (maxKeys < nextKeys.length) {
             keys = nextKeys;
             maxKeys = nextKeys.length;
@@ -63,6 +70,8 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
         .domain(Array(keys.length).keys())
         .range(featurePerDepthColors)
 
+    let minHeightPercentage = 0.2;
+
     g.append("g")
         .selectAll("g")
         .data(stack)
@@ -74,7 +83,9 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
         .data(function(d) { return d; })
         .enter().append("rect")
         .attr("y", function(d) {
-            return x(d.data.depth);
+            let height = x.bandwidth() * minHeightPercentage +
+                (1 - minHeightPercentage) * x.bandwidth() * d.data.sum / maxSum;
+            return x(d.data.depth) + (x.bandwidth() * 0.5 - height * 0.5);
         })
         .attr("x", function(d) {
             return y(d[0]);
@@ -86,7 +97,9 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
                 return y(d[1]) - y(d[0]);
             }
         })
-        .attr("height",x.bandwidth())
+        .attr("height", function(d) {
+            return x.bandwidth() * minHeightPercentage + (1 - minHeightPercentage) * x.bandwidth() * d.data.sum / maxSum;
+        })
         .append("title")
         .text(function () {
             return this.parentNode.parentNode.getAttribute("feature")
@@ -150,10 +163,12 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
         dataArray[depth][featureId]++;
     }
 
+    let dataArrayForSorting = []
     for (let i = 0; i < dataArray.length; i++) {
         const sum = dataArray[i].reduce((partialSum, a) => partialSum + a, 0);
+        dataArrayForSorting.push([]);
         for (let j = 0; j < dataArray[i].length; j++) {
-            dataArray[i][j] = dataArray[i][j] / sum;
+            dataArrayForSorting[i].push(dataArray[i][j] / sum);
         }
     }
 
@@ -175,7 +190,7 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
 
     let sortedIndices;
     if (featureOrder == null) {
-        let columnSum = sumArray(dataArray);
+        let columnSum = sumArray(dataArrayForSorting);
 
         sortedIndices = sortWithIndices(columnSum);
 
@@ -190,6 +205,7 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
         let sum = dataInstance.reduce((partialSum, a) => partialSum + a, 0);
         let instance = {};
         instance["depth"] = i;
+        instance["sum"] = sum;
         for (let j = 0; j < sortedIndices.length; j++) {
             let dataIndex = sortedIndices[j];
             instance[namesData["feature_names"][dataIndex.toString()]] = dataInstance[dataIndex] / sum;
