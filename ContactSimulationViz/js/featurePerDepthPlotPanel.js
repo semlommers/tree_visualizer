@@ -150,6 +150,13 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
         dataArray[depth][featureId]++;
     }
 
+    for (let i = 0; i < dataArray.length; i++) {
+        const sum = dataArray[i].reduce((partialSum, a) => partialSum + a, 0);
+        for (let j = 0; j < dataArray[i].length; j++) {
+            dataArray[i][j] = dataArray[i][j] / sum;
+        }
+    }
+
     let dataMap = [];
 
     const sumArray = (array) => {
