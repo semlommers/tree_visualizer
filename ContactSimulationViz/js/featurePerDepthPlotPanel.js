@@ -163,15 +163,6 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
         dataArray[depth][featureId]++;
     }
 
-    let dataArrayForSorting = []
-    for (let i = 0; i < dataArray.length; i++) {
-        const sum = dataArray[i].reduce((partialSum, a) => partialSum + a, 0);
-        dataArrayForSorting.push([]);
-        for (let j = 0; j < dataArray[i].length; j++) {
-            dataArrayForSorting[i].push(dataArray[i][j] / sum);
-        }
-    }
-
     let dataMap = [];
 
     const sumArray = (array) => {
@@ -190,13 +181,15 @@ function collectTheDataForFeaturePerDepthPlot(treeId) {
 
     let sortedIndices;
     if (featureOrder == null) {
-        let columnSum = sumArray(dataArrayForSorting);
+        let columnSum = sumArray(dataArray);
 
         sortedIndices = sortWithIndices(columnSum);
 
         featureOrder = sortedIndices;
     } else {
-        sortedIndices = featureOrder;
+        let columnSum = sumArray(dataArray);
+
+        sortedIndices = sortWithIndices(columnSum);
     }
 
 
