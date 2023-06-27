@@ -128,9 +128,9 @@ function addNodeInformationToolTip(gElement, nodeId) {
 
     if (nodeIsLeaf) {
         gElement.append("title")
-            .text("Prediction: " + nodeMetaData["predictedLabel"])
+            .text(namesData["target_names"][nodeMetaData["predictedLabel"]])
     } else {
         gElement.append("title")
-            .text("Split feature: " + nodeMetaData["featureId"])
+            .text(namesData["feature_names"][nodeMetaData["featureId"]])
     }
 }
