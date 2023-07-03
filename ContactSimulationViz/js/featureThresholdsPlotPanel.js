@@ -44,7 +44,7 @@ function createFeatureThresholdsPlot(treeId, secondaryTree) {
     for (let i = 0; i < sortedIndices.length; i++) {
         let dataPart = data[sortedIndices[i]];
         if (dataPart.length === 0) {
-            break;
+            continue;
         }
 
         let featureName = namesData["feature_names"][sortedIndices[i]];
