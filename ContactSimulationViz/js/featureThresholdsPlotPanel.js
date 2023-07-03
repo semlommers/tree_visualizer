@@ -157,18 +157,11 @@ function collectTheDataForFeatureThresholdsPlot(treeId) {
         }
 
         let counter = thresholdsWith3SigmaRule.length;
-        if (thresholds[0] > minThreshold) {
-            resultArray.push([minThreshold, counter])
-        }
 
         for (let j = 0; j < thresholdsWith3SigmaRule.length; j++) {
             resultArray.push([thresholdsWith3SigmaRule[j], counter]);
             counter--;
             resultArray.push([thresholdsWith3SigmaRule[j], counter]);
-        }
-
-        if (thresholds[thresholds.length-1] < maxThreshold) {
-            resultArray.push([maxThreshold, 0])
         }
 
         data.push(resultArray);
