@@ -15,7 +15,7 @@ public class RuleSimilarityDistanceExMatrixOverlap extends TreeDistanceMeasure<D
     @Expose
     String name = "RuleSimilarityDistanceExMatrixOverlap";
     private final List<List<Double>> data = new ArrayList<>();
-    private final int SCALE_FACTOR = 100;
+    private final int SCALE_FACTOR = 1000;
 
     public RuleSimilarityDistanceExMatrixOverlap(String inputFileLocation) throws IOException {
         // Input file should be a csv file containing rows of the dataset with last column holding the target values.
