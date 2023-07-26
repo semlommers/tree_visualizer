@@ -1,5 +1,5 @@
 const decisionTreeColorSchemeOrder = ["equal", "nonExistingNode", "differentSplitFeaturePrediction", "nodeLeafComparison"]
-const decisionTreeColorScheme = ['#4daf4a','#e41a1c','#377eb8','#984ea3'];
+const decisionTreeColorScheme = ['#4daf4a','#377eb8','#e41a1c','#984ea3'];
 const decisionTreeSchemeOrderDisplay = ["Equal nodes", "Non-existing node", "Different split feature / prediction", "Node-leaf comparison"]
 
 const decisionTreeStructureColorSchemeOrder = ["existingNode", "nonExistingNode"]
