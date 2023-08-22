@@ -22,7 +22,7 @@ function createFeaturePerDepthPlot(repTreeId, secondaryTree) {
     let height = tabHeight - margin.top - margin.bottom;
 
     let svg = div.append("svg").attr("id", "featurePerDepthPlot")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + margin.left + margin.right + 130)
         .attr("height", height + margin.top + margin.bottom)
         .style("border", "solid")
         .style("margin-right", "10px");
